@@ -1,0 +1,571 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PlatformRole {
+  USER
+  SUPER_ADMIN
+}
+
+enum OrganizationRole {
+  OWNER
+  ADMIN
+  EVALUATOR
+  OBSERVER
+}
+
+enum CampaignStatus {
+  DRAFT
+  OPEN
+  EVALUATING
+  COMPUTING
+  COMPLETED
+  ARCHIVED
+
+  @@map("CommitteeStatus")
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  IN_REVIEW
+  SHORTLISTED
+  SELECTED
+  REJECTED
+  WITHDRAWN
+  ARCHIVED
+
+  @@map("ProjectStatus")
+}
+
+enum SubmissionLinkType {
+  WEBSITE
+  PORTFOLIO
+  RESUME
+  GITHUB
+  DEMO
+  VIDEO
+  PITCH_DECK
+  DOCUMENT
+  OTHER
+}
+
+enum CriterionType {
+  SCALE
+  NUMERIC
+  BOOLEAN
+  RUBRIC
+  STAR
+  PASS_FAIL
+}
+
+enum EvaluationStatus {
+  DRAFT
+  SEALED
+  SUBMITTED
+  INCLUDED
+  EXCLUDED
+}
+
+enum ComputationJobStatus {
+  PENDING
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum DecisionResultStatus {
+  PENDING
+  COMPUTING
+  PUBLISHED
+  VERIFIED
+  FAILED
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
+}
+
+enum NotificationType {
+  INVITATION
+  CAMPAIGN   @map("COMMITTEE")
+  EVALUATION
+  RESULT
+  SYSTEM
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  INVITE
+  ACCEPT_INVITATION
+  REVOKE_INVITATION
+  SUBMIT_EVALUATION
+  START_COMPUTATION
+  COMPLETE_COMPUTATION
+  PUBLISH_RESULT
+  CONNECT_WALLET
+  SIGN_IN
+  SIGN_OUT
+}
+
+model User {
+  id            String       @id @db.Uuid
+  fullName      String       @db.VarChar(120)
+  email         String       @unique @db.VarChar(320)
+  avatar        String?      @db.Text
+  walletAddress String?      @unique @db.VarChar(42)
+  platformRole  PlatformRole @default(USER)
+  createdAt     DateTime     @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime     @updatedAt @db.Timestamptz(6)
+
+  ownedOrganizations      Organization[]          @relation("OrganizationOwner")
+  memberships             OrganizationMember[]
+  createdCampaigns        EvaluationCampaign[]    @relation("CampaignCreator")
+  campaignAssignments     CampaignEvaluator[]     @relation("CampaignEvaluatorUser")
+  assignedCampaignMembers CampaignEvaluator[]     @relation("CampaignEvaluatorAssigner")
+  ownedSubmissions        Submission[]            @relation("SubmissionOwner")
+  submissionContributions SubmissionContributor[] @relation("SubmissionContributorUser")
+  addedSubmissionMembers  SubmissionContributor[] @relation("SubmissionContributorAdder")
+  createdTemplates        EvaluationTemplate[]    @relation("TemplateCreator")
+  evaluations             Evaluation[]            @relation("EvaluationEvaluator")
+  createdComputationJobs  ComputationJob[]        @relation("ComputationJobCreator")
+  notifications           Notification[]
+  auditLogs               AuditLog[]              @relation("AuditActor")
+  sentInvitations         Invitation[]            @relation("InvitationSender")
+  acceptedInvites         Invitation[]            @relation("InvitationAcceptor")
+  walletChallenges        WalletChallenge[]
+  settings                UserSettings?
+
+  @@index([platformRole])
+  @@index([createdAt])
+  @@map("users")
+}
+
+model UserSettings {
+  userId                String   @id @db.Uuid
+  activeOrganizationId  String?  @db.Uuid
+  emailNotifications    Boolean  @default(true)
+  securityNotifications Boolean  @default(true)
+  decisionNotifications Boolean  @default(true)
+  createdAt             DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime @updatedAt @db.Timestamptz(6)
+
+  user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganization Organization? @relation("ActiveOrganization", fields: [activeOrganizationId], references: [id], onDelete: SetNull)
+
+  @@index([activeOrganizationId])
+  @@map("user_settings")
+}
+
+model WalletChallenge {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  nonceHash String    @unique @db.VarChar(64)
+  expiresAt DateTime  @db.Timestamptz(6)
+  usedAt    DateTime? @db.Timestamptz(6)
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@index([expiresAt])
+  @@map("wallet_challenges")
+}
+
+model Organization {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @db.VarChar(120)
+  slug        String   @unique @db.VarChar(80)
+  logo        String?  @db.Text
+  logoPath    String?  @db.Text
+  ownerId     String   @db.Uuid
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
+
+  owner       User                 @relation("OrganizationOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  members     OrganizationMember[]
+  campaigns   EvaluationCampaign[]
+  templates   EvaluationTemplate[]
+  invitations Invitation[]
+  auditLogs   AuditLog[]
+  activeUsers UserSettings[]       @relation("ActiveOrganization")
+
+  @@index([ownerId])
+  @@index([createdAt])
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  organizationId String           @db.Uuid
+  userId         String           @db.Uuid
+  role           OrganizationRole
+  createdAt      DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime         @updatedAt @db.Timestamptz(6)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([organizationId, userId])
+  @@index([userId])
+  @@index([organizationId, role])
+  @@map("organization_members")
+}
+
+model EvaluationCampaign {
+  id                   String         @id @default(uuid()) @db.Uuid
+  organizationId       String         @db.Uuid
+  evaluationTemplateId String?        @db.Uuid
+  title                String         @db.VarChar(160)
+  description          String         @db.Text
+  status               CampaignStatus @default(DRAFT)
+  deadline             DateTime?      @db.Timestamptz(6)
+  createdById          String         @db.Uuid
+  createdAt            DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime       @updatedAt @db.Timestamptz(6)
+
+  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  evaluationTemplate EvaluationTemplate? @relation(fields: [evaluationTemplateId], references: [id], onDelete: SetNull)
+  createdBy          User                @relation("CampaignCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  submissions        Submission[]
+  evaluations        Evaluation[]
+  evaluators         CampaignEvaluator[]
+  computationJobs    ComputationJob[]
+  result             DecisionResult?
+  auditLogs          AuditLog[]
+
+  @@index([organizationId, status])
+  @@index([createdById])
+  @@index([evaluationTemplateId])
+  @@index([deadline])
+  @@map("committees")
+}
+
+model CampaignEvaluator {
+  campaignId   String   @map("committeeId") @db.Uuid
+  userId       String   @db.Uuid
+  assignedById String?  @db.Uuid
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
+
+  campaign   EvaluationCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  evaluator  User               @relation("CampaignEvaluatorUser", fields: [userId], references: [id], onDelete: Cascade)
+  assignedBy User?              @relation("CampaignEvaluatorAssigner", fields: [assignedById], references: [id], onDelete: SetNull)
+
+  @@id([campaignId, userId])
+  @@index([userId, createdAt])
+  @@index([assignedById])
+  @@map("committee_judges")
+}
+
+model Submission {
+  id          String           @id @default(uuid()) @db.Uuid
+  campaignId  String           @map("committeeId") @db.Uuid
+  title       String           @db.VarChar(180)
+  description String           @db.Text
+  kind        String?          @map("category") @db.VarChar(80)
+  status      SubmissionStatus @default(DRAFT)
+  metadata    Json             @default("{}")
+  ownerId     String           @map("submittedById") @db.Uuid
+  createdAt   DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime         @updatedAt @db.Timestamptz(6)
+
+  campaign     EvaluationCampaign      @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  owner        User                    @relation("SubmissionOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  contributors SubmissionContributor[]
+  links        SubmissionLink[]
+  attachments  SubmissionAttachment[]
+  evaluations  Evaluation[]
+  selectedIn   DecisionResult[]        @relation("SelectedSubmission")
+
+  @@unique([campaignId, title])
+  @@index([campaignId, status])
+  @@index([campaignId, kind])
+  @@index([ownerId])
+  @@index([createdAt])
+  @@map("projects")
+}
+
+model SubmissionContributor {
+  submissionId String   @map("projectId") @db.Uuid
+  userId       String   @db.Uuid
+  addedById    String?  @db.Uuid
+  role         String   @default("CONTRIBUTOR") @db.VarChar(80)
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  member     User       @relation("SubmissionContributorUser", fields: [userId], references: [id], onDelete: Cascade)
+  addedBy    User?      @relation("SubmissionContributorAdder", fields: [addedById], references: [id], onDelete: SetNull)
+
+  @@id([submissionId, userId])
+  @@index([userId, createdAt])
+  @@index([addedById])
+  @@map("project_team_members")
+}
+
+model SubmissionLink {
+  id           String             @id @default(uuid()) @db.Uuid
+  submissionId String             @db.Uuid
+  type         SubmissionLinkType @default(OTHER)
+  label        String             @db.VarChar(120)
+  url          String             @db.Text
+  position     Int                @default(0)
+  createdAt    DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime           @updatedAt @db.Timestamptz(6)
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@unique([submissionId, url])
+  @@index([submissionId, position])
+  @@map("submission_links")
+}
+
+model SubmissionAttachment {
+  id            String   @id @default(uuid()) @db.Uuid
+  submissionId  String   @db.Uuid
+  storageBucket String   @db.VarChar(120)
+  storagePath   String   @unique @db.Text
+  fileName      String   @db.VarChar(255)
+  mimeType      String   @db.VarChar(160)
+  sizeBytes     BigInt
+  metadata      Json     @default("{}")
+  createdAt     DateTime @default(now()) @db.Timestamptz(6)
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId, createdAt])
+  @@map("submission_attachments")
+}
+
+model EvaluationTemplate {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @db.Uuid
+  title          String    @db.VarChar(160)
+  description    String?   @db.Text
+  instructions   String    @default("") @db.Text
+  deadline       DateTime? @db.Timestamptz(6)
+  version        Int       @default(1)
+  isDefault      Boolean   @default(false)
+  createdById    String    @db.Uuid
+  createdAt      DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime  @updatedAt @db.Timestamptz(6)
+
+  organization Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy    User                  @relation("TemplateCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  criteria     EvaluationCriterion[]
+  campaigns    EvaluationCampaign[]
+
+  @@unique([organizationId, title, version])
+  @@index([organizationId, isDefault])
+  @@index([organizationId, updatedAt])
+  @@index([organizationId, deadline])
+  @@index([createdById])
+  @@map("evaluation_templates")
+}
+
+model EvaluationCriterion {
+  id          String        @id @default(uuid()) @db.Uuid
+  templateId  String        @db.Uuid
+  key         String        @db.VarChar(80)
+  label       String        @db.VarChar(160)
+  description String?       @db.Text
+  type        CriterionType @default(SCALE)
+  weight      Decimal       @default(1) @db.Decimal(8, 4)
+  minScore    Decimal       @default(0) @db.Decimal(10, 4)
+  maxScore    Decimal       @default(10) @db.Decimal(10, 4)
+  position    Int           @default(0)
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime      @updatedAt @db.Timestamptz(6)
+
+  template EvaluationTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([templateId, key])
+  @@index([templateId, position])
+  @@map("evaluation_criteria")
+}
+
+model Evaluation {
+  id           String           @id @default(uuid()) @db.Uuid
+  campaignId   String           @map("committeeId") @db.Uuid
+  submissionId String           @map("projectId") @db.Uuid
+  evaluatorId  String           @map("judgeId") @db.Uuid
+  status       EvaluationStatus @default(DRAFT)
+  submittedAt  DateTime?        @db.Timestamptz(6)
+  createdAt    DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime         @updatedAt @db.Timestamptz(6)
+
+  campaign   EvaluationCampaign          @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  submission Submission                  @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  evaluator  User                        @relation("EvaluationEvaluator", fields: [evaluatorId], references: [id], onDelete: Restrict)
+  payload    EncryptedEvaluationPayload?
+
+  @@unique([submissionId, evaluatorId])
+  @@index([campaignId, status])
+  @@index([evaluatorId, status])
+  @@index([submittedAt])
+  @@map("evaluations")
+}
+
+model EncryptedEvaluationPayload {
+  id                  String   @id @default(uuid()) @db.Uuid
+  evaluationId        String   @unique @db.Uuid
+  ciphertext          String   @db.Text
+  encryptedKey        String   @db.Text
+  encryptionAlgorithm String   @db.VarChar(80)
+  keyReference        String   @db.VarChar(255)
+  nonce               String   @db.Text
+  authenticationTag   String?  @db.Text
+  additionalData      String?  @db.Text
+  payloadHash         String   @db.VarChar(128)
+  schemaVersion       Int      @default(1)
+  sealedAt            DateTime @default(now()) @db.Timestamptz(6)
+  createdAt           DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt           DateTime @updatedAt @db.Timestamptz(6)
+
+  evaluation Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+
+  @@index([payloadHash])
+  @@index([sealedAt])
+  @@map("encrypted_evaluation_payloads")
+}
+
+model ComputationJob {
+  id                String               @id @default(uuid()) @db.Uuid
+  campaignId        String               @db.Uuid
+  createdById       String               @db.Uuid
+  status            ComputationJobStatus @default(PENDING)
+  provider          String               @default("IEXEC_NOX") @db.VarChar(80)
+  providerTaskId    String?              @unique @db.VarChar(160)
+  providerDealId    String?              @db.VarChar(160)
+  chainId           Int?
+  appAddress        String?              @db.VarChar(42)
+  workerpoolAddress String?              @db.VarChar(42)
+  inputCommitment   String               @db.VarChar(160)
+  resultCommitment  String?              @db.VarChar(160)
+  receiptHash       String?              @db.VarChar(160)
+  requestMetadata   Json                 @default("{}")
+  errorCode         String?              @db.VarChar(120)
+  errorMessage      String?              @db.Text
+  queuedAt          DateTime?            @db.Timestamptz(6)
+  startedAt         DateTime?            @db.Timestamptz(6)
+  completedAt       DateTime?            @db.Timestamptz(6)
+  createdAt         DateTime             @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime             @updatedAt @db.Timestamptz(6)
+
+  campaign  EvaluationCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  createdBy User               @relation("ComputationJobCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  result    DecisionResult?
+
+  @@index([campaignId, createdAt])
+  @@index([campaignId, status])
+  @@index([status, createdAt])
+  @@map("computation_jobs")
+}
+
+model DecisionResult {
+  id                   String               @id @default(uuid()) @db.Uuid
+  campaignId           String               @unique @map("committeeId") @db.Uuid
+  selectedSubmissionId String?              @map("winnerProjectId") @db.Uuid
+  computationJobId     String?              @unique @db.Uuid
+  status               DecisionResultStatus @default(PENDING)
+  decision             String?              @db.VarChar(255)
+  ranking              Json?
+  overallScore         Decimal?             @map("finalScore") @db.Decimal(12, 4)
+  summary              String?              @db.Text
+  consensusSummary     String?              @db.Text
+  statistics           Json?
+  providerTaskId       String?              @map("computationId") @db.VarChar(160)
+  resultCommitment     String?              @map("verificationHash") @db.VarChar(160)
+  transactionHash      String?              @db.VarChar(80)
+  publishedAt          DateTime?            @db.Timestamptz(6)
+  verifiedAt           DateTime?            @db.Timestamptz(6)
+  createdAt            DateTime             @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime             @updatedAt @db.Timestamptz(6)
+
+  campaign           EvaluationCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  selectedSubmission Submission?        @relation("SelectedSubmission", fields: [selectedSubmissionId], references: [id], onDelete: SetNull)
+  computationJob     ComputationJob?    @relation(fields: [computationJobId], references: [id], onDelete: SetNull)
+
+  @@index([selectedSubmissionId])
+  @@index([status, publishedAt])
+  @@index([resultCommitment])
+  @@map("decision_results")
+}
+
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @db.Uuid
+  type      NotificationType
+  title     String           @db.VarChar(180)
+  body      String?          @db.Text
+  data      Json?
+  readAt    DateTime?        @db.Timestamptz(6)
+  createdAt DateTime         @default(now()) @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+model AuditLog {
+  id             String      @id @default(uuid()) @db.Uuid
+  organizationId String?     @db.Uuid
+  campaignId     String?     @map("committeeId") @db.Uuid
+  actorId        String?     @db.Uuid
+  action         AuditAction
+  entityType     String      @db.VarChar(80)
+  entityId       String?     @db.VarChar(160)
+  metadata       Json?
+  ipAddress      String?     @db.VarChar(64)
+  userAgent      String?     @db.Text
+  createdAt      DateTime    @default(now()) @db.Timestamptz(6)
+
+  organization Organization?       @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  campaign     EvaluationCampaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  actor        User?               @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([campaignId, createdAt])
+  @@index([actorId, createdAt])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
+model Invitation {
+  id             String           @id @default(uuid()) @db.Uuid
+  organizationId String           @db.Uuid
+  email          String           @db.VarChar(320)
+  role           OrganizationRole
+  tokenHash      String           @unique @db.VarChar(64)
+  status         InvitationStatus @default(PENDING)
+  invitedById    String           @db.Uuid
+  acceptedById   String?          @db.Uuid
+  expiresAt      DateTime         @db.Timestamptz(6)
+  acceptedAt     DateTime?        @db.Timestamptz(6)
+  createdAt      DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime         @updatedAt @db.Timestamptz(6)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy    User         @relation("InvitationSender", fields: [invitedById], references: [id], onDelete: Restrict)
+  acceptedBy   User?        @relation("InvitationAcceptor", fields: [acceptedById], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, status])
+  @@index([email, status])
+  @@index([expiresAt])
+  @@index([invitedById])
+  @@index([acceptedById])
+  @@map("invitations")
+}

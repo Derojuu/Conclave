@@ -1,0 +1,17 @@
+export const AUDIT_ACTIONS = [
+  "CREATE",
+  "UPDATE",
+  "DELETE",
+  "INVITE",
+  "ACCEPT_INVITATION",
+  "REVOKE_INVITATION",
+  "SUBMIT_EVALUATION",
+  "START_COMPUTATION",
+  "COMPLETE_COMPUTATION",
+  "PUBLISH_RESULT",
+  "CONNECT_WALLET",
+  "SIGN_IN",
+  "SIGN_OUT",
+] as const;
+
+export type AuditAction = (typeof AUDIT_ACTIONS)[number];

@@ -1,0 +1,8 @@
+node_modules
+.next
+lib/generated
+artifacts
+cache
+pnpm-lock.yaml
+*.woff2
+ZKGov*.html
