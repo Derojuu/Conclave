@@ -47,7 +47,7 @@ export function GoogleSignInButton({
   return (
     <div>
       <Button
-        className="flex min-h-12 w-full items-center justify-center gap-3 rounded-sm bg-zinc-950 px-5 py-3 text-[10px] font-bold tracking-[0.1em] text-white uppercase transition-colors hover:bg-zinc-800 disabled:cursor-wait disabled:opacity-60 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+        className="flex min-h-12 w-full items-center justify-center gap-3 rounded-sm bg-zinc-950 px-5 py-3 text-[10px] font-bold tracking-[0.1em] text-white uppercase transition-colors hover:bg-zinc-800 disabled:cursor-wait disabled:opacity-60 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 cursor-pointer"
         disabled={isLoading}
         onClick={signIn}
         type="button"
