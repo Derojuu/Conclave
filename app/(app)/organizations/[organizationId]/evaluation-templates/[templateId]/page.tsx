@@ -106,7 +106,7 @@ export default async function EvaluationTemplateBuilderPage({
   return (
     <div className="max-w-6xl">
       <Link
-        className="inline-flex items-center gap-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase hover:text-indigo-500"
+        className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase hover:text-indigo-500"
         href={`/organizations/${organizationId}/evaluation-templates`}
       >
         <ArrowLeft aria-hidden="true" size={12} />
@@ -114,26 +114,26 @@ export default async function EvaluationTemplateBuilderPage({
       </Link>
       <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-[8px] font-bold tracking-[0.14em] text-indigo-500 uppercase">
+          <p className="text-[10px] font-bold tracking-[0.14em] text-indigo-500 uppercase">
             {template.organization.slug} / version {template.version}
           </p>
           <h1 className="mt-4 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
             {template.title}
           </h1>
-          <p className="mt-4 text-[9px] text-zinc-500">
+          <p className="mt-4 text-[11px] text-zinc-500">
             Created by {template.createdBy.fullName} /{" "}
             {template.createdBy.email}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           {template.isDefault ? (
-            <span className="inline-flex items-center gap-2 border border-emerald-500/20 bg-emerald-500/[0.04] px-3 py-2 text-[8px] font-bold text-emerald-500 uppercase">
+            <span className="inline-flex items-center gap-2 border border-emerald-500/20 bg-emerald-500/[0.04] px-3 py-2 text-[10px] font-bold text-emerald-500 uppercase">
               <CheckCircle2 aria-hidden="true" size={12} />
               Default
             </span>
           ) : null}
           {!editable ? (
-            <span className="inline-flex items-center gap-2 border border-amber-500/20 bg-amber-500/[0.04] px-3 py-2 text-[8px] font-bold text-amber-500 uppercase">
+            <span className="inline-flex items-center gap-2 border border-amber-500/20 bg-amber-500/[0.04] px-3 py-2 text-[10px] font-bold text-amber-500 uppercase">
               <LockKeyhole aria-hidden="true" size={12} />
               {canManage ? "Version locked" : "Read only"}
             </span>
@@ -178,7 +178,7 @@ export default async function EvaluationTemplateBuilderPage({
 
         <aside>
           <div className="border-y border-black/[0.06] py-5 dark:border-white/[0.06]">
-            <p className="text-[8px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Version history
             </p>
             <div className="mt-4 divide-y divide-black/[0.06] dark:divide-white/[0.06]">
@@ -192,10 +192,10 @@ export default async function EvaluationTemplateBuilderPage({
                   href={`/organizations/${organizationId}/evaluation-templates/${versionRecord.id}`}
                   key={versionRecord.id}
                 >
-                  <span className="text-[9px] font-bold uppercase">
+                  <span className="text-[11px] font-bold uppercase">
                     Version {versionRecord.version}
                   </span>
-                  <span className="text-[7px] uppercase">
+                  <span className="text-[9px] uppercase">
                     {versionRecord._count.campaigns > 0
                       ? "In use"
                       : versionRecord.isDefault
@@ -208,10 +208,10 @@ export default async function EvaluationTemplateBuilderPage({
           </div>
 
           <div className="mt-7 border-b border-black/[0.06] pb-6 dark:border-white/[0.06]">
-            <p className="text-[8px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Template record
             </p>
-            <p className="mt-4 flex items-center gap-2 text-[8px] text-zinc-500">
+            <p className="mt-4 flex items-center gap-2 text-[10px] text-zinc-500">
               <CalendarClock aria-hidden="true" size={12} />
               Updated{" "}
               {new Intl.DateTimeFormat("en", {
@@ -219,7 +219,7 @@ export default async function EvaluationTemplateBuilderPage({
                 timeStyle: "short",
               }).format(template.updatedAt)}
             </p>
-            <p className="mt-3 text-[8px] text-zinc-500">
+            <p className="mt-3 text-[10px] text-zinc-500">
               Created{" "}
               {new Intl.DateTimeFormat("en", {
                 dateStyle: "medium",
@@ -228,7 +228,7 @@ export default async function EvaluationTemplateBuilderPage({
           </div>
 
           <div className="mt-7">
-            <p className="text-[8px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Campaign usage
             </p>
             {template.campaigns.length ? (
@@ -239,17 +239,17 @@ export default async function EvaluationTemplateBuilderPage({
                     href={`/organizations/${organizationId}/campaigns/${campaign.id}`}
                     key={campaign.id}
                   >
-                    <p className="text-[8px] font-bold uppercase">
+                    <p className="text-[10px] font-bold uppercase">
                       {campaign.title}
                     </p>
-                    <p className="mt-1 text-[7px] text-zinc-500">
+                    <p className="mt-1 text-[9px] text-zinc-500">
                       {campaign.status}
                     </p>
                   </Link>
                 ))}
               </div>
             ) : (
-              <p className="mt-3 text-[8px] leading-5 text-zinc-500">
+              <p className="mt-3 text-[10px] leading-5 text-zinc-500">
                 This version is not assigned to a campaign and remains
                 editable.
               </p>

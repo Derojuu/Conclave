@@ -75,10 +75,10 @@ export function PersonalSettingsForm({
           key={option.name}
         >
           <span>
-            <span className="block text-[10px] font-bold text-zinc-950 dark:text-white">
+            <span className="block text-[12px] font-bold text-zinc-950 dark:text-white">
               {option.label}
             </span>
-            <span className="mt-1 block max-w-xl text-[9px] leading-5 text-zinc-500">
+            <span className="mt-1 block max-w-xl text-[11px] leading-5 text-zinc-500">
               {option.description}
             </span>
           </span>
@@ -94,15 +94,15 @@ export function PersonalSettingsForm({
         <p
           className={
             message === "Preferences saved."
-              ? "text-[9px] text-emerald-500"
-              : "text-[9px] text-rose-500"
+              ? "text-[11px] text-emerald-500"
+              : "text-[11px] text-rose-500"
           }
           role="status"
         >
           {message}
         </p>
         <button
-          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[9px] font-bold tracking-[0.1em] uppercase disabled:cursor-wait disabled:opacity-60 dark:bg-white"
+          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[11px] font-bold tracking-[0.1em] uppercase disabled:cursor-wait disabled:opacity-60 dark:bg-white"
           disabled={isSubmitting}
           type="submit"
         >

@@ -20,17 +20,17 @@ export function ConfidentialitySection() {
         <article className="overflow-hidden bg-[#EBE8E1] dark:bg-[#111]">
           <div className="flex items-center justify-between border-b border-black/[0.06] px-5 py-4 dark:border-white/[0.06]">
             <div>
-              <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+              <p className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
                 Observable review / legacy
               </p>
-              <p className="mt-1 text-[8px] tracking-[0.1em] text-zinc-500 uppercase">
+              <p className="mt-1 text-[10px] tracking-[0.1em] text-zinc-500 uppercase">
                 Administrator-readable inputs
               </p>
             </div>
             <Icon className="text-rose-400" name="eye" size={18} />
           </div>
           <div className="p-5">
-            <p className="text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+            <p className="text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
               Evaluation stream / exposed
             </p>
             <div className="mt-5 space-y-2">
@@ -39,10 +39,10 @@ export function ConfidentialitySection() {
                   className="flex items-center justify-between border border-black/[0.06] bg-black/[0.015] p-3 dark:border-white/[0.06] dark:bg-white/[0.02]"
                   key={evaluator}
                 >
-                  <span className="text-[9px] tracking-[0.08em] text-zinc-600 uppercase dark:text-zinc-300">
+                  <span className="text-[11px] tracking-[0.08em] text-zinc-600 uppercase dark:text-zinc-300">
                     {evaluator}
                   </span>
-                  <span className="flex items-center gap-3 text-[9px] font-bold text-zinc-900 dark:text-white">
+                  <span className="flex items-center gap-3 text-[11px] font-bold text-zinc-900 dark:text-white">
                     SCORE / {score}
                     <span className="h-1.5 w-1.5 bg-rose-500" />
                   </span>
@@ -50,7 +50,7 @@ export function ConfidentialitySection() {
               ))}
             </div>
             <div className="mt-6 border-t border-black/[0.06] pt-5 dark:border-white/[0.06]">
-              <p className="text-[9px] font-bold tracking-[0.08em] text-rose-500 uppercase">
+              <p className="text-[11px] font-bold tracking-[0.08em] text-rose-500 uppercase">
                 Risk / later reviewers anchor on earlier opinions
               </p>
             </div>
@@ -60,17 +60,17 @@ export function ConfidentialitySection() {
         <article className="overflow-hidden bg-[#EBE8E1] dark:bg-[#111]">
           <div className="flex items-center justify-between border-b border-black/[0.06] px-5 py-4 dark:border-white/[0.06]">
             <div>
-              <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+              <p className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
                 Confidential review / Conclave
               </p>
-              <p className="mt-1 text-[8px] tracking-[0.1em] text-zinc-500 uppercase">
+              <p className="mt-1 text-[10px] tracking-[0.1em] text-zinc-500 uppercase">
                 Inputs protected during computation
               </p>
             </div>
             <Icon className="text-emerald-500" name="shield" size={18} />
           </div>
           <div className="p-5">
-            <p className="text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+            <p className="text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
               Evaluation stream / sealed
             </p>
             <div className="mt-5 space-y-2">
@@ -79,10 +79,10 @@ export function ConfidentialitySection() {
                   className="flex items-center justify-between border border-black/[0.06] bg-black/[0.015] p-3 dark:border-white/[0.06] dark:bg-white/[0.02]"
                   key={score}
                 >
-                  <span className="privacy-redact text-[9px] tracking-[0.08em] text-zinc-600 uppercase dark:text-zinc-300">
+                  <span className="privacy-redact text-[11px] tracking-[0.08em] text-zinc-600 uppercase dark:text-zinc-300">
                     EVALUATOR / 0x{index + 4}A...{index + 7}F
                   </span>
-                  <span className="flex items-center gap-2 text-[8px] font-bold tracking-[0.1em] text-emerald-500 uppercase">
+                  <span className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-emerald-500 uppercase">
                     <Icon name="lock" size={11} />
                     Sealed
                   </span>
@@ -90,7 +90,7 @@ export function ConfidentialitySection() {
               ))}
             </div>
             <div className="mt-6 border-t border-black/[0.06] pt-5 dark:border-white/[0.06]">
-              <p className="text-[9px] font-bold tracking-[0.08em] text-emerald-600 uppercase dark:text-emerald-400">
+              <p className="text-[11px] font-bold tracking-[0.08em] text-emerald-600 uppercase dark:text-emerald-400">
                 State / independent judgment preserved
               </p>
             </div>

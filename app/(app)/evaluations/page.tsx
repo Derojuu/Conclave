@@ -86,14 +86,14 @@ export default async function EvaluationsPage() {
       <header>
         <div className="flex items-center gap-3">
           <span className="h-1.5 w-1.5 bg-emerald-500" />
-          <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+          <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
             Private evaluator workspace
           </p>
         </div>
         <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
           Assigned evaluations
         </h1>
-        <p className="mt-4 max-w-2xl text-[10px] leading-6 text-zinc-500">
+        <p className="mt-4 max-w-2xl text-[12px] leading-6 text-zinc-500">
           Complete independent assessments. Your scores, recommendation, and
           comments are encrypted in the browser before submission.
         </p>
@@ -122,7 +122,7 @@ export default async function EvaluationsPage() {
             <p className="mt-7 text-3xl font-bold text-zinc-950 dark:text-white">
               {stat.value}
             </p>
-            <p className="mt-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+            <p className="mt-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               {stat.label}
             </p>
           </article>
@@ -135,21 +135,21 @@ export default async function EvaluationsPage() {
             <section key={campaign.id}>
               <div className="flex flex-col gap-4 border-b border-black/[0.06] pb-5 sm:flex-row sm:items-end sm:justify-between dark:border-white/[0.06]">
                 <div>
-                  <p className="text-[7px] font-bold tracking-[0.1em] text-indigo-500 uppercase">
+                  <p className="text-[9px] font-bold tracking-[0.1em] text-indigo-500 uppercase">
                     {campaign.organization.name}
                   </p>
                   <h2 className="mt-2 text-[15px] font-bold text-zinc-950 dark:text-white">
                     {campaign.title}
                   </h2>
-                  <p className="mt-2 max-w-3xl text-[9px] leading-5 text-zinc-500">
+                  <p className="mt-2 max-w-3xl text-[11px] leading-5 text-zinc-500">
                     {campaign.description}
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
-                  <p className="text-[8px] font-bold text-zinc-950 uppercase dark:text-white">
+                  <p className="text-[10px] font-bold text-zinc-950 uppercase dark:text-white">
                     {campaign.status.replaceAll("_", " ")}
                   </p>
-                  <p className="mt-2 flex items-center gap-2 text-[7px] text-zinc-500">
+                  <p className="mt-2 flex items-center gap-2 text-[9px] text-zinc-500">
                     <CalendarClock aria-hidden="true" size={11} />
                     {campaign.deadline
                       ? new Intl.DateTimeFormat("en", {
@@ -177,16 +177,16 @@ export default async function EvaluationsPage() {
                       >
                         <div>
                           <div className="flex flex-wrap items-center gap-3">
-                            <p className="text-[11px] font-bold text-zinc-950 group-hover:text-indigo-500 dark:text-white">
+                            <p className="text-[13px] font-bold text-zinc-950 group-hover:text-indigo-500 dark:text-white">
                               {submission.title}
                             </p>
                             {submission.kind ? (
-                              <span className="text-[7px] text-zinc-500 uppercase">
+                              <span className="text-[9px] text-zinc-500 uppercase">
                                 {submission.kind}
                               </span>
                             ) : null}
                           </div>
-                          <p className="mt-2 text-[8px] text-zinc-500">
+                          <p className="mt-2 text-[10px] text-zinc-500">
                             {complete
                               ? "Submitted and sealed"
                               : evaluation?.status === "SEALED"
@@ -197,8 +197,8 @@ export default async function EvaluationsPage() {
                         <span
                           className={
                             complete
-                              ? "inline-flex items-center gap-2 text-[8px] font-bold text-emerald-500 uppercase"
-                              : "inline-flex items-center gap-2 text-[8px] font-bold text-indigo-500 uppercase"
+                              ? "inline-flex items-center gap-2 text-[10px] font-bold text-emerald-500 uppercase"
+                              : "inline-flex items-center gap-2 text-[10px] font-bold text-indigo-500 uppercase"
                           }
                         >
                           {complete ? "View receipt" : "Evaluate"}
@@ -209,7 +209,7 @@ export default async function EvaluationsPage() {
                   })}
                 </div>
               ) : (
-                <p className="py-8 text-[9px] text-zinc-500">
+                <p className="py-8 text-[11px] text-zinc-500">
                   No submissions are currently available for evaluation.
                 </p>
               )}
@@ -222,7 +222,7 @@ export default async function EvaluationsPage() {
               className="mx-auto text-zinc-500"
               size={22}
             />
-            <p className="mt-4 text-[10px] text-zinc-500">
+            <p className="mt-4 text-[12px] text-zinc-500">
               You do not have any campaign assignments.
             </p>
           </div>

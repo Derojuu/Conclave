@@ -92,13 +92,13 @@ export function OrganizationForm({
     <form className="space-y-6" onSubmit={onSubmit}>
       <div>
         <label
-          className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+          className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
           htmlFor="name"
         >
           Organization name
         </label>
         <input
-          className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[11px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+          className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[13px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
           id="name"
           {...register("name", {
             onChange(event) {
@@ -113,19 +113,19 @@ export function OrganizationForm({
           })}
         />
         {errors.name ? (
-          <p className="mt-2 text-[9px] text-rose-500">{errors.name.message}</p>
+          <p className="mt-2 text-[11px] text-rose-500">{errors.name.message}</p>
         ) : null}
       </div>
 
       <div>
         <label
-          className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+          className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
           htmlFor="slug"
         >
           Workspace slug
         </label>
         <input
-          className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[11px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+          className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[13px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
           id="slug"
           {...register("slug", {
             onChange() {
@@ -134,19 +134,19 @@ export function OrganizationForm({
           })}
         />
         {errors.slug ? (
-          <p className="mt-2 text-[9px] text-rose-500">{errors.slug.message}</p>
+          <p className="mt-2 text-[11px] text-rose-500">{errors.slug.message}</p>
         ) : null}
       </div>
 
       <div>
         <label
-          className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+          className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
           htmlFor="description"
         >
           Description
         </label>
         <textarea
-          className="mt-2 min-h-28 w-full resize-y rounded-sm border border-black/[0.08] bg-black/[0.02] p-3 text-[11px] leading-5 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+          className="mt-2 min-h-28 w-full resize-y rounded-sm border border-black/[0.08] bg-black/[0.02] p-3 text-[13px] leading-5 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
           id="description"
           {...register("description")}
         />
@@ -156,15 +156,15 @@ export function OrganizationForm({
         <p
           className={
             message === "Organization profile updated."
-              ? "text-[9px] text-emerald-500"
-              : "text-[9px] text-rose-500"
+              ? "text-[11px] text-emerald-500"
+              : "text-[11px] text-rose-500"
           }
           role="status"
         >
           {message}
         </p>
         <button
-          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[9px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
+          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[11px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
           disabled={isSubmitting}
           type="submit"
         >

@@ -106,14 +106,14 @@ export default async function OrganizationAuditLogPage({
     <div className="max-w-6xl">
       <div className="flex items-center gap-3">
         <History aria-hidden="true" className="text-indigo-500" size={16} />
-        <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+        <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
           {organization.slug} / integrity record
         </p>
       </div>
       <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
         Audit log
       </h1>
-      <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+      <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
         Administrative, campaign, submission, and confidential-computation
         events for {organization.name}.
       </p>
@@ -128,7 +128,7 @@ export default async function OrganizationAuditLogPage({
           Audit action
         </label>
         <select
-          className="h-10 border border-black/[0.08] bg-transparent px-3 text-[8px] font-bold uppercase dark:border-white/[0.08]"
+          className="h-10 border border-black/[0.08] bg-transparent px-3 text-[10px] font-bold uppercase dark:border-white/[0.08]"
           defaultValue={input.action ?? ""}
           id="audit-action"
           name="action"
@@ -144,14 +144,14 @@ export default async function OrganizationAuditLogPage({
           Entity type
         </label>
         <input
-          className="h-10 min-w-0 border border-black/[0.08] bg-black/[0.02] px-3 text-[9px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+          className="h-10 min-w-0 border border-black/[0.08] bg-black/[0.02] px-3 text-[11px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
           defaultValue={input.entity ?? ""}
           id="audit-entity"
           name="entity"
           placeholder="Filter entity type"
         />
         <button
-          className="button-primary inline-flex h-10 items-center justify-center gap-2 bg-zinc-950 px-4 text-[8px] font-bold uppercase dark:bg-white"
+          className="button-primary inline-flex h-10 items-center justify-center gap-2 bg-zinc-950 px-4 text-[10px] font-bold uppercase dark:bg-white"
           type="submit"
         >
           <Search aria-hidden="true" size={12} />
@@ -171,16 +171,16 @@ export default async function OrganizationAuditLogPage({
                   className={
                     log.action === "DELETE" ||
                     log.action === "REVOKE_INVITATION"
-                      ? "text-[8px] font-bold text-rose-500 uppercase"
+                      ? "text-[10px] font-bold text-rose-500 uppercase"
                       : log.action.includes("COMPUTATION") ||
                           log.action === "PUBLISH_RESULT"
-                        ? "text-[8px] font-bold text-emerald-500 uppercase"
-                        : "text-[8px] font-bold text-indigo-500 uppercase"
+                        ? "text-[10px] font-bold text-emerald-500 uppercase"
+                        : "text-[10px] font-bold text-indigo-500 uppercase"
                   }
                 >
                   {log.action.replaceAll("_", " ")}
                 </p>
-                <time className="mt-2 block text-[7px] leading-4 text-zinc-500">
+                <time className="mt-2 block text-[9px] leading-4 text-zinc-500">
                   {new Intl.DateTimeFormat("en", {
                     dateStyle: "medium",
                     timeStyle: "short",
@@ -188,15 +188,15 @@ export default async function OrganizationAuditLogPage({
                 </time>
               </div>
               <div className="min-w-0">
-                <p className="text-[10px] font-bold text-zinc-950 dark:text-white">
+                <p className="text-[12px] font-bold text-zinc-950 dark:text-white">
                   {log.entityType}
                 </p>
-                <p className="mt-2 truncate font-mono text-[7px] text-zinc-500">
+                <p className="mt-2 truncate font-mono text-[9px] text-zinc-500">
                   {log.entityId ?? "No entity identifier"}
                 </p>
                 {log.campaign ? (
                   <Link
-                    className="mt-2 inline-block text-[8px] text-indigo-500"
+                    className="mt-2 inline-block text-[10px] text-indigo-500"
                     href={`/organizations/${organizationId}/campaigns/${log.campaign.id}`}
                   >
                     {log.campaign.title}
@@ -204,16 +204,16 @@ export default async function OrganizationAuditLogPage({
                 ) : null}
                 {metadata ? (
                   <details className="mt-3">
-                    <summary className="cursor-pointer text-[7px] font-bold text-zinc-500 uppercase">
+                    <summary className="cursor-pointer text-[9px] font-bold text-zinc-500 uppercase">
                       Event metadata
                     </summary>
-                    <pre className="mt-3 max-h-64 overflow-auto border border-black/[0.06] bg-black/[0.02] p-3 text-[7px] leading-4 whitespace-pre-wrap text-zinc-500 dark:border-white/[0.06] dark:bg-white/[0.02]">
+                    <pre className="mt-3 max-h-64 overflow-auto border border-black/[0.06] bg-black/[0.02] p-3 text-[9px] leading-4 whitespace-pre-wrap text-zinc-500 dark:border-white/[0.06] dark:bg-white/[0.02]">
                       {metadata}
                     </pre>
                   </details>
                 ) : null}
               </div>
-              <div className="text-[8px] leading-5 text-zinc-500">
+              <div className="text-[10px] leading-5 text-zinc-500">
                 <p className="font-bold text-zinc-700 dark:text-zinc-300">
                   {confidentialActor
                     ? "Confidential evaluator"
@@ -229,7 +229,7 @@ export default async function OrganizationAuditLogPage({
           );
         })}
         {!logs.length ? (
-          <p className="py-12 text-center text-[9px] text-zinc-500">
+          <p className="py-12 text-center text-[11px] text-zinc-500">
             No audit events match the current filters.
           </p>
         ) : null}
@@ -244,22 +244,22 @@ export default async function OrganizationAuditLogPage({
             aria-disabled={pagination.page <= 1}
             className={
               pagination.page <= 1
-                ? "pointer-events-none text-[8px] text-zinc-300 uppercase dark:text-zinc-700"
-                : "text-[8px] font-bold text-indigo-500 uppercase"
+                ? "pointer-events-none text-[10px] text-zinc-300 uppercase dark:text-zinc-700"
+                : "text-[10px] font-bold text-indigo-500 uppercase"
             }
             href={`?${queryString(Math.max(1, pagination.page - 1))}`}
           >
             Previous
           </Link>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {pagination.page} / {pages}
           </span>
           <Link
             aria-disabled={pagination.page >= pages}
             className={
               pagination.page >= pages
-                ? "pointer-events-none text-[8px] text-zinc-300 uppercase dark:text-zinc-700"
-                : "text-[8px] font-bold text-indigo-500 uppercase"
+                ? "pointer-events-none text-[10px] text-zinc-300 uppercase dark:text-zinc-700"
+                : "text-[10px] font-bold text-indigo-500 uppercase"
             }
             href={`?${queryString(Math.min(pages, pagination.page + 1))}`}
           >

@@ -14,17 +14,17 @@ export function FinalCtaSection() {
             <div className="flex items-center gap-4">
               <BrandMark className="bg-white text-zinc-950 dark:bg-white dark:text-zinc-950" />
               <div>
-                <p className="text-[9px] font-bold tracking-[0.15em] text-white uppercase">
+                <p className="text-[11px] font-bold tracking-[0.15em] text-white uppercase">
                   Conclave / decision infrastructure
                 </p>
-                <p className="mt-1 text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+                <p className="mt-1 text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
                   Powered by iExec Nox
                 </p>
               </div>
             </div>
             <div className="mt-10 flex items-center gap-3">
               <span className="h-1.5 w-1.5 bg-emerald-400 animate-pulse" />
-              <p className="text-[9px] font-bold tracking-[0.18em] text-emerald-400 uppercase">
+              <p className="text-[11px] font-bold tracking-[0.18em] text-emerald-400 uppercase">
                 Build decisions people can trust
               </p>
             </div>
@@ -39,14 +39,14 @@ export function FinalCtaSection() {
 
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
             <a
-              className="flex min-h-12 items-center justify-center gap-2 rounded-sm bg-white px-7 py-3 text-[9px] font-bold tracking-[0.13em] text-zinc-950 uppercase transition-colors hover:bg-zinc-200"
+              className="flex min-h-12 items-center justify-center gap-2 rounded-sm bg-white px-7 py-3 text-[11px] font-bold tracking-[0.13em] text-zinc-950 uppercase transition-colors hover:bg-zinc-200"
               href={siteLinks.demo}
             >
               Explore the demo
               <Icon name="chevron-right" size={14} />
             </a>
             <a
-              className="flex min-h-12 items-center justify-center rounded-sm border border-white/15 px-7 py-3 text-[9px] font-bold tracking-[0.13em] text-zinc-300 uppercase transition-colors hover:bg-white/[0.05] hover:text-white"
+              className="flex min-h-12 items-center justify-center rounded-sm border border-white/15 px-7 py-3 text-[11px] font-bold tracking-[0.13em] text-zinc-300 uppercase transition-colors hover:bg-white/[0.05] hover:text-white"
               href={siteLinks.documentation}
               rel="noreferrer"
               target="_blank"
@@ -63,10 +63,10 @@ export function FinalCtaSection() {
             ["OUTPUT", "VERIFIABLE"],
           ].map(([label, value]) => (
             <div className="bg-[#111] px-4 py-3" key={label}>
-              <p className="text-[7px] tracking-[0.12em] text-zinc-500">
+              <p className="text-[9px] tracking-[0.12em] text-zinc-500">
                 {label}
               </p>
-              <p className="mt-2 text-[9px] font-bold tracking-[0.08em] text-white">
+              <p className="mt-2 text-[11px] font-bold tracking-[0.08em] text-white">
                 {value}
               </p>
             </div>

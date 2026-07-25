@@ -38,7 +38,7 @@ export function CampaignNavigation({
     >
       {links.map((link) => (
         <Link
-          className="inline-flex min-h-9 items-center gap-2 border border-black/[0.06] px-3 text-[8px] font-bold tracking-[0.08em] text-zinc-500 uppercase transition-colors hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.06]"
+          className="inline-flex min-h-9 items-center gap-2 border border-black/[0.06] px-3 text-[10px] font-bold tracking-[0.08em] text-zinc-500 uppercase transition-colors hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.06]"
           href={link.href}
           key={link.href}
         >

@@ -4,6 +4,8 @@ import { Loader2, UserMinus, UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+
 type Person = {
   id: string;
   fullName: string;
@@ -42,6 +44,9 @@ export function SubmissionContributorsManager({
   const router = useRouter();
   const [selectedUserId, setSelectedUserId] = useState(candidates[0]?.id ?? "");
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
+  const [confirmMember, setConfirmMember] = useState<TeamMember | null>(
+    null,
+  );
   const [message, setMessage] = useState<string | null>(null);
   const activeUserId = candidates.some(
     (candidate) => candidate.id === selectedUserId,
@@ -88,10 +93,12 @@ export function SubmissionContributorsManager({
 
     if (!response.ok) {
       setMessage(result.error ?? "Contributor removal failed.");
+      setConfirmMember(null);
       return;
     }
 
     setMessage("Contributor removed.");
+    setConfirmMember(null);
     router.refresh();
   }
 
@@ -101,13 +108,13 @@ export function SubmissionContributorsManager({
         <div className="flex flex-col gap-3 border-b border-black/[0.06] pb-7 sm:flex-row dark:border-white/[0.06]">
           <div className="min-w-0 flex-1">
             <label
-              className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+              className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
               htmlFor="submission-contributor-candidate"
             >
               Assign organization member
             </label>
             <select
-              className="mt-2 h-11 w-full border border-black/[0.08] bg-[#EBE8E1] px-3 text-[10px] outline-none focus:border-indigo-500 disabled:opacity-50 dark:border-white/[0.08] dark:bg-[#111]"
+              className="mt-2 h-11 w-full border border-black/[0.08] bg-[#EBE8E1] px-3 text-[12px] outline-none focus:border-indigo-500 disabled:opacity-50 dark:border-white/[0.08] dark:bg-[#111]"
               disabled={
                 !mutable || !candidates.length || pendingUserId !== null
               }
@@ -127,7 +134,7 @@ export function SubmissionContributorsManager({
             </select>
           </div>
           <button
-            className="button-primary mt-5 inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[8px] font-bold tracking-[0.1em] uppercase disabled:opacity-50 dark:bg-white"
+            className="button-primary mt-5 inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[10px] font-bold tracking-[0.1em] uppercase disabled:opacity-50 dark:bg-white"
             disabled={!mutable || !activeUserId || pendingUserId !== null}
             onClick={addMember}
             type="button"
@@ -143,7 +150,7 @@ export function SubmissionContributorsManager({
       ) : null}
 
       {!mutable && canManage ? (
-        <p className="mt-4 text-[9px] text-amber-500">
+        <p className="mt-4 text-[11px] text-amber-500">
           Contributor assignments are locked because evaluation has started.
         </p>
       ) : null}
@@ -152,8 +159,8 @@ export function SubmissionContributorsManager({
           className={
             message === "Contributor added." ||
             message === "Contributor removed."
-              ? "mt-4 text-[9px] text-emerald-500"
-              : "mt-4 text-[9px] text-rose-500"
+              ? "mt-4 text-[11px] text-emerald-500"
+              : "mt-4 text-[11px] text-rose-500"
           }
           role="status"
         >
@@ -163,10 +170,10 @@ export function SubmissionContributorsManager({
 
       <div className="mt-7">
         <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-          <p className="text-[9px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[11px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
             Submission contributors
           </p>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {members.length} MEMBERS
           </span>
         </div>
@@ -178,7 +185,7 @@ export function SubmissionContributorsManager({
                 key={member.id}
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[8px] font-bold text-indigo-500">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[10px] font-bold text-indigo-500">
                     {member.avatar ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -191,13 +198,13 @@ export function SubmissionContributorsManager({
                     )}
                   </span>
                   <div className="min-w-0">
-                    <p className="truncate text-[10px] font-bold text-zinc-950 dark:text-white">
+                    <p className="truncate text-[12px] font-bold text-zinc-950 dark:text-white">
                       {member.fullName}
                     </p>
-                    <p className="mt-1 truncate text-[8px] text-zinc-500">
+                    <p className="mt-1 truncate text-[10px] text-zinc-500">
                       {member.email}
                     </p>
-                    <p className="mt-1 text-[7px] text-zinc-500">
+                    <p className="mt-1 text-[9px] text-zinc-500">
                       ADDED{" "}
                       {new Intl.DateTimeFormat("en", {
                         dateStyle: "medium",
@@ -210,9 +217,9 @@ export function SubmissionContributorsManager({
                 </div>
                 {canManage ? (
                   <button
-                    className="inline-flex min-h-9 w-fit items-center justify-center gap-2 border border-rose-500/20 px-3 text-[8px] font-bold text-rose-500 uppercase disabled:opacity-50"
+                    className="inline-flex min-h-9 w-fit items-center justify-center gap-2 border border-rose-500/20 px-3 text-[10px] font-bold text-rose-500 uppercase disabled:opacity-50"
                     disabled={!mutable || pendingUserId === member.id}
-                    onClick={() => removeMember(member.id)}
+                    onClick={() => setConfirmMember(member)}
                     type="button"
                   >
                     {pendingUserId === member.id ? (
@@ -231,11 +238,29 @@ export function SubmissionContributorsManager({
             ))}
           </div>
         ) : (
-          <p className="border-b border-black/[0.06] py-8 text-[10px] text-zinc-500 dark:border-white/[0.06]">
+          <p className="border-b border-black/[0.06] py-8 text-[12px] text-zinc-500 dark:border-white/[0.06]">
             No organization members are assigned to this submission.
           </p>
         )}
       </div>
+      <ConfirmationDialog
+        confirmLabel="Remove contributor"
+        description={
+          confirmMember
+            ? `${confirmMember.fullName} will be removed from this submission's contributor list.`
+            : ""
+        }
+        isPending={pendingUserId === confirmMember?.id}
+        onConfirm={() => {
+          if (confirmMember) void removeMember(confirmMember.id);
+        }}
+        onOpenChange={(open) => {
+          if (!open) setConfirmMember(null);
+        }}
+        open={confirmMember !== null}
+        title="Are you sure you want to remove this contributor?"
+        tone="danger"
+      />
     </div>
   );
 }

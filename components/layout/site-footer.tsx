@@ -15,19 +15,19 @@ export function SiteFooter() {
               Conclave
             </span>
           </a>
-          <p className="text-[9px] font-medium tracking-[0.1em] text-zinc-500 uppercase">
+          <p className="text-[11px] font-medium tracking-[0.1em] text-zinc-500 uppercase">
             Confidential inputs. Verified outcomes.
           </p>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           <a
-            className="text-[11px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
+            className="text-[13px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
             href={siteLinks.product}
           >
             PRODUCT
           </a>
           <a
-            className="text-[11px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
+            className="text-[13px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
             href={siteLinks.documentation}
             rel="noreferrer"
             target="_blank"
@@ -35,19 +35,19 @@ export function SiteFooter() {
             IEXEC DOCS
           </a>
           <a
-            className="text-[11px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
+            className="text-[13px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
             href={siteLinks.faq}
           >
             FAQ
           </a>
           <a
-            className="text-[11px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
+            className="text-[13px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
             href={siteLinks.privacy}
           >
             PRIVACY
           </a>
           <a
-            className="text-[11px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
+            className="text-[13px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
             href={siteLinks.terms}
           >
             TERMS

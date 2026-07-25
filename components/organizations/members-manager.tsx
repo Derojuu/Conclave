@@ -9,6 +9,7 @@ import {
   invitationSchema,
   type InvitationInput,
 } from "@/lib/validation/auth";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 
 type Member = {
   userId: string;
@@ -34,6 +35,15 @@ type MembersManagerProps = {
   invitations: Invitation[];
 };
 
+type MemberConfirmation =
+  | {
+      type: "role";
+      member: Member;
+      role: "ADMIN" | "EVALUATOR" | "OBSERVER";
+    }
+  | { type: "remove"; member: Member }
+  | { type: "revoke"; invitation: Invitation };
+
 export function MembersManager({
   organizationId,
   currentUserId,
@@ -45,6 +55,8 @@ export function MembersManager({
   const [message, setMessage] = useState<string | null>(null);
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
   const [pendingMember, setPendingMember] = useState<string | null>(null);
+  const [confirmation, setConfirmation] =
+    useState<MemberConfirmation | null>(null);
   const {
     register,
     handleSubmit,
@@ -113,9 +125,11 @@ export function MembersManager({
 
     if (!response.ok) {
       setMessage(result.error ?? "Role update failed.");
+      setConfirmation(null);
       return;
     }
 
+    setConfirmation(null);
     router.refresh();
   }
 
@@ -131,25 +145,72 @@ export function MembersManager({
 
     if (!response.ok) {
       setMessage(result.error ?? "Member removal failed.");
+      setConfirmation(null);
       return;
     }
 
+    setConfirmation(null);
     router.refresh();
   }
 
   async function revokeInvitation(invitationId: string) {
+    setPendingMember(invitationId);
     const response = await fetch(
       `/api/organizations/${organizationId}/invitations/${invitationId}`,
       { method: "DELETE" },
     );
     const result = (await response.json()) as { error?: string };
+    setPendingMember(null);
 
     if (!response.ok) {
       setMessage(result.error ?? "Invitation revocation failed.");
+      setConfirmation(null);
       return;
     }
 
+    setConfirmation(null);
     router.refresh();
+  }
+
+  const confirmationContent = confirmation
+    ? confirmation.type === "role"
+      ? {
+          title: "Are you sure you want to change this member's role?",
+          description: `${confirmation.member.fullName} will change from ${confirmation.member.role} to ${confirmation.role}. Their organization permissions will update immediately.`,
+          label: "Change role",
+          pendingId: confirmation.member.userId,
+          tone: "default" as const,
+        }
+      : confirmation.type === "remove"
+        ? {
+            title: "Are you sure you want to remove this member?",
+            description: `${confirmation.member.fullName} will lose access to this organization and its permitted campaigns.`,
+            label: "Remove member",
+            pendingId: confirmation.member.userId,
+            tone: "danger" as const,
+          }
+        : {
+            title: "Are you sure you want to revoke this invitation?",
+            description: `The invitation for ${confirmation.invitation.email} will no longer be accepted.`,
+            label: "Revoke invitation",
+            pendingId: confirmation.invitation.id,
+            tone: "danger" as const,
+          }
+    : null;
+
+  function confirmMemberAction() {
+    if (!confirmation) return;
+
+    if (confirmation.type === "role") {
+      void updateMember(
+        confirmation.member.userId,
+        confirmation.role,
+      );
+    } else if (confirmation.type === "remove") {
+      void removeMember(confirmation.member.userId);
+    } else {
+      void revokeInvitation(confirmation.invitation.id);
+    }
   }
 
   return (
@@ -161,32 +222,32 @@ export function MembersManager({
         >
           <div>
             <label
-              className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+              className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
               htmlFor="invite-email"
             >
               Invite by email
             </label>
             <input
-              className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[11px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+              className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[13px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
               id="invite-email"
               placeholder="evaluator@example.com"
               {...register("email")}
             />
             {errors.email ? (
-              <p className="mt-2 text-[9px] text-rose-500">
+              <p className="mt-2 text-[11px] text-rose-500">
                 {errors.email.message}
               </p>
             ) : null}
           </div>
           <div>
             <label
-              className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+              className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
               htmlFor="invite-role"
             >
               Role
             </label>
             <select
-              className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-[#EBE8E1] px-3 text-[10px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
+              className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-[#EBE8E1] px-3 text-[12px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
               id="invite-role"
               {...register("role")}
             >
@@ -196,7 +257,7 @@ export function MembersManager({
             </select>
           </div>
           <button
-            className="button-primary mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 text-[9px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
+            className="button-primary mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 text-[11px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
             disabled={isSubmitting}
             type="submit"
           >
@@ -212,11 +273,11 @@ export function MembersManager({
 
       {inviteUrl ? (
         <div className="mt-5 flex flex-col gap-3 border border-emerald-500/20 bg-emerald-500/[0.04] p-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="min-w-0 break-all text-[9px] text-emerald-600 dark:text-emerald-400">
+          <p className="min-w-0 break-all text-[11px] text-emerald-600 dark:text-emerald-400">
             {inviteUrl}
           </p>
           <button
-            className="inline-flex shrink-0 items-center gap-2 text-[8px] font-bold tracking-[0.1em] text-emerald-600 uppercase dark:text-emerald-400"
+            className="inline-flex shrink-0 items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-emerald-600 uppercase dark:text-emerald-400"
             onClick={() => navigator.clipboard.writeText(inviteUrl)}
             type="button"
           >
@@ -227,17 +288,17 @@ export function MembersManager({
       ) : null}
 
       {message ? (
-        <p className="mt-4 text-[9px] text-zinc-500" role="status">
+        <p className="mt-4 text-[11px] text-zinc-500" role="status">
           {message}
         </p>
       ) : null}
 
       <div className="mt-8">
         <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-          <p className="text-[9px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[11px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
             Active members
           </p>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {members.length} MEMBERS
           </span>
         </div>
@@ -254,10 +315,10 @@ export function MembersManager({
                 key={member.userId}
               >
                 <div className="min-w-0">
-                  <p className="truncate text-[10px] font-bold text-zinc-950 uppercase dark:text-white">
+                  <p className="truncate text-[12px] font-bold text-zinc-950 uppercase dark:text-white">
                     {member.fullName}
                   </p>
-                  <p className="mt-1 truncate text-[8px] text-zinc-500">
+                  <p className="mt-1 truncate text-[10px] text-zinc-500">
                     {member.email}
                   </p>
                 </div>
@@ -265,25 +326,26 @@ export function MembersManager({
                   {mutable ? (
                     <select
                       aria-label={`Role for ${member.fullName}`}
-                      className="h-9 rounded-sm border border-black/[0.08] bg-[#EBE8E1] px-3 text-[8px] font-bold dark:border-white/[0.08] dark:bg-[#111]"
-                      defaultValue={member.role}
+                      className="h-9 rounded-sm border border-black/[0.08] bg-[#EBE8E1] px-3 text-[10px] font-bold dark:border-white/[0.08] dark:bg-[#111]"
                       disabled={pendingMember === member.userId}
                       onChange={(event) =>
-                        updateMember(
-                          member.userId,
-                          event.target.value as
+                        setConfirmation({
+                          type: "role",
+                          member,
+                          role: event.target.value as
                             | "ADMIN"
                             | "EVALUATOR"
                             | "OBSERVER",
-                        )
+                        })
                       }
+                      value={member.role}
                     >
                       <option value="ADMIN">ADMIN</option>
                       <option value="EVALUATOR">EVALUATOR</option>
                       <option value="OBSERVER">OBSERVER</option>
                     </select>
                   ) : (
-                    <span className="border border-black/[0.07] px-3 py-2 text-[8px] font-bold text-zinc-500 dark:border-white/[0.07]">
+                    <span className="border border-black/[0.07] px-3 py-2 text-[10px] font-bold text-zinc-500 dark:border-white/[0.07]">
                       {member.role}
                     </span>
                   )}
@@ -292,7 +354,9 @@ export function MembersManager({
                       aria-label={`Remove ${member.fullName}`}
                       className="flex h-9 w-9 items-center justify-center rounded-sm border border-rose-500/20 text-rose-500"
                       disabled={pendingMember === member.userId}
-                      onClick={() => removeMember(member.userId)}
+                      onClick={() =>
+                        setConfirmation({ type: "remove", member })
+                      }
                       type="button"
                     >
                       {pendingMember === member.userId ? (
@@ -316,7 +380,7 @@ export function MembersManager({
       {canManage && invitations.length ? (
         <div className="mt-10">
           <div className="border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-            <p className="text-[9px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+            <p className="text-[11px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Invitations
             </p>
           </div>
@@ -327,17 +391,19 @@ export function MembersManager({
                 key={invitation.id}
               >
                 <div className="min-w-0">
-                  <p className="truncate text-[10px] text-zinc-950 dark:text-white">
+                  <p className="truncate text-[12px] text-zinc-950 dark:text-white">
                     {invitation.email}
                   </p>
-                  <p className="mt-1 text-[8px] text-zinc-500">
+                  <p className="mt-1 text-[10px] text-zinc-500">
                     {invitation.role} / {invitation.status}
                   </p>
                 </div>
                 {invitation.status === "PENDING" ? (
                   <button
-                    className="text-[8px] font-bold tracking-[0.1em] text-rose-500 uppercase"
-                    onClick={() => revokeInvitation(invitation.id)}
+                    className="text-[10px] font-bold tracking-[0.1em] text-rose-500 uppercase"
+                    onClick={() =>
+                      setConfirmation({ type: "revoke", invitation })
+                    }
                     type="button"
                   >
                     Revoke
@@ -348,6 +414,21 @@ export function MembersManager({
           </div>
         </div>
       ) : null}
+      <ConfirmationDialog
+        confirmLabel={confirmationContent?.label ?? "Confirm"}
+        description={confirmationContent?.description ?? ""}
+        isPending={
+          confirmationContent?.pendingId === pendingMember &&
+          pendingMember !== null
+        }
+        onConfirm={confirmMemberAction}
+        onOpenChange={(open) => {
+          if (!open) setConfirmation(null);
+        }}
+        open={confirmation !== null}
+        title={confirmationContent?.title ?? "Confirm action"}
+        tone={confirmationContent?.tone}
+      />
     </div>
   );
 }

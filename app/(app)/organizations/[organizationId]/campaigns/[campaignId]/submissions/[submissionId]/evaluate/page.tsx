@@ -105,7 +105,7 @@ export default async function EvaluateSubmissionPage({
     <div className="max-w-5xl">
       <header>
         <Link
-          className="inline-flex items-center gap-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase hover:text-indigo-500"
+          className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase hover:text-indigo-500"
           href="/evaluations"
         >
           <ArrowLeft aria-hidden="true" size={12} />
@@ -113,17 +113,17 @@ export default async function EvaluateSubmissionPage({
         </Link>
         <div className="mt-6 flex flex-col gap-5 border-b border-black/[0.06] pb-7 sm:flex-row sm:items-start sm:justify-between dark:border-white/[0.06]">
           <div>
-            <p className="text-[8px] font-bold tracking-[0.12em] text-indigo-500 uppercase">
+            <p className="text-[10px] font-bold tracking-[0.12em] text-indigo-500 uppercase">
               {campaign.organization.name} / {campaign.title}
             </p>
             <h1 className="mt-3 text-3xl font-bold text-zinc-950 sm:text-4xl dark:text-white">
               {submission.title}
             </h1>
-            <p className="mt-4 max-w-3xl text-[10px] leading-6 text-zinc-500">
+            <p className="mt-4 max-w-3xl text-[12px] leading-6 text-zinc-500">
               {submission.description}
             </p>
           </div>
-          <div className="flex shrink-0 items-center gap-2 border border-emerald-500/20 bg-emerald-500/[0.04] px-3 py-2 text-[8px] font-bold text-emerald-500 uppercase">
+          <div className="flex shrink-0 items-center gap-2 border border-emerald-500/20 bg-emerald-500/[0.04] px-3 py-2 text-[10px] font-bold text-emerald-500 uppercase">
             <LockKeyhole aria-hidden="true" size={13} />
             Browser encrypted
           </div>
@@ -133,15 +133,15 @@ export default async function EvaluateSubmissionPage({
       <section className="mt-8">
         <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+            <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               {template.title} / Version {template.version}
             </p>
-            <p className="mt-2 text-[8px] text-zinc-500">
+            <p className="mt-2 text-[10px] text-zinc-500">
               {template.criteria.length} criteria / Campaign{" "}
               {campaign.status.toLowerCase()}
             </p>
           </div>
-          <p className="text-[7px] text-zinc-500">
+          <p className="text-[9px] text-zinc-500">
             Deadline:{" "}
             {campaign.deadline
               ? new Intl.DateTimeFormat("en", {

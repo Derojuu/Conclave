@@ -67,20 +67,20 @@ export default async function CampaignsPage({
     <div className="max-w-6xl">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+          <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
             {access.organization.slug} / campaigns
           </p>
           <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
             Campaign management
           </h1>
-          <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+          <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
             Configure confidential decision groups, assign evaluators, and manage
             each campaign lifecycle.
           </p>
         </div>
         {canManage ? (
           <Link
-            className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[8px] font-bold tracking-[0.1em] uppercase dark:bg-white"
+            className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[10px] font-bold tracking-[0.1em] uppercase dark:bg-white"
             href={`/organizations/${organizationId}/campaigns/new`}
           >
             <Plus aria-hidden="true" size={14} />
@@ -117,10 +117,10 @@ export default async function CampaignsPage({
                     status={campaign.status as CampaignStatus}
                   />
                 </div>
-                <p className="mt-3 line-clamp-2 max-w-3xl text-[9px] leading-5 text-zinc-500">
+                <p className="mt-3 line-clamp-2 max-w-3xl text-[11px] leading-5 text-zinc-500">
                   {campaign.description}
                 </p>
-                <p className="mt-3 text-[7px] tracking-[0.08em] text-zinc-500 uppercase">
+                <p className="mt-3 text-[9px] tracking-[0.08em] text-zinc-500 uppercase">
                   {campaign._count.evaluators} evaluators /{" "}
                   {campaign._count.submissions} submissions /{" "}
                   {campaign._count.evaluations} evaluations
@@ -142,7 +142,7 @@ export default async function CampaignsPage({
             className="mx-auto text-zinc-500"
             size={20}
           />
-          <p className="mt-4 text-[10px] text-zinc-500">
+          <p className="mt-4 text-[12px] text-zinc-500">
             {canManage
               ? "Create the first campaign for this organization."
               : "No campaigns are currently assigned to you."}

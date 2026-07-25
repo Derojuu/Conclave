@@ -68,15 +68,15 @@ export function NotificationList({
     <section>
       <div className="flex flex-col gap-4 border-b border-black/[0.06] pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/[0.06]">
         <div>
-          <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:text-white">
             Notification inbox
           </p>
-          <p className="mt-2 text-[8px] text-zinc-500">
+          <p className="mt-2 text-[10px] text-zinc-500">
             {unreadCount} unread
           </p>
         </div>
         <button
-          className="inline-flex min-h-10 items-center justify-center gap-2 border border-black/[0.08] px-4 text-[8px] font-bold tracking-[0.08em] uppercase disabled:opacity-50 dark:border-white/[0.08]"
+          className="inline-flex min-h-10 items-center justify-center gap-2 border border-black/[0.08] px-4 text-[10px] font-bold tracking-[0.08em] uppercase disabled:opacity-50 dark:border-white/[0.08]"
           disabled={unreadCount === 0 || pending !== null}
           onClick={markAllRead}
           type="button"
@@ -111,22 +111,22 @@ export function NotificationList({
                 </span>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-[10px] font-bold text-zinc-950 dark:text-white">
+                    <p className="text-[12px] font-bold text-zinc-950 dark:text-white">
                       {notification.title}
                     </p>
                     {unread ? (
                       <span className="h-1.5 w-1.5 bg-indigo-500" />
                     ) : null}
-                    <span className="text-[7px] font-bold tracking-[0.08em] text-zinc-500 uppercase">
+                    <span className="text-[9px] font-bold tracking-[0.08em] text-zinc-500 uppercase">
                       {notification.type}
                     </span>
                   </div>
                   {notification.body ? (
-                    <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+                    <p className="mt-2 text-[11px] leading-5 text-zinc-500">
                       {notification.body}
                     </p>
                   ) : null}
-                  <time className="mt-2 block text-[7px] text-zinc-400 uppercase">
+                  <time className="mt-2 block text-[9px] text-zinc-400 uppercase">
                     {new Intl.DateTimeFormat("en", {
                       dateStyle: "medium",
                       timeStyle: "short",
@@ -168,14 +168,14 @@ export function NotificationList({
       ) : (
         <div className="flex min-h-64 flex-col items-center justify-center border-b border-black/[0.06] text-center dark:border-white/[0.06]">
           <Bell aria-hidden="true" className="text-zinc-400" size={20} />
-          <p className="mt-4 text-[10px] text-zinc-500">
+          <p className="mt-4 text-[12px] text-zinc-500">
             No notifications have been recorded.
           </p>
         </div>
       )}
 
       {message ? (
-        <p className="mt-4 text-[9px] text-rose-500" role="alert">
+        <p className="mt-4 text-[11px] text-rose-500" role="alert">
           {message}
         </p>
       ) : null}

@@ -33,20 +33,20 @@ export default async function DashboardPage() {
         <div>
           <div className="flex items-center gap-3">
             <span className="h-1.5 w-1.5 bg-emerald-500" />
-            <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+            <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
               Authenticated workspace
             </p>
           </div>
           <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
             Decision control center
           </h1>
-          <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+          <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
             Manage organization access, confidential campaigns, and assigned
             evaluation work.
           </p>
         </div>
         <Link
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[9px] font-bold tracking-[0.1em] text-white uppercase dark:bg-white dark:text-zinc-950"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[11px] font-bold tracking-[0.1em] text-white uppercase dark:bg-white dark:text-zinc-950"
           href="/organizations/new"
         >
           Create organization
@@ -79,12 +79,12 @@ export default async function DashboardPage() {
                 className="text-zinc-500"
                 size={17}
               />
-              <span className="text-[7px] text-zinc-500 uppercase">Live</span>
+              <span className="text-[9px] text-zinc-500 uppercase">Live</span>
             </div>
             <p className="mt-8 text-3xl font-bold text-zinc-950 dark:text-white">
               {stat.value}
             </p>
-            <p className="mt-2 text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
+            <p className="mt-2 text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
               {stat.label}
             </p>
           </article>
@@ -93,10 +93,10 @@ export default async function DashboardPage() {
 
       <section className="mt-10">
         <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-          <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+          <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
             Organization access
           </h2>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {authorization.organizations.length} MEMBERSHIPS
           </span>
         </div>
@@ -110,10 +110,10 @@ export default async function DashboardPage() {
                 key={organization.id}
               >
                 <div className="min-w-0">
-                  <p className="truncate text-[11px] font-bold text-zinc-950 uppercase dark:text-white">
+                  <p className="truncate text-[13px] font-bold text-zinc-950 uppercase dark:text-white">
                     {organization.name}
                   </p>
-                  <p className="mt-2 text-[8px] text-zinc-500 uppercase">
+                  <p className="mt-2 text-[10px] text-zinc-500 uppercase">
                     {organization.role} / {organization.slug}
                   </p>
                 </div>
@@ -123,7 +123,7 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="border-b border-black/[0.06] py-10 dark:border-white/[0.06]">
-            <p className="text-[10px] leading-6 text-zinc-500">
+            <p className="text-[12px] leading-6 text-zinc-500">
               You do not belong to an organization yet. Create one or accept an
               invitation to begin.
             </p>

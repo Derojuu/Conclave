@@ -52,7 +52,7 @@ export function OrganizationSwitcher({
         Active organization
       </label>
       <select
-        className="h-9 w-[128px] truncate border border-black/[0.07] bg-transparent px-2 pr-7 text-[8px] font-bold text-zinc-600 outline-none focus:border-indigo-500 sm:w-[190px] dark:border-white/[0.07] dark:text-zinc-300"
+        className="h-9 w-[128px] truncate border border-black/[0.07] bg-transparent px-2 pr-7 text-[10px] font-bold text-zinc-600 outline-none focus:border-indigo-500 sm:w-[190px] dark:border-white/[0.07] dark:text-zinc-300"
         disabled={isPending}
         id="organization-switcher"
         onChange={(event) => void switchOrganization(event.target.value)}

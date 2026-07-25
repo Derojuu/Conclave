@@ -25,17 +25,17 @@ export function ApplicationsSection() {
               <div className="flex h-10 w-10 items-center justify-center rounded-sm border border-black/[0.08] text-zinc-500 transition-colors group-hover:text-indigo-500 dark:border-white/[0.08]">
                 <Icon name={application.icon} size={17} />
               </div>
-              <span className="text-[8px] tracking-[0.12em] text-zinc-400">
+              <span className="text-[10px] tracking-[0.12em] text-zinc-400">
                 CASE / {String(index + 1).padStart(2, "0")}
               </span>
             </div>
-            <h3 className="mt-8 text-[11px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
+            <h3 className="mt-8 text-[13px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
               {application.title}
             </h3>
-            <p className="mt-3 text-[10px] leading-5 text-zinc-500">
+            <p className="mt-3 text-[12px] leading-5 text-zinc-500">
               {application.description}
             </p>
-            <div className="mt-auto flex items-center gap-2 border-t border-black/[0.06] pt-5 text-[8px] font-bold tracking-[0.1em] text-emerald-600 uppercase dark:border-white/[0.06] dark:text-emerald-400">
+            <div className="mt-auto flex items-center gap-2 border-t border-black/[0.06] pt-5 text-[10px] font-bold tracking-[0.1em] text-emerald-600 uppercase dark:border-white/[0.06] dark:text-emerald-400">
               <Icon name="lock" size={11} />
               Confidential input layer
             </div>

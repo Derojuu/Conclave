@@ -20,7 +20,7 @@ export function LiveIndicator({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 text-[9px] font-bold tracking-[0.16em] text-zinc-500 uppercase",
+        "flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] text-zinc-500 uppercase",
         className,
       )}
     >

@@ -130,19 +130,19 @@ export function CampaignForm({
     <form className="space-y-6" onSubmit={onSubmit}>
       <div>
         <label
-          className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+          className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
           htmlFor="campaign-title"
         >
           Campaign title
         </label>
         <input
-          className="mt-2 h-11 w-full border border-black/[0.08] bg-black/[0.02] px-3 text-[11px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+          className="mt-2 h-11 w-full border border-black/[0.08] bg-black/[0.02] px-3 text-[13px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
           id="campaign-title"
           disabled={disabled}
           {...register("title")}
         />
         {errors.title ? (
-          <p className="mt-2 text-[9px] text-rose-500" role="alert">
+          <p className="mt-2 text-[11px] text-rose-500" role="alert">
             {errors.title.message}
           </p>
         ) : null}
@@ -150,19 +150,19 @@ export function CampaignForm({
 
       <div>
         <label
-          className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+          className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
           htmlFor="campaign-description"
         >
           Description
         </label>
         <textarea
-          className="mt-2 min-h-32 w-full resize-y border border-black/[0.08] bg-black/[0.02] p-3 text-[11px] leading-6 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+          className="mt-2 min-h-32 w-full resize-y border border-black/[0.08] bg-black/[0.02] p-3 text-[13px] leading-6 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
           id="campaign-description"
           disabled={disabled}
           {...register("description")}
         />
         {errors.description ? (
-          <p className="mt-2 text-[9px] text-rose-500" role="alert">
+          <p className="mt-2 text-[11px] text-rose-500" role="alert">
             {errors.description.message}
           </p>
         ) : null}
@@ -171,13 +171,13 @@ export function CampaignForm({
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label
-            className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+            className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
             htmlFor="campaign-deadline"
           >
             Deadline
           </label>
           <input
-            className="mt-2 h-11 w-full border border-black/[0.08] bg-black/[0.02] px-3 text-[10px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+            className="mt-2 h-11 w-full border border-black/[0.08] bg-black/[0.02] px-3 text-[12px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
             id="campaign-deadline"
             disabled={disabled}
             type="datetime-local"
@@ -186,13 +186,13 @@ export function CampaignForm({
         </div>
         <div>
           <label
-            className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+            className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
             htmlFor="evaluation-template"
           >
             Evaluation template
           </label>
           <select
-            className="mt-2 h-11 w-full border border-black/[0.08] bg-[#EBE8E1] px-3 text-[10px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
+            className="mt-2 h-11 w-full border border-black/[0.08] bg-[#EBE8E1] px-3 text-[12px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
             id="evaluation-template"
             disabled={disabled}
             {...register("evaluationTemplateId")}
@@ -211,15 +211,15 @@ export function CampaignForm({
         <p
           className={
             message === "Campaign settings saved."
-              ? "text-[9px] text-emerald-500"
-              : "text-[9px] text-rose-500"
+              ? "text-[11px] text-emerald-500"
+              : "text-[11px] text-rose-500"
           }
           role="status"
         >
           {message}
         </p>
         <button
-          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 py-3 text-[9px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
+          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 py-3 text-[11px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
           disabled={disabled || isSubmitting}
           type="submit"
         >

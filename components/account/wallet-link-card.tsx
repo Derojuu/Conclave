@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+
 type WalletLinkCardProps = {
   linkedAddress: string | null;
 };
@@ -16,6 +18,7 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
   const { disconnectAsync } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
   const [isPending, setIsPending] = useState(false);
+  const [confirmUnlinkOpen, setConfirmUnlinkOpen] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   async function linkWallet() {
@@ -85,6 +88,7 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
     if (!response.ok) {
       setMessage(result.error ?? "Wallet unlinking failed.");
       setIsPending(false);
+      setConfirmUnlinkOpen(false);
       return;
     }
 
@@ -94,6 +98,7 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
 
     setMessage("Wallet unlinked.");
     setIsPending(false);
+    setConfirmUnlinkOpen(false);
     router.refresh();
   }
 
@@ -101,10 +106,10 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-[10px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[12px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
             Optional blockchain wallet
           </p>
-          <p className="mt-2 max-w-xl text-[9px] leading-5 text-zinc-500">
+          <p className="mt-2 max-w-xl text-[11px] leading-5 text-zinc-500">
             Authentication does not require a wallet. Link one only when you
             need to sign blockchain transactions.
           </p>
@@ -117,10 +122,10 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
       </div>
 
       <div className="mt-6 border border-black/[0.06] bg-black/[0.015] p-4 dark:border-white/[0.06] dark:bg-white/[0.02]">
-        <p className="text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+        <p className="text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
           Linked profile address
         </p>
-        <p className="mt-2 break-all text-[10px] font-bold text-zinc-950 dark:text-white">
+        <p className="mt-2 break-all text-[12px] font-bold text-zinc-950 dark:text-white">
           {linkedAddress ?? "No wallet linked"}
         </p>
       </div>
@@ -129,8 +134,8 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
         <p
           className={
             message?.includes("linked.")
-              ? "text-[9px] text-emerald-500"
-              : "text-[9px] text-rose-500"
+              ? "text-[11px] text-emerald-500"
+              : "text-[11px] text-rose-500"
           }
           role="status"
         >
@@ -138,9 +143,9 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
         </p>
         {linkedAddress ? (
           <button
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-sm border border-rose-500/20 px-5 py-3 text-[9px] font-bold tracking-[0.1em] text-rose-500 uppercase disabled:opacity-60"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-sm border border-rose-500/20 px-5 py-3 text-[11px] font-bold tracking-[0.1em] text-rose-500 uppercase disabled:opacity-60"
             disabled={isPending}
-            onClick={unlinkWallet}
+            onClick={() => setConfirmUnlinkOpen(true)}
             type="button"
           >
             {isPending ? (
@@ -152,7 +157,7 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
           </button>
         ) : (
           <button
-            className="button-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[9px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
+            className="button-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[11px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
             disabled={isPending || !isConnected}
             onClick={linkWallet}
             type="button"
@@ -166,6 +171,16 @@ export function WalletLinkCard({ linkedAddress }: WalletLinkCardProps) {
           </button>
         )}
       </div>
+      <ConfirmationDialog
+        confirmLabel="Unlink wallet"
+        description="The wallet address will be removed from your Conclave profile and the active wallet connection will be disconnected. Your Google account remains active."
+        isPending={isPending}
+        onConfirm={() => void unlinkWallet()}
+        onOpenChange={setConfirmUnlinkOpen}
+        open={confirmUnlinkOpen}
+        title="Are you sure you want to unlink this wallet?"
+        tone="danger"
+      />
     </div>
   );
 }

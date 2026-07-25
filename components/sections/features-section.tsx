@@ -16,10 +16,10 @@ export function FeaturesSection() {
             <Icon name="shield" size={16} />
           </div>
           <div>
-            <p className="text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+            <p className="text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
               System policy
             </p>
-            <p className="mt-1 text-[10px] font-bold tracking-[0.08em] text-zinc-900 uppercase dark:text-white">
+            <p className="mt-1 text-[12px] font-bold tracking-[0.08em] text-zinc-900 uppercase dark:text-white">
               Reveal outcomes, not opinions
             </p>
           </div>
@@ -38,14 +38,14 @@ export function FeaturesSection() {
                 name={feature.icon}
                 size={18}
               />
-              <span className="text-[8px] text-zinc-400">
+              <span className="text-[10px] text-zinc-400">
                 MODULE / {String(index + 1).padStart(2, "0")}
               </span>
             </div>
-            <h3 className="mt-8 text-[11px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
+            <h3 className="mt-8 text-[13px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
               {feature.title}
             </h3>
-            <p className="mt-3 max-w-sm text-[10px] leading-5 text-zinc-500">
+            <p className="mt-3 max-w-sm text-[12px] leading-5 text-zinc-500">
               {feature.description}
             </p>
           </article>

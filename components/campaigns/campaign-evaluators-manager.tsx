@@ -4,6 +4,8 @@ import { Loader2, UserMinus, UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+
 type Person = {
   id: string;
   fullName: string;
@@ -38,6 +40,8 @@ export function CampaignEvaluatorsManager({
   const [pendingUserId, setPendingUserId] = useState<string | null>(
     null,
   );
+  const [confirmEvaluator, setConfirmEvaluator] =
+    useState<AssignedEvaluator | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   async function assignEvaluator() {
@@ -79,10 +83,12 @@ export function CampaignEvaluatorsManager({
 
     if (!response.ok) {
       setMessage(result.error ?? "Evaluator removal failed.");
+      setConfirmEvaluator(null);
       return;
     }
 
     setMessage("Evaluator removed.");
+    setConfirmEvaluator(null);
     router.refresh();
   }
 
@@ -92,13 +98,13 @@ export function CampaignEvaluatorsManager({
         <div className="flex flex-col gap-3 border-b border-black/[0.06] pb-7 sm:flex-row dark:border-white/[0.06]">
           <div className="min-w-0 flex-1">
             <label
-              className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+              className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
               htmlFor="evaluator-candidate"
             >
               Assign organization evaluator
             </label>
             <select
-              className="mt-2 h-11 w-full border border-black/[0.08] bg-[#EBE8E1] px-3 text-[10px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
+              className="mt-2 h-11 w-full border border-black/[0.08] bg-[#EBE8E1] px-3 text-[12px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
               disabled={!candidates.length || pendingUserId !== null}
               id="evaluator-candidate"
               onChange={(event) => setSelectedUserId(event.target.value)}
@@ -116,7 +122,7 @@ export function CampaignEvaluatorsManager({
             </select>
           </div>
           <button
-            className="button-primary mt-5 inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[8px] font-bold tracking-[0.1em] uppercase disabled:opacity-50 sm:mt-5 dark:bg-white"
+            className="button-primary mt-5 inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[10px] font-bold tracking-[0.1em] uppercase disabled:opacity-50 sm:mt-5 dark:bg-white"
             disabled={!selectedUserId || pendingUserId !== null}
             onClick={assignEvaluator}
             type="button"
@@ -135,8 +141,8 @@ export function CampaignEvaluatorsManager({
         <p
           className={
             message === "Evaluator assigned." || message === "Evaluator removed."
-              ? "mt-4 text-[9px] text-emerald-500"
-              : "mt-4 text-[9px] text-rose-500"
+              ? "mt-4 text-[11px] text-emerald-500"
+              : "mt-4 text-[11px] text-rose-500"
           }
           role="status"
         >
@@ -146,10 +152,10 @@ export function CampaignEvaluatorsManager({
 
       <div className="mt-7">
         <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-          <p className="text-[9px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[11px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
             Assigned evaluators
           </p>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {evaluators.length} EVALUATORS
           </span>
         </div>
@@ -162,7 +168,7 @@ export function CampaignEvaluatorsManager({
                 key={evaluator.id}
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[8px] font-bold text-indigo-500">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[10px] font-bold text-indigo-500">
                     {evaluator.avatar ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -175,13 +181,13 @@ export function CampaignEvaluatorsManager({
                     )}
                   </span>
                   <div className="min-w-0">
-                    <p className="truncate text-[10px] font-bold text-zinc-950 dark:text-white">
+                    <p className="truncate text-[12px] font-bold text-zinc-950 dark:text-white">
                       {evaluator.fullName}
                     </p>
-                    <p className="mt-1 truncate text-[8px] text-zinc-500">
+                    <p className="mt-1 truncate text-[10px] text-zinc-500">
                       {evaluator.email}
                     </p>
-                    <p className="mt-1 text-[7px] text-zinc-500">
+                    <p className="mt-1 text-[9px] text-zinc-500">
                       ASSIGNED{" "}
                       {new Intl.DateTimeFormat("en", {
                         dateStyle: "medium",
@@ -194,9 +200,9 @@ export function CampaignEvaluatorsManager({
                 </div>
                 {canManage ? (
                   <button
-                    className="inline-flex min-h-9 w-fit items-center justify-center gap-2 border border-rose-500/20 px-3 text-[8px] font-bold text-rose-500 uppercase disabled:opacity-50"
+                    className="inline-flex min-h-9 w-fit items-center justify-center gap-2 border border-rose-500/20 px-3 text-[10px] font-bold text-rose-500 uppercase disabled:opacity-50"
                     disabled={pendingUserId === evaluator.id}
-                    onClick={() => removeEvaluator(evaluator.id)}
+                    onClick={() => setConfirmEvaluator(evaluator)}
                     type="button"
                   >
                     {pendingUserId === evaluator.id ? (
@@ -215,11 +221,29 @@ export function CampaignEvaluatorsManager({
             ))}
           </div>
         ) : (
-          <p className="border-b border-black/[0.06] py-8 text-[10px] text-zinc-500 dark:border-white/[0.06]">
+          <p className="border-b border-black/[0.06] py-8 text-[12px] text-zinc-500 dark:border-white/[0.06]">
             No evaluators are assigned to this campaign.
           </p>
         )}
       </div>
+      <ConfirmationDialog
+        confirmLabel="Remove evaluator"
+        description={
+          confirmEvaluator
+            ? `${confirmEvaluator.fullName} will lose access to this campaign's evaluation workspace. Existing submitted evaluation records are not deleted.`
+            : ""
+        }
+        isPending={pendingUserId === confirmEvaluator?.id}
+        onConfirm={() => {
+          if (confirmEvaluator) void removeEvaluator(confirmEvaluator.id);
+        }}
+        onOpenChange={(open) => {
+          if (!open) setConfirmEvaluator(null);
+        }}
+        open={confirmEvaluator !== null}
+        title="Are you sure you want to remove this evaluator?"
+        tone="danger"
+      />
     </div>
   );
 }

@@ -171,7 +171,7 @@ export default async function SubmissionOverviewPage({
             <p className="mt-7 text-2xl font-bold break-words text-zinc-950 uppercase dark:text-white">
               {stat.value}
             </p>
-            <p className="mt-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+            <p className="mt-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               {stat.label}
             </p>
           </article>
@@ -180,21 +180,21 @@ export default async function SubmissionOverviewPage({
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.25fr_0.75fr]">
         <section>
-          <h2 className="border-b border-black/[0.06] pb-4 text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
+          <h2 className="border-b border-black/[0.06] pb-4 text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
             Submission
           </h2>
           <div className="border-b border-black/[0.06] py-6 dark:border-white/[0.06]">
-            <p className="text-[11px] leading-6 whitespace-pre-wrap text-zinc-600 dark:text-zinc-400">
+            <p className="text-[13px] leading-6 whitespace-pre-wrap text-zinc-600 dark:text-zinc-400">
               {submission.description}
             </p>
           </div>
           <div className="grid gap-6 border-b border-black/[0.06] py-6 sm:grid-cols-2 dark:border-white/[0.06]">
             <div>
-              <p className="text-[7px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+              <p className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
                 Submission owner
               </p>
               <div className="mt-3 flex items-center gap-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[8px] font-bold text-indigo-500">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[10px] font-bold text-indigo-500">
                   {submission.owner.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -207,27 +207,27 @@ export default async function SubmissionOverviewPage({
                   )}
                 </span>
                 <div className="min-w-0">
-                  <p className="truncate text-[10px] font-bold text-zinc-950 dark:text-white">
+                  <p className="truncate text-[12px] font-bold text-zinc-950 dark:text-white">
                     {submission.owner.fullName}
                   </p>
-                  <p className="mt-1 truncate text-[8px] text-zinc-500">
+                  <p className="mt-1 truncate text-[10px] text-zinc-500">
                     {submission.owner.email}
                   </p>
                 </div>
               </div>
             </div>
             <div>
-              <p className="text-[7px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+              <p className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
                 Submission record
               </p>
-              <p className="mt-3 text-[9px] text-zinc-950 dark:text-white">
+              <p className="mt-3 text-[11px] text-zinc-950 dark:text-white">
                 Created{" "}
                 {new Intl.DateTimeFormat("en", {
                   dateStyle: "medium",
                   timeStyle: "short",
                 }).format(submission.createdAt)}
               </p>
-              <p className="mt-2 text-[8px] text-zinc-500">
+              <p className="mt-2 text-[10px] text-zinc-500">
                 Last updated{" "}
                 {new Intl.DateTimeFormat("en", {
                   dateStyle: "medium",
@@ -239,11 +239,11 @@ export default async function SubmissionOverviewPage({
 
           <div className="pt-8">
             <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-              <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+              <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
                 Contributors
               </h2>
               <Link
-                className="text-[8px] font-bold text-indigo-500 uppercase"
+                className="text-[10px] font-bold text-indigo-500 uppercase"
                 href={`/organizations/${organizationId}/campaigns/${campaignId}/submissions/${submissionId}/contributors`}
               >
                 {canManage ? "Manage" : "View"} /{" "}
@@ -254,7 +254,7 @@ export default async function SubmissionOverviewPage({
               <div className="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
                 {submission.contributors.map(({ member, createdAt, role }) => (
                   <div className="flex items-center gap-3 py-4" key={member.id}>
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[8px] font-bold text-indigo-500">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[10px] font-bold text-indigo-500">
                       {member.avatar ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -267,14 +267,14 @@ export default async function SubmissionOverviewPage({
                       )}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-[9px] font-bold text-zinc-950 dark:text-white">
+                      <p className="truncate text-[11px] font-bold text-zinc-950 dark:text-white">
                         {member.fullName}
                       </p>
-                      <p className="mt-1 truncate text-[7px] text-zinc-500">
+                      <p className="mt-1 truncate text-[9px] text-zinc-500">
                         {member.email} / {role}
                       </p>
                     </div>
-                    <time className="hidden text-[7px] text-zinc-500 uppercase sm:block">
+                    <time className="hidden text-[9px] text-zinc-500 uppercase sm:block">
                       Added{" "}
                       {new Intl.DateTimeFormat("en", {
                         dateStyle: "medium",
@@ -284,7 +284,7 @@ export default async function SubmissionOverviewPage({
                 ))}
               </div>
             ) : (
-              <p className="border-b border-black/[0.06] py-8 text-[9px] text-zinc-500 dark:border-white/[0.06]">
+              <p className="border-b border-black/[0.06] py-8 text-[11px] text-zinc-500 dark:border-white/[0.06]">
                 No contributors are assigned to this submission.
               </p>
             )}
@@ -292,7 +292,7 @@ export default async function SubmissionOverviewPage({
         </section>
 
         <aside>
-          <h2 className="border-b border-black/[0.06] pb-4 text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
+          <h2 className="border-b border-black/[0.06] pb-4 text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
             Submission links
           </h2>
           {submission.links.length ? (
@@ -309,10 +309,10 @@ export default async function SubmissionOverviewPage({
                     <Link2 aria-hidden="true" size={15} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[9px] font-bold text-zinc-950 uppercase dark:text-white">
+                    <span className="block text-[11px] font-bold text-zinc-950 uppercase dark:text-white">
                       {resource.label}
                     </span>
-                    <span className="mt-1 block truncate text-[8px] text-zinc-500">
+                    <span className="mt-1 block truncate text-[10px] text-zinc-500">
                       {resource.type.replaceAll("_", " ")} /{" "}
                       {formatHost(resource.url)}
                     </span>
@@ -326,22 +326,22 @@ export default async function SubmissionOverviewPage({
               ))}
             </div>
           ) : (
-            <p className="border-b border-black/[0.06] py-8 text-[9px] text-zinc-500 dark:border-white/[0.06]">
+            <p className="border-b border-black/[0.06] py-8 text-[11px] text-zinc-500 dark:border-white/[0.06]">
               No links were added to this submission.
             </p>
           )}
 
           <div className="mt-8 border-y border-black/[0.06] py-6 dark:border-white/[0.06]">
-            <p className="text-[7px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+            <p className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               Campaign
             </p>
-            <p className="mt-3 text-[10px] font-bold text-zinc-950 uppercase dark:text-white">
+            <p className="mt-3 text-[12px] font-bold text-zinc-950 uppercase dark:text-white">
               {submission.campaign.title}
             </p>
-            <p className="mt-2 text-[8px] text-zinc-500">
+            <p className="mt-2 text-[10px] text-zinc-500">
               {submission.campaign.organization.name}
             </p>
-            <p className="mt-5 flex items-center gap-2 text-[8px] text-zinc-500">
+            <p className="mt-5 flex items-center gap-2 text-[10px] text-zinc-500">
               <CalendarClock aria-hidden="true" size={12} />
               {submission.campaign.deadline
                 ? new Intl.DateTimeFormat("en", {
@@ -352,7 +352,7 @@ export default async function SubmissionOverviewPage({
             </p>
           </div>
 
-          <div className="mt-8 flex items-center gap-3 text-[8px] text-zinc-500">
+          <div className="mt-8 flex items-center gap-3 text-[10px] text-zinc-500">
             <UserRound aria-hidden="true" size={13} />
             Submission ID
             <span className="truncate font-mono text-zinc-950 dark:text-white">

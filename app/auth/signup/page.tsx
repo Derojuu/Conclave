@@ -34,21 +34,21 @@ export default async function SignupPage({
       <div className="p-6 sm:p-8">
         <div className="flex items-center gap-3">
           <span className="h-1.5 w-1.5 bg-indigo-500" />
-          <p className="text-[9px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
+          <p className="text-[11px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
             Confidential workspace
           </p>
         </div>
         <h1 className="mt-6 text-3xl leading-tight font-bold text-zinc-950 uppercase dark:text-white">
           Create your account
         </h1>
-        <p className="mt-4 text-[11px] leading-6 text-zinc-500">
+        <p className="mt-4 text-[13px] leading-6 text-zinc-500">
           Join Conclave to create an organization, manage confidential
           evaluation campaigns, or participate as an evaluator.
         </p>
 
         {error ? (
           <div
-            className="mt-6 border border-rose-500/20 bg-rose-500/[0.05] px-4 py-3 text-[10px] leading-5 text-rose-500"
+            className="mt-6 border border-rose-500/20 bg-rose-500/[0.05] px-4 py-3 text-[12px] leading-5 text-rose-500"
             role="alert"
           >
             {error}

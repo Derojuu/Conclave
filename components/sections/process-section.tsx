@@ -26,21 +26,21 @@ export function ProcessSection() {
               <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-sm border border-black/[0.08] bg-[#EBE8E1] text-zinc-500 dark:border-white/[0.09] dark:bg-[#111]">
                 <Icon name={step.icon} size={18} />
               </div>
-              <span className="text-[8px] tracking-[0.12em] text-zinc-400">
+              <span className="text-[10px] tracking-[0.12em] text-zinc-400">
                 {step.number}
               </span>
             </div>
-            <h3 className="mt-8 text-[11px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
+            <h3 className="mt-8 text-[13px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
               {step.title}
             </h3>
-            <p className="mt-3 text-[10px] leading-5 text-zinc-500">
+            <p className="mt-3 text-[12px] leading-5 text-zinc-500">
               {step.description}
             </p>
             <div
               className={
                 step.visibility === "Private"
-                  ? "mt-auto flex items-center gap-2 pt-6 text-[8px] font-bold tracking-[0.12em] text-indigo-500 uppercase"
-                  : "mt-auto flex items-center gap-2 pt-6 text-[8px] font-bold tracking-[0.12em] text-emerald-600 uppercase dark:text-emerald-400"
+                  ? "mt-auto flex items-center gap-2 pt-6 text-[10px] font-bold tracking-[0.12em] text-indigo-500 uppercase"
+                  : "mt-auto flex items-center gap-2 pt-6 text-[10px] font-bold tracking-[0.12em] text-emerald-600 uppercase dark:text-emerald-400"
               }
             >
               <span className="h-1.5 w-1.5 bg-current" />

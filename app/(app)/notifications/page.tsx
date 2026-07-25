@@ -44,14 +44,14 @@ export default async function NotificationsPage({
     <div className="max-w-5xl">
       <div className="flex items-center gap-3">
         <Bell aria-hidden="true" className="text-indigo-500" size={16} />
-        <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+        <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
           Account activity
         </p>
       </div>
       <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
         Notifications
       </h1>
-      <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+      <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
         Campaign assignments, confidential evaluation receipts, invitations,
         and verified decision updates.
       </p>
@@ -80,22 +80,22 @@ export default async function NotificationsPage({
             aria-disabled={pagination.page <= 1}
             className={
               pagination.page <= 1
-                ? "pointer-events-none text-[8px] font-bold text-zinc-300 uppercase dark:text-zinc-700"
-                : "text-[8px] font-bold text-indigo-500 uppercase"
+                ? "pointer-events-none text-[10px] font-bold text-zinc-300 uppercase dark:text-zinc-700"
+                : "text-[10px] font-bold text-indigo-500 uppercase"
             }
             href={`/notifications?page=${Math.max(1, pagination.page - 1)}`}
           >
             Previous
           </Link>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {pagination.page} / {pages}
           </span>
           <Link
             aria-disabled={pagination.page >= pages}
             className={
               pagination.page >= pages
-                ? "pointer-events-none text-[8px] font-bold text-zinc-300 uppercase dark:text-zinc-700"
-                : "text-[8px] font-bold text-indigo-500 uppercase"
+                ? "pointer-events-none text-[10px] font-bold text-zinc-300 uppercase dark:text-zinc-700"
+                : "text-[10px] font-bold text-indigo-500 uppercase"
             }
             href={`/notifications?page=${Math.min(pages, pagination.page + 1)}`}
           >

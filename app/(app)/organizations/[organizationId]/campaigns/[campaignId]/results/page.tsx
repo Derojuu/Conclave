@@ -139,14 +139,14 @@ export default async function CampaignResultsPage({
           <section className="mt-8 border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="flex items-center gap-2 text-[8px] font-bold tracking-[0.12em] text-emerald-500 uppercase">
+                <p className="flex items-center gap-2 text-[10px] font-bold tracking-[0.12em] text-emerald-500 uppercase">
                   <ShieldCheck aria-hidden="true" size={14} />
                   Verified confidential decision
                 </p>
                 <h2 className="mt-4 text-2xl font-bold text-zinc-950 dark:text-white">
                   {campaign.result.decision}
                 </h2>
-                <p className="mt-4 max-w-3xl text-[10px] leading-6 text-zinc-600 dark:text-zinc-400">
+                <p className="mt-4 max-w-3xl text-[12px] leading-6 text-zinc-600 dark:text-zinc-400">
                   {campaign.result.summary}
                 </p>
               </div>
@@ -155,7 +155,7 @@ export default async function CampaignResultsPage({
                   <p className="text-4xl font-bold text-zinc-950 dark:text-white">
                     {Number(campaign.result.overallScore).toFixed(2)}
                   </p>
-                  <p className="mt-2 text-[7px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+                  <p className="mt-2 text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
                     Aggregate score
                   </p>
                 </div>
@@ -166,7 +166,7 @@ export default async function CampaignResultsPage({
           <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <section>
               <div className="border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-                <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+                <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
                   Aggregate ranking
                 </h2>
               </div>
@@ -183,16 +183,16 @@ export default async function CampaignResultsPage({
                         {String(entry.rank).padStart(2, "0")}
                       </span>
                       <div>
-                        <p className="text-[10px] font-bold text-zinc-950 dark:text-white">
+                        <p className="text-[12px] font-bold text-zinc-950 dark:text-white">
                           {submission?.title ?? "Unknown submission"}
                         </p>
                         {submission?.kind ? (
-                          <p className="mt-1 text-[7px] text-zinc-500 uppercase">
+                          <p className="mt-1 text-[9px] text-zinc-500 uppercase">
                             {submission.kind}
                           </p>
                         ) : null}
                       </div>
-                      <span className="font-mono text-[10px] text-zinc-950 dark:text-white">
+                      <span className="font-mono text-[12px] text-zinc-950 dark:text-white">
                         {entry.score.toFixed(2)}
                       </span>
                     </div>
@@ -203,15 +203,15 @@ export default async function CampaignResultsPage({
 
             <section>
               <div className="border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-                <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+                <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
                   Neutral consensus
                 </h2>
               </div>
               <div className="py-6">
-                <p className="text-[11px] leading-7 text-zinc-600 dark:text-zinc-400">
+                <p className="text-[13px] leading-7 text-zinc-600 dark:text-zinc-400">
                   {campaign.result.consensusSummary}
                 </p>
-                <p className="mt-5 text-[7px] leading-4 text-zinc-500">
+                <p className="mt-5 text-[9px] leading-4 text-zinc-500">
                   Generated inside the confidential computation from aggregate
                   feedback. No evaluator attribution or individual comments are
                   included.
@@ -225,7 +225,7 @@ export default async function CampaignResultsPage({
                       <p className="text-lg font-bold text-zinc-950 dark:text-white">
                         {String(value)}
                       </p>
-                      <p className="mt-2 text-[7px] tracking-[0.08em] text-zinc-500 uppercase">
+                      <p className="mt-2 text-[9px] tracking-[0.08em] text-zinc-500 uppercase">
                         {label.replaceAll("_", " ")}
                       </p>
                     </div>
@@ -277,10 +277,10 @@ export default async function CampaignResultsPage({
                     className="text-zinc-500"
                     size={14}
                   />
-                  <p className="mt-3 truncate font-mono text-[8px] text-zinc-950 dark:text-white">
+                  <p className="mt-3 truncate font-mono text-[10px] text-zinc-950 dark:text-white">
                     {item.value ?? "Unavailable"}
                   </p>
-                  <p className="mt-2 text-[7px] font-bold tracking-[0.08em] text-zinc-500 uppercase">
+                  <p className="mt-2 text-[9px] font-bold tracking-[0.08em] text-zinc-500 uppercase">
                     {item.label}
                   </p>
                 </div>
@@ -292,13 +292,13 @@ export default async function CampaignResultsPage({
         <section className="mt-8 border-y border-black/[0.06] py-10 dark:border-white/[0.06]">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="flex items-center gap-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+              <p className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
                 <Activity aria-hidden="true" size={14} />
                 {activeJob
                   ? `Computation ${activeJob.status.toLowerCase()}`
                   : "No verified result"}
               </p>
-              <p className="mt-3 max-w-2xl text-[10px] leading-6 text-zinc-500">
+              <p className="mt-3 max-w-2xl text-[12px] leading-6 text-zinc-500">
                 {activeJob
                   ? "Encrypted evaluations are being processed by iExec Nox. Only the aggregate result will be published."
                   : "Start confidential computation after every assigned evaluator has submitted an encrypted assessment."}
@@ -317,7 +317,7 @@ export default async function CampaignResultsPage({
       {campaign.computationJobs.length ? (
         <section className="mt-10">
           <div className="border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-            <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+            <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Computation history
             </h2>
           </div>
@@ -327,26 +327,26 @@ export default async function CampaignResultsPage({
                 className="grid gap-3 py-5 sm:grid-cols-[140px_1fr_auto]"
                 key={job.id}
               >
-                <p className="text-[8px] font-bold text-zinc-950 uppercase dark:text-white">
+                <p className="text-[10px] font-bold text-zinc-950 uppercase dark:text-white">
                   {job.status}
                 </p>
                 <div className="min-w-0">
-                  <p className="truncate font-mono text-[7px] text-zinc-500">
+                  <p className="truncate font-mono text-[9px] text-zinc-500">
                     {job.providerTaskId ?? job.inputCommitment}
                   </p>
                   {job.receiptHash ? (
-                    <p className="mt-2 truncate font-mono text-[7px] text-zinc-500">
+                    <p className="mt-2 truncate font-mono text-[9px] text-zinc-500">
                       Receipt {job.receiptHash}
                       {job.chainId ? ` · Chain ${job.chainId}` : ""}
                     </p>
                   ) : null}
                   {job.errorMessage ? (
-                    <p className="mt-2 text-[8px] text-rose-500">
+                    <p className="mt-2 text-[10px] text-rose-500">
                       {job.errorCode}: {job.errorMessage}
                     </p>
                   ) : null}
                 </div>
-                <time className="text-[7px] text-zinc-500">
+                <time className="text-[9px] text-zinc-500">
                   {new Intl.DateTimeFormat("en", {
                     dateStyle: "medium",
                     timeStyle: "short",

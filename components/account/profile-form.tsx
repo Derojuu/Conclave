@@ -61,18 +61,18 @@ export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
     <form className="space-y-6" onSubmit={onSubmit}>
       <div>
         <label
-          className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+          className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
           htmlFor="fullName"
         >
           Full name
         </label>
         <input
-          className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[11px] text-zinc-950 outline-none transition-colors focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02] dark:text-white"
+          className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[13px] text-zinc-950 outline-none transition-colors focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02] dark:text-white"
           id="fullName"
           {...register("fullName")}
         />
         {errors.fullName ? (
-          <p className="mt-2 text-[9px] text-rose-500" role="alert">
+          <p className="mt-2 text-[11px] text-rose-500" role="alert">
             {errors.fullName.message}
           </p>
         ) : null}
@@ -80,13 +80,13 @@ export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
 
       <div>
         <label
-          className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+          className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
           htmlFor="email"
         >
           Google account
         </label>
         <input
-          className="mt-2 h-11 w-full cursor-not-allowed rounded-sm border border-black/[0.06] bg-black/[0.025] px-3 text-[11px] text-zinc-500 dark:border-white/[0.06] dark:bg-white/[0.025]"
+          className="mt-2 h-11 w-full cursor-not-allowed rounded-sm border border-black/[0.06] bg-black/[0.025] px-3 text-[13px] text-zinc-500 dark:border-white/[0.06] dark:bg-white/[0.025]"
           disabled
           id="email"
           value={email}
@@ -95,19 +95,19 @@ export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
 
       <div>
         <label
-          className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
+          className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase"
           htmlFor="avatar"
         >
           Avatar URL
         </label>
         <input
-          className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[11px] text-zinc-950 outline-none transition-colors focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02] dark:text-white"
+          className="mt-2 h-11 w-full rounded-sm border border-black/[0.08] bg-black/[0.02] px-3 text-[13px] text-zinc-950 outline-none transition-colors focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02] dark:text-white"
           id="avatar"
           placeholder="https://"
           {...register("avatar")}
         />
         {errors.avatar ? (
-          <p className="mt-2 text-[9px] text-rose-500" role="alert">
+          <p className="mt-2 text-[11px] text-rose-500" role="alert">
             {errors.avatar.message}
           </p>
         ) : null}
@@ -117,15 +117,15 @@ export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
         <p
           className={
             message === "Profile updated."
-              ? "text-[9px] text-emerald-500"
-              : "text-[9px] text-rose-500"
+              ? "text-[11px] text-emerald-500"
+              : "text-[11px] text-rose-500"
           }
           role="status"
         >
           {message}
         </p>
         <button
-          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[9px] font-bold tracking-[0.1em] uppercase disabled:cursor-wait disabled:opacity-60 dark:bg-white"
+          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[11px] font-bold tracking-[0.1em] uppercase disabled:cursor-wait disabled:opacity-60 dark:bg-white"
           disabled={isSubmitting}
           type="submit"
         >

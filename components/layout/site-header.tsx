@@ -42,13 +42,13 @@ export function SiteHeader() {
               <LogIn aria-hidden="true" size={16} />
             </Link>
             <Link
-              className="hidden h-10 items-center justify-center px-3 text-[10px] font-bold tracking-[0.1em] text-zinc-600 uppercase transition-colors hover:text-zinc-950 sm:inline-flex dark:text-zinc-400 dark:hover:text-white"
+              className="hidden h-10 items-center justify-center px-3 text-[12px] font-bold tracking-[0.1em] text-zinc-600 uppercase transition-colors hover:text-zinc-950 sm:inline-flex dark:text-zinc-400 dark:hover:text-white"
               href={siteLinks.login}
             >
               Sign in
             </Link>
             <Link
-              className="button-wallet hidden h-10 items-center justify-center rounded-[2px] bg-[#0988F0] px-4 text-[10px] font-bold tracking-[0.08em] uppercase transition-[border-radius,background-color,transform] duration-200 hover:rounded-[3px] hover:bg-[#1595fb] active:scale-[0.975] md:inline-flex"
+              className="button-wallet hidden h-10 items-center justify-center rounded-[2px] bg-[#0988F0] px-4 text-[12px] font-bold tracking-[0.08em] uppercase transition-[border-radius,background-color,transform] duration-200 hover:rounded-[3px] hover:bg-[#1595fb] active:scale-[0.975] md:inline-flex"
               href={siteLinks.signup}
             >
               Create account
@@ -64,7 +64,7 @@ export function SiteHeader() {
               <div className="absolute top-12 right-0 w-[min(18rem,calc(100vw-2rem))] rounded-sm border border-black/[0.08] bg-[#F5F2EB] p-2 shadow-2xl dark:border-white/[0.08] dark:bg-[#111]">
                 {navigationItems.map((item) => (
                   <a
-                    className="block rounded-sm px-3 py-3 text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase hover:bg-black/[0.04] dark:hover:bg-white/[0.04]"
+                    className="block rounded-sm px-3 py-3 text-[12px] font-bold tracking-[0.12em] text-zinc-500 uppercase hover:bg-black/[0.04] dark:hover:bg-white/[0.04]"
                     href={item.href}
                     key={item.label}
                   >
@@ -73,13 +73,13 @@ export function SiteHeader() {
                 ))}
                 <div className="my-2 border-t border-black/[0.07] dark:border-white/[0.07]" />
                 <Link
-                  className="block rounded-sm px-3 py-3 text-[10px] font-bold tracking-[0.12em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
+                  className="block rounded-sm px-3 py-3 text-[12px] font-bold tracking-[0.12em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
                   href={siteLinks.login}
                 >
                   Sign in
                 </Link>
                 <Link
-                  className="mt-1 flex min-h-10 items-center justify-center rounded-[2px] bg-[#0988F0] px-3 text-[10px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-[#1595fb]"
+                  className="mt-1 flex min-h-10 items-center justify-center rounded-[2px] bg-[#0988F0] px-3 text-[12px] font-bold tracking-[0.1em] text-black uppercase transition-colors hover:bg-[#1595fb]"
                   href={siteLinks.signup}
                 >
                   Create account

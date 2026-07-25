@@ -13,6 +13,7 @@ import {
   evaluationRecommendationLabels,
   type EvaluationRecommendation,
 } from "@/constants/evaluation";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { encryptEvaluationPayload } from "@/lib/confidential/browser-encryption";
 import {
   confidentialEvaluationPayloadSchema,
@@ -104,6 +105,7 @@ export function ConfidentialEvaluationForm({
     existingEvaluation?.status === "INCLUDED";
   const [message, setMessage] = useState<string | null>(null);
   const [isEncrypting, setIsEncrypting] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   const autosaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastAutosaveFingerprint = useRef<string | null>(null);
@@ -283,23 +285,23 @@ export function ConfidentialEvaluationForm({
     watchedValues,
   ]);
 
-  const submit = handleSubmit(() => persist(true));
+  const submit = handleSubmit(() => setConfirmOpen(true));
 
   if (submitted) {
     return (
       <div className="border border-emerald-500/20 bg-emerald-500/[0.04] p-6">
         <div className="flex items-center gap-3 text-emerald-500">
           <Check aria-hidden="true" size={18} />
-          <p className="text-[10px] font-bold tracking-[0.1em] uppercase">
+          <p className="text-[12px] font-bold tracking-[0.1em] uppercase">
             Confidential evaluation submitted
           </p>
         </div>
-        <p className="mt-4 max-w-2xl text-[9px] leading-5 text-zinc-500">
+        <p className="mt-4 max-w-2xl text-[11px] leading-5 text-zinc-500">
           The application stores only the encrypted payload and its integrity
           commitment. Individual responses cannot be viewed from this page.
         </p>
         {existingEvaluation?.payloadHash ? (
-          <p className="mt-5 break-all font-mono text-[7px] text-zinc-500">
+          <p className="mt-5 break-all font-mono text-[9px] text-zinc-500">
             {existingEvaluation.payloadHash}
           </p>
         ) : null}
@@ -310,7 +312,7 @@ export function ConfidentialEvaluationForm({
   return (
     <form className="space-y-8" onSubmit={submit}>
       {!encryptionConfig ? (
-        <div className="border border-amber-500/20 bg-amber-500/[0.04] p-5 text-[9px] leading-5 text-amber-600 dark:text-amber-400">
+        <div className="border border-amber-500/20 bg-amber-500/[0.04] p-5 text-[11px] leading-5 text-amber-600 dark:text-amber-400">
           Confidential evaluation encryption is not configured. An organization
           administrator must configure the Nox public key before evaluations
           can be submitted.
@@ -318,7 +320,7 @@ export function ConfidentialEvaluationForm({
       ) : null}
 
       {existingEvaluation?.status === "SEALED" ? (
-        <div className="border border-indigo-500/20 bg-indigo-500/[0.04] p-4 text-[8px] text-indigo-500">
+        <div className="border border-indigo-500/20 bg-indigo-500/[0.04] p-4 text-[10px] text-indigo-500">
           An encrypted draft checkpoint exists. Saving again replaces that
           checkpoint; its contents are never returned by the server.
         </div>
@@ -326,10 +328,10 @@ export function ConfidentialEvaluationForm({
 
       {template.instructions ? (
         <div className="border-y border-black/[0.06] py-5 dark:border-white/[0.06]">
-          <p className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+          <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
             Instructions
           </p>
-          <p className="mt-3 whitespace-pre-wrap text-[10px] leading-6 text-zinc-600 dark:text-zinc-400">
+          <p className="mt-3 whitespace-pre-wrap text-[12px] leading-6 text-zinc-600 dark:text-zinc-400">
             {template.instructions}
           </p>
         </div>
@@ -343,16 +345,16 @@ export function ConfidentialEvaluationForm({
           >
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h2 className="text-[11px] font-bold text-zinc-950 dark:text-white">
+                <h2 className="text-[13px] font-bold text-zinc-950 dark:text-white">
                   {criterion.label}
                 </h2>
                 {criterion.description ? (
-                  <p className="mt-2 max-w-2xl text-[9px] leading-5 text-zinc-500">
+                  <p className="mt-2 max-w-2xl text-[11px] leading-5 text-zinc-500">
                     {criterion.description}
                   </p>
                 ) : null}
               </div>
-              <span className="text-[7px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+              <span className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
                 Weight {criterion.weight}
               </span>
             </div>
@@ -413,7 +415,7 @@ export function ConfidentialEvaluationForm({
                 />
               ) : criterion.type === "PASS_FAIL" ? (
                 <select
-                  className="h-11 w-full max-w-xs border border-black/[0.08] bg-[#EBE8E1] px-3 text-[10px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
+                  className="h-11 w-full max-w-xs border border-black/[0.08] bg-[#EBE8E1] px-3 text-[12px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
                   {...register(`criteria.${index}.value`)}
                 >
                   <option value="">Select outcome</option>
@@ -426,7 +428,7 @@ export function ConfidentialEvaluationForm({
                   name={`criteria.${index}.value`}
                   render={({ field }) => (
                     <select
-                      className="h-11 w-full max-w-xs border border-black/[0.08] bg-[#EBE8E1] px-3 text-[10px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
+                      className="h-11 w-full max-w-xs border border-black/[0.08] bg-[#EBE8E1] px-3 text-[12px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
                       onBlur={field.onBlur}
                       onChange={(event) => {
                         const value = event.target.value;
@@ -450,14 +452,14 @@ export function ConfidentialEvaluationForm({
                 />
               ) : criterion.type === "RUBRIC" ? (
                 <textarea
-                  className="min-h-28 w-full resize-y border border-black/[0.08] bg-black/[0.02] p-3 text-[10px] leading-5 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+                  className="min-h-28 w-full resize-y border border-black/[0.08] bg-black/[0.02] p-3 text-[12px] leading-5 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
                   placeholder="Enter the rubric outcome"
                   {...register(`criteria.${index}.value`)}
                 />
               ) : (
                 <div className="flex items-center gap-3">
                   <input
-                    className="h-11 w-36 border border-black/[0.08] bg-black/[0.02] px-3 text-[11px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+                    className="h-11 w-36 border border-black/[0.08] bg-black/[0.02] px-3 text-[13px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
                     max={criterion.maxScore}
                     min={criterion.minScore}
                     step="any"
@@ -466,7 +468,7 @@ export function ConfidentialEvaluationForm({
                       valueAsNumber: true,
                     })}
                   />
-                  <span className="text-[8px] text-zinc-500">
+                  <span className="text-[10px] text-zinc-500">
                     {criterion.minScore} to {criterion.maxScore}
                   </span>
                 </div>
@@ -474,7 +476,7 @@ export function ConfidentialEvaluationForm({
             </div>
 
             <textarea
-              className="mt-4 min-h-20 w-full resize-y border border-black/[0.08] bg-black/[0.02] p-3 text-[9px] leading-5 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+              className="mt-4 min-h-20 w-full resize-y border border-black/[0.08] bg-black/[0.02] p-3 text-[11px] leading-5 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
               placeholder="Private criterion comment (optional)"
               {...register(`criteria.${index}.privateComment`)}
             />
@@ -485,13 +487,13 @@ export function ConfidentialEvaluationForm({
       <div className="grid gap-6 lg:grid-cols-2">
         <div>
           <label
-            className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase"
+            className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase"
             htmlFor="overall-recommendation"
           >
             Overall recommendation
           </label>
           <select
-            className="mt-2 h-11 w-full border border-black/[0.08] bg-[#EBE8E1] px-3 text-[10px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
+            className="mt-2 h-11 w-full border border-black/[0.08] bg-[#EBE8E1] px-3 text-[12px] outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-[#111]"
             id="overall-recommendation"
             {...register("overallRecommendation")}
           >
@@ -504,13 +506,13 @@ export function ConfidentialEvaluationForm({
         </div>
         <div>
           <label
-            className="text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase"
+            className="text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase"
             htmlFor="private-comments"
           >
             Private overall comments
           </label>
           <textarea
-            className="mt-2 min-h-24 w-full resize-y border border-black/[0.08] bg-black/[0.02] p-3 text-[9px] leading-5 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
+            className="mt-2 min-h-24 w-full resize-y border border-black/[0.08] bg-black/[0.02] p-3 text-[11px] leading-5 outline-none focus:border-indigo-500 dark:border-white/[0.08] dark:bg-white/[0.02]"
             id="private-comments"
             {...register("privateComments")}
           />
@@ -523,8 +525,8 @@ export function ConfidentialEvaluationForm({
             className={
               message?.startsWith("Evaluation submitted") ||
               message === "Encrypted draft saved."
-                ? "text-[9px] text-emerald-500"
-                : "text-[9px] text-zinc-500"
+                ? "text-[11px] text-emerald-500"
+                : "text-[11px] text-zinc-500"
             }
             role="status"
           >
@@ -533,14 +535,14 @@ export function ConfidentialEvaluationForm({
                 ? `Encrypted checkpoint saved ${lastSavedAt.toLocaleTimeString()}`
                 : "Changes autosave as an encrypted checkpoint.")}
           </p>
-          <p className="mt-2 flex items-center gap-2 text-[7px] text-zinc-500">
+          <p className="mt-2 flex items-center gap-2 text-[9px] text-zinc-500">
             <LockKeyhole aria-hidden="true" size={11} />
             Plaintext responses never leave this browser.
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
           <button
-            className="inline-flex min-h-11 items-center justify-center gap-2 border border-black/[0.08] px-4 text-[8px] font-bold uppercase disabled:opacity-50 dark:border-white/[0.08]"
+            className="inline-flex min-h-11 items-center justify-center gap-2 border border-black/[0.08] px-4 text-[10px] font-bold uppercase disabled:opacity-50 dark:border-white/[0.08]"
             disabled={!encryptionConfig || isEncrypting}
             onClick={() => void persist(false)}
             type="button"
@@ -553,7 +555,7 @@ export function ConfidentialEvaluationForm({
             Save encrypted draft
           </button>
           <button
-            className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[8px] font-bold tracking-[0.1em] uppercase disabled:opacity-50 dark:bg-white"
+            className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[10px] font-bold tracking-[0.1em] uppercase disabled:opacity-50 dark:bg-white"
             disabled={!encryptionConfig || isEncrypting}
             type="submit"
           >
@@ -566,6 +568,19 @@ export function ConfidentialEvaluationForm({
           </button>
         </div>
       </div>
+      <ConfirmationDialog
+        confirmLabel="Seal and submit"
+        description="Your evaluation will be encrypted, sealed, and submitted for confidential computation. You will not be able to view or edit the plaintext responses afterward."
+        isPending={isEncrypting}
+        onConfirm={() => {
+          void persist(true).then((submittedSuccessfully) => {
+            if (!submittedSuccessfully) setConfirmOpen(false);
+          });
+        }}
+        onOpenChange={setConfirmOpen}
+        open={confirmOpen}
+        title="Are you sure you want to submit this evaluation?"
+      />
     </form>
   );
 }

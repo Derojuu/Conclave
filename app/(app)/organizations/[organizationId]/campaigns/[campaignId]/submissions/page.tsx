@@ -116,7 +116,7 @@ export default async function CampaignSubmissionsPage({
             <p className="mt-7 text-3xl font-bold text-zinc-950 dark:text-white">
               {stat.value}
             </p>
-            <p className="mt-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+            <p className="mt-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               {stat.label}
             </p>
           </article>
@@ -126,24 +126,24 @@ export default async function CampaignSubmissionsPage({
       <section className="mt-10">
         <div className="flex flex-col gap-4 border-b border-black/[0.06] pb-5 sm:flex-row sm:items-end sm:justify-between dark:border-white/[0.06]">
           <div>
-            <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+            <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Submissions
             </h2>
-            <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+            <p className="mt-2 text-[11px] leading-5 text-zinc-500">
               Review every submission, its resources, contributors, and
               evaluation progress.
             </p>
           </div>
           {canManage && mutable ? (
             <Link
-              className="button-primary inline-flex min-h-10 items-center justify-center gap-2 bg-zinc-950 px-4 text-[8px] font-bold tracking-[0.1em] uppercase dark:bg-white"
+              className="button-primary inline-flex min-h-10 items-center justify-center gap-2 bg-zinc-950 px-4 text-[10px] font-bold tracking-[0.1em] uppercase dark:bg-white"
               href={`/organizations/${organizationId}/campaigns/${campaignId}/submissions/new`}
             >
               <Plus aria-hidden="true" size={13} />
               Add submission
             </Link>
           ) : canManage ? (
-            <span className="text-[8px] font-bold tracking-[0.1em] text-amber-500 uppercase">
+            <span className="text-[10px] font-bold tracking-[0.1em] text-amber-500 uppercase">
               Submissions locked
             </span>
           ) : null}
@@ -172,10 +172,10 @@ export default async function CampaignSubmissionsPage({
                         status={submission.status as SubmissionStatus}
                       />
                     </div>
-                    <p className="mt-3 line-clamp-2 max-w-3xl text-[9px] leading-5 text-zinc-500">
+                    <p className="mt-3 line-clamp-2 max-w-3xl text-[11px] leading-5 text-zinc-500">
                       {submission.description}
                     </p>
-                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[7px] tracking-[0.08em] text-zinc-500 uppercase">
+                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[9px] tracking-[0.08em] text-zinc-500 uppercase">
                       {submission.kind ? <span>{submission.kind}</span> : null}
                       <span>
                         {submission._count.contributors} contributors
@@ -210,7 +210,7 @@ export default async function CampaignSubmissionsPage({
               className="mx-auto text-zinc-500"
               size={21}
             />
-            <p className="mt-4 text-[10px] text-zinc-500">
+            <p className="mt-4 text-[12px] text-zinc-500">
               {canManage && mutable
                 ? "Add the first submission to this campaign."
                 : "No submissions are available."}

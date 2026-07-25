@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-import { signOutAction } from "@/app/auth/actions";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 import { OrganizationSidebarLink } from "@/components/organizations/organization-sidebar-link";
 import { OrganizationSwitcher } from "@/components/organizations/organization-switcher";
 import { BrandMark } from "@/components/ui/brand-mark";
@@ -62,7 +62,7 @@ export function AppShell({
             >
               {navigation.map((item) => (
                 <Link
-                  className="flex h-9 items-center gap-2 rounded-sm px-3 text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase transition-colors hover:bg-black/[0.04] hover:text-zinc-950 dark:hover:bg-white/[0.04] dark:hover:text-white"
+                  className="flex h-9 items-center gap-2 rounded-sm px-3 text-[11px] font-bold tracking-[0.1em] text-zinc-500 uppercase transition-colors hover:bg-black/[0.04] hover:text-zinc-950 dark:hover:bg-white/[0.04] dark:hover:text-white"
                   href={item.href}
                   key={item.href}
                 >
@@ -90,7 +90,7 @@ export function AppShell({
             </Link>
             <details className="relative">
             <summary className="flex cursor-pointer list-none items-center gap-3 rounded-sm border border-black/[0.07] px-3 py-2 dark:border-white/[0.07]">
-              <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-sm bg-indigo-500/10 text-[9px] font-bold text-indigo-500">
+              <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-sm bg-indigo-500/10 text-[11px] font-bold text-indigo-500">
                 {user.avatar ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -103,23 +103,23 @@ export function AppShell({
                 )}
               </span>
               <span className="hidden text-left sm:block">
-                <span className="block max-w-40 truncate text-[9px] font-bold text-zinc-950 dark:text-white">
+                <span className="block max-w-40 truncate text-[11px] font-bold text-zinc-950 dark:text-white">
                   {user.fullName}
                 </span>
-                <span className="mt-0.5 block max-w-40 truncate text-[7px] text-zinc-500">
+                <span className="mt-0.5 block max-w-40 truncate text-[9px] text-zinc-500">
                   {user.email}
                 </span>
               </span>
             </summary>
             <div className="absolute top-12 right-0 w-64 overflow-hidden rounded-sm border border-black/[0.08] bg-[#EBE8E1] shadow-2xl dark:border-white/[0.08] dark:bg-[#111]">
               <div className="border-b border-black/[0.06] px-4 py-4 dark:border-white/[0.06]">
-                <p className="truncate text-[10px] font-bold text-zinc-950 dark:text-white">
+                <p className="truncate text-[12px] font-bold text-zinc-950 dark:text-white">
                   {user.fullName}
                 </p>
-                <p className="mt-1 truncate text-[8px] text-zinc-500">
+                <p className="mt-1 truncate text-[10px] text-zinc-500">
                   {user.email}
                 </p>
-                <div className="mt-3 flex items-center gap-2 text-[7px] font-bold tracking-[0.1em] text-emerald-500 uppercase">
+                <div className="mt-3 flex items-center gap-2 text-[9px] font-bold tracking-[0.1em] text-emerald-500 uppercase">
                   <ShieldCheck aria-hidden="true" size={12} />
                   {user.platformRole === "SUPER_ADMIN"
                     ? "Super admin"
@@ -127,14 +127,14 @@ export function AppShell({
                 </div>
               </div>
               <Link
-                className="flex items-center gap-3 px-4 py-3 text-[9px] font-bold tracking-[0.08em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
+                className="flex items-center gap-3 px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
                 href="/account"
               >
                 <UserRound aria-hidden="true" size={14} />
                 Account settings
               </Link>
               <Link
-                className="flex items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-[9px] font-bold tracking-[0.08em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:border-white/[0.06] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
+                className="flex items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:border-white/[0.06] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
                 href="/notifications"
               >
                 <Bell aria-hidden="true" size={14} />
@@ -142,21 +142,14 @@ export function AppShell({
               </Link>
               {user.platformRole === "SUPER_ADMIN" ? (
                 <Link
-                  className="flex items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-[9px] font-bold tracking-[0.08em] text-emerald-600 uppercase hover:bg-emerald-500/[0.05] dark:border-white/[0.06] dark:text-emerald-400"
+                  className="flex items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-emerald-600 uppercase hover:bg-emerald-500/[0.05] dark:border-white/[0.06] dark:text-emerald-400"
                   href="/admin"
                 >
                   <ShieldCheck aria-hidden="true" size={14} />
                   Platform admin
                 </Link>
               ) : null}
-              <form action={signOutAction}>
-                <button
-                  className="flex w-full items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-left text-[9px] font-bold tracking-[0.08em] text-rose-500 uppercase hover:bg-rose-500/[0.05] dark:border-white/[0.06]"
-                  type="submit"
-                >
-                  Sign out
-                </button>
-              </form>
+              <SignOutButton />
             </div>
             </details>
           </div>
@@ -165,7 +158,7 @@ export function AppShell({
 
       <div className="mx-auto grid max-w-[1500px] lg:grid-cols-[240px_1fr]">
         <aside className="hidden min-h-[calc(100vh-4rem)] border-r border-black/[0.06] p-5 lg:block dark:border-white/[0.06]">
-          <p className="px-2 text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+          <p className="px-2 text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
             Organizations
           </p>
           <div className="mt-4 space-y-1">
@@ -177,7 +170,7 @@ export function AppShell({
               />
             ))}
             <Link
-              className="flex items-center gap-3 rounded-sm px-2 py-3 text-[9px] font-bold tracking-[0.08em] text-indigo-500 uppercase transition-colors hover:bg-indigo-500/[0.06]"
+              className="flex items-center gap-3 rounded-sm px-2 py-3 text-[11px] font-bold tracking-[0.08em] text-indigo-500 uppercase transition-colors hover:bg-indigo-500/[0.06]"
               href="/organizations/new"
             >
               <Plus aria-hidden="true" size={14} />

@@ -116,20 +116,20 @@ export default async function EvaluationTemplatesPage({
     <div className="max-w-6xl">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+          <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
             {access.organization.slug} / evaluation system
           </p>
           <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
             Evaluation templates
           </h1>
-          <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+          <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
             Build reusable, weighted evaluation frameworks and assign a fixed
             version to each campaign.
           </p>
         </div>
         {canManage ? (
           <Link
-            className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[8px] font-bold tracking-[0.1em] uppercase dark:bg-white"
+            className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[10px] font-bold tracking-[0.1em] uppercase dark:bg-white"
             href={`/organizations/${organizationId}/evaluation-templates/new`}
           >
             <Plus aria-hidden="true" size={14} />
@@ -151,7 +151,7 @@ export default async function EvaluationTemplatesPage({
             <p className="mt-7 text-3xl font-bold text-zinc-950 dark:text-white">
               {stat.value}
             </p>
-            <p className="mt-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+            <p className="mt-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               {stat.label}
             </p>
           </article>
@@ -160,10 +160,10 @@ export default async function EvaluationTemplatesPage({
 
       <section className="mt-10">
         <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-          <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+          <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
             Template library
           </h2>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {templates.length} VERSIONS
           </span>
         </div>
@@ -205,31 +205,31 @@ export default async function EvaluationTemplatesPage({
                       <h3 className="text-[12px] font-bold text-zinc-950 uppercase group-hover:text-indigo-500 dark:text-white">
                         {template.title}
                       </h3>
-                      <span className="border border-black/[0.07] px-2 py-1 text-[7px] font-bold text-zinc-500 uppercase dark:border-white/[0.07]">
+                      <span className="border border-black/[0.07] px-2 py-1 text-[9px] font-bold text-zinc-500 uppercase dark:border-white/[0.07]">
                         v{template.version}
                       </span>
                       {latestTemplateIds.has(template.id) ? (
-                        <span className="border border-indigo-500/20 bg-indigo-500/[0.04] px-2 py-1 text-[7px] font-bold text-indigo-500 uppercase">
+                        <span className="border border-indigo-500/20 bg-indigo-500/[0.04] px-2 py-1 text-[9px] font-bold text-indigo-500 uppercase">
                           Latest
                         </span>
                       ) : null}
                       {template.isDefault ? (
-                        <span className="border border-emerald-500/20 bg-emerald-500/[0.04] px-2 py-1 text-[7px] font-bold text-emerald-500 uppercase">
+                        <span className="border border-emerald-500/20 bg-emerald-500/[0.04] px-2 py-1 text-[9px] font-bold text-emerald-500 uppercase">
                           Default
                         </span>
                       ) : null}
                       {template._count.campaigns > 0 ? (
-                        <span className="border border-amber-500/20 bg-amber-500/[0.04] px-2 py-1 text-[7px] font-bold text-amber-500 uppercase">
+                        <span className="border border-amber-500/20 bg-amber-500/[0.04] px-2 py-1 text-[9px] font-bold text-amber-500 uppercase">
                           Locked
                         </span>
                       ) : null}
                     </div>
                     {template.description ? (
-                      <p className="mt-3 line-clamp-2 max-w-3xl text-[9px] leading-5 text-zinc-500">
+                      <p className="mt-3 line-clamp-2 max-w-3xl text-[11px] leading-5 text-zinc-500">
                         {template.description}
                       </p>
                     ) : null}
-                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[7px] tracking-[0.08em] text-zinc-500 uppercase">
+                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[9px] tracking-[0.08em] text-zinc-500 uppercase">
                       <span>{template._count.criteria} criteria</span>
                       <span>
                         Range {formatNumber(minimum)} - {formatNumber(maximum)}
@@ -272,7 +272,7 @@ export default async function EvaluationTemplatesPage({
               className="mx-auto text-zinc-500"
               size={21}
             />
-            <p className="mt-4 text-[10px] text-zinc-500">
+            <p className="mt-4 text-[12px] text-zinc-500">
               {canManage
                 ? "Create the first reusable evaluation template."
                 : "No evaluation templates are available."}

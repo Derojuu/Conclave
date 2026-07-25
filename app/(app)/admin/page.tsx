@@ -53,13 +53,13 @@ export default async function PlatformAdminPage() {
 
   return (
     <div className="max-w-7xl">
-      <p className="text-[8px] font-bold tracking-[0.16em] text-emerald-500 uppercase">
+      <p className="text-[10px] font-bold tracking-[0.16em] text-emerald-500 uppercase">
         Super admin
       </p>
       <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
         Platform administration
       </h1>
-      <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+      <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
         Operational visibility across organizations, campaigns, and aggregate
         confidential-computation jobs.
       </p>
@@ -71,7 +71,7 @@ export default async function PlatformAdminPage() {
             <p className="mt-7 text-3xl font-bold text-zinc-950 dark:text-white">
               {stat.value}
             </p>
-            <p className="mt-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+            <p className="mt-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               {stat.label}
             </p>
           </article>
@@ -80,7 +80,7 @@ export default async function PlatformAdminPage() {
 
       <div className="mt-10 grid gap-10 xl:grid-cols-2">
         <section>
-          <h2 className="border-b border-black/[0.06] pb-4 text-[10px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
+          <h2 className="border-b border-black/[0.06] pb-4 text-[12px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
             Recent organizations
           </h2>
           <div className="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
@@ -91,16 +91,16 @@ export default async function PlatformAdminPage() {
                 key={organization.id}
               >
                 <span className="min-w-0">
-                  <span className="block truncate text-[9px] font-bold text-zinc-950 uppercase dark:text-white">
+                  <span className="block truncate text-[11px] font-bold text-zinc-950 uppercase dark:text-white">
                     {organization.name}
                   </span>
-                  <span className="mt-1 block truncate text-[7px] text-zinc-500">
+                  <span className="mt-1 block truncate text-[9px] text-zinc-500">
                     {organization.owner.fullName} /{" "}
                     {organization._count.members} members /{" "}
                     {organization._count.campaigns} campaigns
                   </span>
                 </span>
-                <span className="text-[7px] text-zinc-400 uppercase">
+                <span className="text-[9px] text-zinc-400 uppercase">
                   {organization.slug}
                 </span>
               </Link>
@@ -109,7 +109,7 @@ export default async function PlatformAdminPage() {
         </section>
 
         <section>
-          <h2 className="border-b border-black/[0.06] pb-4 text-[10px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
+          <h2 className="border-b border-black/[0.06] pb-4 text-[12px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
             Recent users
           </h2>
           <div className="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
@@ -119,14 +119,14 @@ export default async function PlatformAdminPage() {
                 key={record.id}
               >
                 <span className="min-w-0">
-                  <span className="block truncate text-[9px] font-bold text-zinc-950 dark:text-white">
+                  <span className="block truncate text-[11px] font-bold text-zinc-950 dark:text-white">
                     {record.fullName}
                   </span>
-                  <span className="mt-1 block truncate text-[7px] text-zinc-500">
+                  <span className="mt-1 block truncate text-[9px] text-zinc-500">
                     {record.email} / {record._count.memberships} memberships
                   </span>
                 </span>
-                <span className="text-[7px] font-bold text-emerald-500 uppercase">
+                <span className="text-[9px] font-bold text-emerald-500 uppercase">
                   {record.platformRole.replaceAll("_", " ")}
                 </span>
               </div>
@@ -136,7 +136,7 @@ export default async function PlatformAdminPage() {
       </div>
 
       <section className="mt-10">
-        <h2 className="border-b border-black/[0.06] pb-4 text-[10px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
+        <h2 className="border-b border-black/[0.06] pb-4 text-[12px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:border-white/[0.06] dark:text-white">
           Computation activity
         </h2>
         <div className="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
@@ -147,23 +147,23 @@ export default async function PlatformAdminPage() {
               key={job.id}
             >
               <span className="min-w-0">
-                <span className="block truncate text-[9px] font-bold text-zinc-950 dark:text-white">
+                <span className="block truncate text-[11px] font-bold text-zinc-950 dark:text-white">
                   {job.campaign.title}
                 </span>
-                <span className="mt-1 block truncate text-[7px] text-zinc-500">
+                <span className="mt-1 block truncate text-[9px] text-zinc-500">
                   {job.campaign.organization.name} / {job.provider}
                 </span>
               </span>
-              <span className="text-[7px] text-zinc-500">
+              <span className="text-[9px] text-zinc-500">
                 {job.providerTaskId ?? "TASK PENDING"}
               </span>
               <span
                 className={
                   job.status === "FAILED"
-                    ? "text-[7px] font-bold text-rose-500 uppercase"
+                    ? "text-[9px] font-bold text-rose-500 uppercase"
                     : job.status === "SUCCEEDED"
-                      ? "text-[7px] font-bold text-emerald-500 uppercase"
-                      : "text-[7px] font-bold text-amber-500 uppercase"
+                      ? "text-[9px] font-bold text-emerald-500 uppercase"
+                      : "text-[9px] font-bold text-amber-500 uppercase"
                 }
               >
                 {job.status}

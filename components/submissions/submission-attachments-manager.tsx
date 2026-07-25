@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import type { DownloadableAttachment } from "@/lib/submission-attachments";
 import {
   SUBMISSION_ATTACHMENT_MAX_BYTES,
@@ -56,6 +57,8 @@ export function SubmissionAttachmentsManager({
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [pending, setPending] = useState<string | null>(null);
+  const [confirmAttachment, setConfirmAttachment] =
+    useState<DownloadableAttachment | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const uploadEnabled =
     canManage && mutable && attachments.length < SUBMISSION_ATTACHMENT_MAX_FILES;
@@ -112,10 +115,12 @@ export function SubmissionAttachmentsManager({
     setPending(null);
     if (!response.ok) {
       setMessage(result.error ?? "Attachment could not be removed.");
+      setConfirmAttachment(null);
       return;
     }
 
     setMessage("Attachment removed.");
+    setConfirmAttachment(null);
     router.refresh();
   }
 
@@ -123,11 +128,11 @@ export function SubmissionAttachmentsManager({
     <div>
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:text-white">
+          <p className="flex items-center gap-2 text-[12px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:text-white">
             <Paperclip aria-hidden="true" size={14} />
             Submission attachments
           </p>
-          <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+          <p className="mt-2 text-[11px] leading-5 text-zinc-500">
             {attachments.length} / {SUBMISSION_ATTACHMENT_MAX_FILES} files
           </p>
         </div>
@@ -135,8 +140,8 @@ export function SubmissionAttachmentsManager({
           <label
             className={
               uploadEnabled && pending === null
-                ? "inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 border border-black/[0.08] px-4 text-[8px] font-bold tracking-[0.08em] uppercase transition-colors hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.08]"
-                : "inline-flex min-h-10 cursor-not-allowed items-center justify-center gap-2 border border-black/[0.08] px-4 text-[8px] font-bold tracking-[0.08em] text-zinc-400 uppercase opacity-60 dark:border-white/[0.08]"
+                ? "inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 border border-black/[0.08] px-4 text-[10px] font-bold tracking-[0.08em] uppercase transition-colors hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.08]"
+                : "inline-flex min-h-10 cursor-not-allowed items-center justify-center gap-2 border border-black/[0.08] px-4 text-[10px] font-bold tracking-[0.08em] text-zinc-400 uppercase opacity-60 dark:border-white/[0.08]"
             }
           >
             {pending === "upload" ? (
@@ -161,7 +166,7 @@ export function SubmissionAttachmentsManager({
       </div>
 
       {canManage && !mutable ? (
-        <p className="mt-5 border border-amber-500/20 bg-amber-500/[0.04] px-4 py-3 text-[9px] leading-5 text-amber-600 dark:text-amber-400">
+        <p className="mt-5 border border-amber-500/20 bg-amber-500/[0.04] px-4 py-3 text-[11px] leading-5 text-amber-600 dark:text-amber-400">
           Attachments are locked because campaign evaluation has started.
         </p>
       ) : null}
@@ -177,10 +182,10 @@ export function SubmissionAttachmentsManager({
                 <AttachmentIcon mimeType={attachment.mimeType} />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[9px] font-bold text-zinc-950 dark:text-white">
+                <p className="truncate text-[11px] font-bold text-zinc-950 dark:text-white">
                   {attachment.fileName}
                 </p>
-                <p className="mt-1 text-[7px] text-zinc-500 uppercase">
+                <p className="mt-1 text-[9px] text-zinc-500 uppercase">
                   {formatBytes(attachment.sizeBytes)} /{" "}
                   {new Intl.DateTimeFormat("en", {
                     dateStyle: "medium",
@@ -209,7 +214,7 @@ export function SubmissionAttachmentsManager({
                     aria-label={`Remove ${attachment.fileName}`}
                     className="flex h-9 w-9 items-center justify-center border border-rose-500/20 text-rose-500 disabled:opacity-50"
                     disabled={pending !== null}
-                    onClick={() => removeAttachment(attachment.id)}
+                    onClick={() => setConfirmAttachment(attachment)}
                     type="button"
                   >
                     {pending === attachment.id ? (
@@ -235,10 +240,10 @@ export function SubmissionAttachmentsManager({
           type="button"
         >
           <Upload aria-hidden="true" size={20} />
-          <span className="mt-4 text-[9px] font-bold tracking-[0.1em] uppercase">
+          <span className="mt-4 text-[11px] font-bold tracking-[0.1em] uppercase">
             No attachments
           </span>
-          <span className="mt-2 text-[8px]">
+          <span className="mt-2 text-[10px]">
             PDF, images, Office files, text, CSV, or ZIP up to 25 MB
           </span>
         </button>
@@ -248,14 +253,34 @@ export function SubmissionAttachmentsManager({
         <p
           className={
             message.endsWith("uploaded.") || message === "Attachment removed."
-              ? "mt-4 text-[9px] text-emerald-500"
-              : "mt-4 text-[9px] text-rose-500"
+              ? "mt-4 text-[11px] text-emerald-500"
+              : "mt-4 text-[11px] text-rose-500"
           }
           role="status"
         >
           {message}
         </p>
       ) : null}
+      <ConfirmationDialog
+        confirmLabel="Remove attachment"
+        description={
+          confirmAttachment
+            ? `${confirmAttachment.fileName} will be permanently removed from this submission and its private storage bucket.`
+            : ""
+        }
+        isPending={pending === confirmAttachment?.id}
+        onConfirm={() => {
+          if (confirmAttachment) {
+            void removeAttachment(confirmAttachment.id);
+          }
+        }}
+        onOpenChange={(open) => {
+          if (!open) setConfirmAttachment(null);
+        }}
+        open={confirmAttachment !== null}
+        title="Are you sure you want to remove this attachment?"
+        tone="danger"
+      />
     </div>
   );
 }

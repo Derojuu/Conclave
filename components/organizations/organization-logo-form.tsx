@@ -4,6 +4,8 @@ import { ImageUp, Loader2, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+
 type OrganizationLogoFormProps = {
   organizationId: string;
   organizationName: string;
@@ -18,6 +20,7 @@ export function OrganizationLogoForm({
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isPending, setIsPending] = useState(false);
+  const [confirmRemoveOpen, setConfirmRemoveOpen] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   async function uploadLogo(file: File) {
@@ -59,10 +62,12 @@ export function OrganizationLogoForm({
     setIsPending(false);
     if (!response.ok) {
       setMessage(result.error ?? "Logo removal failed.");
+      setConfirmRemoveOpen(false);
       return;
     }
 
     setMessage("Logo removed.");
+    setConfirmRemoveOpen(false);
     router.refresh();
   }
 
@@ -81,14 +86,14 @@ export function OrganizationLogoForm({
         )}
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-[10px] font-bold text-zinc-950 dark:text-white">
+        <p className="text-[12px] font-bold text-zinc-950 dark:text-white">
           Organization logo
         </p>
-        <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+        <p className="mt-2 text-[11px] leading-5 text-zinc-500">
           Upload a PNG, JPEG, or WebP image up to 2 MB.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
-          <label className="inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 border border-black/[0.08] px-4 text-[8px] font-bold tracking-[0.08em] uppercase transition-colors hover:border-indigo-500 dark:border-white/[0.08]">
+          <label className="inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 border border-black/[0.08] px-4 text-[10px] font-bold tracking-[0.08em] uppercase transition-colors hover:border-indigo-500 dark:border-white/[0.08]">
             {isPending ? (
               <Loader2 aria-hidden="true" className="animate-spin" size={13} />
             ) : (
@@ -111,9 +116,9 @@ export function OrganizationLogoForm({
           </label>
           {logo ? (
             <button
-              className="inline-flex min-h-10 items-center justify-center gap-2 border border-rose-500/20 px-4 text-[8px] font-bold tracking-[0.08em] text-rose-500 uppercase"
+              className="inline-flex min-h-10 items-center justify-center gap-2 border border-rose-500/20 px-4 text-[10px] font-bold tracking-[0.08em] text-rose-500 uppercase"
               disabled={isPending}
-              onClick={removeLogo}
+              onClick={() => setConfirmRemoveOpen(true)}
               type="button"
             >
               <Trash2 aria-hidden="true" size={13} />
@@ -125,8 +130,8 @@ export function OrganizationLogoForm({
           <p
             className={
               message === "Logo updated." || message === "Logo removed."
-                ? "mt-3 text-[9px] text-emerald-500"
-                : "mt-3 text-[9px] text-rose-500"
+                ? "mt-3 text-[11px] text-emerald-500"
+                : "mt-3 text-[11px] text-rose-500"
             }
             role="status"
           >
@@ -134,6 +139,16 @@ export function OrganizationLogoForm({
           </p>
         ) : null}
       </div>
+      <ConfirmationDialog
+        confirmLabel="Remove logo"
+        description="The current organization logo will be removed from Conclave and deleted from storage."
+        isPending={isPending}
+        onConfirm={() => void removeLogo()}
+        onOpenChange={setConfirmRemoveOpen}
+        open={confirmRemoveOpen}
+        title="Are you sure you want to remove this logo?"
+        tone="danger"
+      />
     </div>
   );
 }

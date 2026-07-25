@@ -72,10 +72,10 @@ export function InteractiveDemoSection() {
       <div className="mt-12 overflow-hidden rounded-sm border border-black/[0.06] bg-[#EBE8E1] shadow-[0_35px_90px_rgba(0,0,0,0.14)] dark:border-white/[0.07] dark:bg-[#111]">
         <div className="flex min-h-14 items-center justify-between gap-4 border-b border-black/[0.06] px-5 py-3 dark:border-white/[0.06]">
           <div>
-            <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+            <p className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Research Grant 2026 / Final review
             </p>
-            <p className="mt-1 text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+            <p className="mt-1 text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
               Campaign session C-0291
             </p>
           </div>
@@ -95,14 +95,14 @@ export function InteractiveDemoSection() {
           <div className="border-b border-black/[0.06] p-5 lg:border-r lg:border-b-0 dark:border-white/[0.06] sm:p-7">
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-[8px] tracking-[0.13em] text-zinc-500 uppercase">
+                <p className="text-[10px] tracking-[0.13em] text-zinc-500 uppercase">
                   Evaluator activity
                 </p>
                 <p className="mt-2 text-2xl font-bold text-zinc-950 dark:text-white">
                   {allSubmitted ? "4 / 4" : "3 / 4"}
                 </p>
               </div>
-              <span className="text-[8px] text-zinc-500 uppercase">
+              <span className="text-[10px] text-zinc-500 uppercase">
                 Inputs remain hidden
               </span>
             </div>
@@ -118,16 +118,16 @@ export function InteractiveDemoSection() {
                     key={initials}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-black/[0.08] text-[8px] font-bold text-zinc-600 dark:border-white/[0.08] dark:text-zinc-300">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-sm border border-black/[0.08] text-[10px] font-bold text-zinc-600 dark:border-white/[0.08] dark:text-zinc-300">
                         {initials}
                       </div>
                       <div>
-                        <p className="text-[9px] font-bold tracking-[0.06em] text-zinc-900 uppercase dark:text-white">
+                        <p className="text-[11px] font-bold tracking-[0.06em] text-zinc-900 uppercase dark:text-white">
                           {finalEvaluator && allSubmitted
                             ? "0x7C...92F"
                             : name}
                         </p>
-                        <p className="mt-1 text-[8px] text-zinc-500 uppercase">
+                        <p className="mt-1 text-[10px] text-zinc-500 uppercase">
                           {finalEvaluator && allSubmitted
                             ? "Identity redacted"
                             : role}
@@ -136,7 +136,7 @@ export function InteractiveDemoSection() {
                     </div>
                     <span
                       className={cn(
-                        "flex items-center gap-2 text-[8px] font-bold tracking-[0.08em] uppercase",
+                        "flex items-center gap-2 text-[10px] font-bold tracking-[0.08em] uppercase",
                         sealed ? "text-emerald-500" : "text-zinc-400",
                       )}
                     >
@@ -156,7 +156,7 @@ export function InteractiveDemoSection() {
             </div>
 
             <button
-              className="button-primary mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-sm bg-zinc-950 px-4 py-3 text-center text-[9px] leading-4 font-bold tracking-[0.12em] uppercase transition-colors hover:bg-zinc-800 disabled:cursor-wait disabled:opacity-70 dark:bg-white dark:hover:bg-zinc-200"
+              className="button-primary mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-sm bg-zinc-950 px-4 py-3 text-center text-[11px] leading-4 font-bold tracking-[0.12em] uppercase transition-colors hover:bg-zinc-800 disabled:cursor-wait disabled:opacity-70 dark:bg-white dark:hover:bg-zinc-200"
               disabled={phase === "computing"}
               onClick={runDemo}
               type="button"
@@ -179,10 +179,10 @@ export function InteractiveDemoSection() {
 
           <div className="flex min-w-0 flex-col p-5 sm:p-7">
             <div className="flex items-center justify-between">
-              <p className="text-[8px] tracking-[0.13em] text-zinc-500 uppercase">
+              <p className="text-[10px] tracking-[0.13em] text-zinc-500 uppercase">
                 Confidential result board
               </p>
-              <div className="flex items-center gap-2 text-[8px] text-zinc-500 uppercase">
+              <div className="flex items-center gap-2 text-[10px] text-zinc-500 uppercase">
                 <Icon name="lock" size={11} />
                 Scores encrypted
               </div>
@@ -202,14 +202,14 @@ export function InteractiveDemoSection() {
                     key={name}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[8px] text-zinc-400">
+                      <span className="text-[10px] text-zinc-400">
                         SUBMISSION / 0{index + 1}
                       </span>
                       <AnimatePresence initial={false} mode="wait">
                         {selected ? (
                           <motion.span
                             animate={{ opacity: 1, y: 0 }}
-                            className="border border-emerald-500/30 bg-emerald-500/10 px-2 py-1 text-[7px] font-bold tracking-[0.1em] text-emerald-500 uppercase"
+                            className="border border-emerald-500/30 bg-emerald-500/10 px-2 py-1 text-[9px] font-bold tracking-[0.1em] text-emerald-500 uppercase"
                             exit={{ opacity: 0, y: reduceMotion ? 0 : -4 }}
                             initial={{
                               opacity: reduceMotion ? 1 : 0,
@@ -238,11 +238,11 @@ export function InteractiveDemoSection() {
                     <h3 className="mt-7 text-sm font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
                       {name}
                     </h3>
-                    <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+                    <p className="mt-2 text-[11px] leading-5 text-zinc-500">
                       {description}
                     </p>
                     <div className="mt-auto border-t border-black/[0.06] pt-4 dark:border-white/[0.06]">
-                      <p className="text-[8px] text-zinc-500 uppercase">
+                      <p className="text-[10px] text-zinc-500 uppercase">
                         Aggregate score
                       </p>
                       <motion.p
@@ -276,10 +276,10 @@ export function InteractiveDemoSection() {
 
             <div className="relative mt-5 overflow-hidden border border-black/[0.06] bg-black/[0.015] p-4 dark:border-white/[0.06] dark:bg-white/[0.02]">
               <div className="flex items-center justify-between">
-                <p className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
+                <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
                   Encrypted packet route
                 </p>
-                <span className="text-[8px] text-zinc-500 uppercase">
+                <span className="text-[10px] text-zinc-500 uppercase">
                   {phase === "collecting"
                     ? "Awaiting final input"
                     : phase === "computing"
@@ -326,7 +326,7 @@ export function InteractiveDemoSection() {
                               : "border-black/10 dark:border-white/10",
                           )}
                         />
-                        <span className="mt-3 text-[7px] text-zinc-500">
+                        <span className="mt-3 text-[9px] text-zinc-500">
                           {label}
                         </span>
                       </div>
@@ -339,13 +339,13 @@ export function InteractiveDemoSection() {
         </div>
 
         <div className="flex min-w-0 items-center gap-3 overflow-x-auto border-t border-black/[0.06] px-5 py-3 dark:border-white/[0.06]">
-          <span className="shrink-0 text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+          <span className="shrink-0 text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
             Verification rail
           </span>
           {receiptBlocks.map((receipt, index) => (
             <div
               className={cn(
-                "flex h-7 min-w-16 items-center justify-center border text-[8px] font-bold transition-colors",
+                "flex h-7 min-w-16 items-center justify-center border text-[10px] font-bold transition-colors",
                 (phase === "computing" && index < 2) || isRevealed
                   ? "border-indigo-500/35 bg-indigo-500/10 text-indigo-500"
                   : "border-black/[0.08] bg-black/[0.02] text-zinc-500 dark:border-white/[0.08] dark:bg-white/[0.02]",
@@ -356,7 +356,7 @@ export function InteractiveDemoSection() {
             </div>
           ))}
           <div className="proof-flow h-px min-w-20 flex-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-          <span className="shrink-0 text-[8px] text-zinc-500">
+          <span className="shrink-0 text-[10px] text-zinc-500">
             CONFIRMATIONS / {isRevealed ? "06" : "00"}
           </span>
         </div>

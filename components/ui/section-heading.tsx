@@ -30,7 +30,7 @@ export function SectionHeading({
         )}
       >
         <span className="h-1.5 w-1.5 bg-emerald-500" />
-        <p className="text-[9px] font-bold tracking-[0.2em] text-zinc-500 uppercase">
+        <p className="text-[11px] font-bold tracking-[0.2em] text-zinc-500 uppercase">
           {eyebrow}
         </p>
       </div>

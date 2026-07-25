@@ -33,19 +33,19 @@ export default async function NewSubmissionPage({
   return (
     <div className="max-w-4xl">
       <Link
-        className="inline-flex items-center gap-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase hover:text-indigo-500"
+        className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase hover:text-indigo-500"
         href={`/organizations/${organizationId}/campaigns/${campaignId}/submissions`}
       >
         <ArrowLeft aria-hidden="true" size={12} />
         {access.campaign.title} submissions
       </Link>
-      <p className="mt-7 text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+      <p className="mt-7 text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
         {access.organization.slug} / submission submission
       </p>
       <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
         Add submission
       </h1>
-      <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+      <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
         Register the submission profile, category, source repository, demo, and
         presentation links for this campaign.
       </p>

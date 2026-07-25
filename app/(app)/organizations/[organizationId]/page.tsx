@@ -120,7 +120,7 @@ export default async function OrganizationDashboardPage({
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+            <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
               {organization.slug} / organization
             </p>
             <h1 className="mt-3 truncate text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
@@ -130,7 +130,7 @@ export default async function OrganizationDashboardPage({
         </div>
         {canManageSettings ? (
           <Link
-            className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 border border-black/[0.08] px-4 text-[8px] font-bold tracking-[0.08em] uppercase hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.08]"
+            className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 border border-black/[0.08] px-4 text-[10px] font-bold tracking-[0.08em] uppercase hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.08]"
             href={`/organizations/${organizationId}/settings`}
           >
             Edit profile
@@ -146,11 +146,11 @@ export default async function OrganizationDashboardPage({
       />
 
       <section className="mt-8 border-y border-black/[0.06] py-6 dark:border-white/[0.06]">
-        <p className="max-w-3xl text-[11px] leading-6 text-zinc-600 dark:text-zinc-400">
+        <p className="max-w-3xl text-[13px] leading-6 text-zinc-600 dark:text-zinc-400">
           {organization.description ||
             "No organization description has been added."}
         </p>
-        <p className="mt-4 text-[8px] text-zinc-500">
+        <p className="mt-4 text-[10px] text-zinc-500">
           OWNER: {organization.owner.fullName} / {organization.owner.email}
         </p>
       </section>
@@ -166,7 +166,7 @@ export default async function OrganizationDashboardPage({
             <p className="mt-7 text-3xl font-bold text-zinc-950 dark:text-white">
               {stat.value}
             </p>
-            <p className="mt-2 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
+            <p className="mt-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               {stat.label}
             </p>
           </article>
@@ -175,10 +175,10 @@ export default async function OrganizationDashboardPage({
 
       <section className="mt-10">
         <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-          <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+          <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
             Recent campaigns
           </h2>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {organization.campaigns.length} SHOWN
           </span>
         </div>
@@ -191,22 +191,22 @@ export default async function OrganizationDashboardPage({
                 key={campaign.id}
               >
                 <div>
-                  <p className="text-[11px] font-bold text-zinc-950 dark:text-white">
+                  <p className="text-[13px] font-bold text-zinc-950 dark:text-white">
                     {campaign.title}
                   </p>
-                  <p className="mt-2 text-[8px] text-zinc-500">
+                  <p className="mt-2 text-[10px] text-zinc-500">
                     {campaign._count.submissions} SUBMISSIONS /{" "}
                     {campaign._count.evaluations} EVALUATIONS
                   </p>
                 </div>
-                <span className="w-fit border border-black/[0.07] px-3 py-2 text-[8px] font-bold text-zinc-500 dark:border-white/[0.07]">
+                <span className="w-fit border border-black/[0.07] px-3 py-2 text-[10px] font-bold text-zinc-500 dark:border-white/[0.07]">
                   {campaign.status}
                 </span>
               </Link>
             ))}
           </div>
         ) : (
-          <p className="border-b border-black/[0.06] py-8 text-[10px] text-zinc-500 dark:border-white/[0.06]">
+          <p className="border-b border-black/[0.06] py-8 text-[12px] text-zinc-500 dark:border-white/[0.06]">
             No campaigns have been created for this organization.
           </p>
         )}

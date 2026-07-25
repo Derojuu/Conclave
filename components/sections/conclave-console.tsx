@@ -102,7 +102,7 @@ export function ConclaveConsole() {
           <span className="h-2 w-2 rounded-full bg-zinc-500/40" />
           <span className="h-2 w-2 rounded-full bg-zinc-500/20" />
         </div>
-        <div className="text-[9px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
+        <div className="text-[11px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
           CONCLAVE / CONFIDENTIAL DECISION CONSOLE
         </div>
         <LiveIndicator
@@ -119,7 +119,7 @@ export function ConclaveConsole() {
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-black/[0.03] px-3 py-1 dark:border-white/[0.08] dark:bg-white/[0.03]">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[9px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
+              <span className="text-[11px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
                 POWERED BY IEXEC NOX
               </span>
             </div>
@@ -136,7 +136,7 @@ export function ConclaveConsole() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <button
-                className="button-primary inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-zinc-900 px-7 text-[10px] font-bold tracking-[0.18em] uppercase transition-colors hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200"
+                className="button-primary inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-zinc-900 px-7 text-[12px] font-bold tracking-[0.18em] uppercase transition-colors hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200"
                 onClick={runSequence}
                 type="button"
               >
@@ -152,7 +152,7 @@ export function ConclaveConsole() {
                 )}
               </button>
               <a
-                className="button-secondary inline-flex h-12 items-center justify-center rounded-sm border border-black/10 px-7 text-[10px] font-bold tracking-[0.18em] uppercase transition-colors hover:bg-black/[0.03] dark:border-white/10 dark:hover:bg-white/[0.04]"
+                className="button-secondary inline-flex h-12 items-center justify-center rounded-sm border border-black/10 px-7 text-[12px] font-bold tracking-[0.18em] uppercase transition-colors hover:bg-black/[0.03] dark:border-white/10 dark:hover:bg-white/[0.04]"
                 href={siteLinks.product}
               >
                 View workflow
@@ -172,10 +172,10 @@ export function ConclaveConsole() {
                   name={icon as "lock" | "cpu" | "check"}
                   size={17}
                 />
-                <p className="text-[8px] tracking-[0.13em] text-zinc-500 uppercase">
+                <p className="text-[10px] tracking-[0.13em] text-zinc-500 uppercase">
                   {label}
                 </p>
-                <p className="mt-2 text-[11px] font-bold text-zinc-900 uppercase dark:text-white">
+                <p className="mt-2 text-[13px] font-bold text-zinc-900 uppercase dark:text-white">
                   {value}
                 </p>
               </div>
@@ -186,16 +186,16 @@ export function ConclaveConsole() {
         <aside className="flex min-h-[650px] flex-col">
           <div className="flex items-center justify-between border-b border-black/[0.06] px-5 py-4 dark:border-white/[0.07] sm:px-7">
             <div>
-              <p className="text-[11px] font-bold tracking-[0.12em] text-zinc-900 uppercase dark:text-white">
+              <p className="text-[13px] font-bold tracking-[0.12em] text-zinc-900 uppercase dark:text-white">
                 RESEARCH GRANT SELECTION
               </p>
-              <p className="mt-1 text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+              <p className="mt-1 text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
                 CAMPAIGN / REVIEW 02
               </p>
             </div>
             <span
               className={cn(
-                "border px-2 py-1 text-[8px] font-bold tracking-[0.1em] uppercase",
+                "border px-2 py-1 text-[10px] font-bold tracking-[0.1em] uppercase",
                 stage === stages.length - 1
                   ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-400"
                   : "border-amber-400/30 bg-amber-400/10 text-amber-400",
@@ -208,14 +208,14 @@ export function ConclaveConsole() {
           <div className="flex flex-1 flex-col p-5 sm:p-7">
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-[8px] tracking-[0.13em] text-zinc-500 uppercase">
+                <p className="text-[10px] tracking-[0.13em] text-zinc-500 uppercase">
                   EVALUATOR ACTIVITY
                 </p>
                 <p className="mt-2 text-3xl font-bold text-zinc-900 dark:text-white">
                   {stage >= 0 ? "4 / 4" : "3 / 4"}
                 </p>
               </div>
-              <span className="text-[8px] text-zinc-500 uppercase">
+              <span className="text-[10px] text-zinc-500 uppercase">
                 ALL INPUTS PRIVATE
               </span>
             </div>
@@ -231,14 +231,14 @@ export function ConclaveConsole() {
                     key={initials}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 text-[9px] font-bold text-zinc-700 dark:bg-white/10 dark:text-zinc-300">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 text-[11px] font-bold text-zinc-700 dark:bg-white/10 dark:text-zinc-300">
                         {initials}
                       </div>
                       <div>
-                        <p className="text-[10px] font-bold text-zinc-900 uppercase dark:text-white">
+                        <p className="text-[12px] font-bold text-zinc-900 uppercase dark:text-white">
                           {finalEvaluator && stage >= 1 ? "0x7C...92F" : name}
                         </p>
-                        <p className="mt-1 text-[8px] text-zinc-500 uppercase">
+                        <p className="mt-1 text-[10px] text-zinc-500 uppercase">
                           {finalEvaluator && stage >= 1
                             ? "IDENTITY REDACTED"
                             : role}
@@ -247,7 +247,7 @@ export function ConclaveConsole() {
                     </div>
                     <span
                       className={cn(
-                        "flex items-center gap-2 text-[8px] font-bold uppercase",
+                        "flex items-center gap-2 text-[10px] font-bold uppercase",
                         sealed ? "text-emerald-400" : "text-zinc-500",
                       )}
                     >
@@ -268,10 +268,10 @@ export function ConclaveConsole() {
 
             <div className="mt-6 border border-black/[0.06] p-4 dark:border-white/[0.06]">
               <div className="flex items-center justify-between">
-                <p className="text-[8px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
+                <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
                   CONFIDENTIAL PIPELINE
                 </p>
-                <span className="text-[8px] text-zinc-500">
+                <span className="text-[10px] text-zinc-500">
                   {stage >= 0 ? stages[stage] : "AWAITING INPUT"}
                 </span>
               </div>
@@ -317,10 +317,10 @@ export function ConclaveConsole() {
                           {stage >= index ? (
                             <Icon name="check" size={13} />
                           ) : (
-                            <span className="text-[8px]">0{index + 1}</span>
+                            <span className="text-[10px]">0{index + 1}</span>
                           )}
                         </div>
-                        <span className="mt-3 text-[7px] text-zinc-500">
+                        <span className="mt-3 text-[9px] text-zinc-500">
                           {label}
                         </span>
                       </div>
@@ -338,7 +338,7 @@ export function ConclaveConsole() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[8px] tracking-[0.13em] text-zinc-500 uppercase">
+                  <p className="text-[10px] tracking-[0.13em] text-zinc-500 uppercase">
                     COMPUTED OUTCOME
                   </p>
                   <p className="mt-2 text-lg font-bold text-zinc-900 uppercase dark:text-white">
@@ -360,7 +360,7 @@ export function ConclaveConsole() {
       </div>
 
       <div className="relative z-10 flex items-center gap-2 overflow-hidden border-t border-black/[0.06] px-5 py-3 dark:border-white/[0.07]">
-        <span className="shrink-0 text-[8px] tracking-[0.12em] text-zinc-500 uppercase">
+        <span className="shrink-0 text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
           BLOCK RAIL
         </span>
         <div className="flex flex-1 items-center gap-1.5 overflow-hidden">
@@ -370,7 +370,7 @@ export function ConclaveConsole() {
             return (
               <div
                 className={cn(
-                  "flex h-8 shrink-0 items-center gap-2 border px-2 text-[8px] font-bold transition-colors duration-500",
+                  "flex h-8 shrink-0 items-center gap-2 border px-2 text-[10px] font-bold transition-colors duration-500",
                   isResultBlock && settled
                     ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-400"
                     : "border-black/[0.08] bg-black/[0.02] text-zinc-500 dark:border-white/[0.08] dark:bg-white/[0.02]",
@@ -390,7 +390,7 @@ export function ConclaveConsole() {
             );
           })}
         </div>
-        <span className="hidden shrink-0 text-[8px] text-zinc-500 sm:block">
+        <span className="hidden shrink-0 text-[10px] text-zinc-500 sm:block">
           GAS 21K · SESSION C-0291
         </span>
       </div>

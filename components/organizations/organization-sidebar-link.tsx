@@ -41,8 +41,8 @@ export function OrganizationSidebarLink({
     <button
       className={
         active
-          ? "flex w-full items-center justify-between gap-3 rounded-sm bg-indigo-500/[0.06] px-2 py-3 text-left text-[9px] text-indigo-500"
-          : "flex w-full items-center justify-between gap-3 rounded-sm px-2 py-3 text-left text-[9px] text-zinc-600 transition-colors hover:bg-black/[0.04] hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-white"
+          ? "flex w-full items-center justify-between gap-3 rounded-sm bg-indigo-500/[0.06] px-2 py-3 text-left text-[11px] text-indigo-500"
+          : "flex w-full items-center justify-between gap-3 rounded-sm px-2 py-3 text-left text-[11px] text-zinc-600 transition-colors hover:bg-black/[0.04] hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-white/[0.04] dark:hover:text-white"
       }
       disabled={isPending}
       onClick={activate}
@@ -56,7 +56,7 @@ export function OrganizationSidebarLink({
         )}
         <span className="truncate">{organization.name}</span>
       </span>
-      <span className="text-[7px] text-zinc-500">
+      <span className="text-[9px] text-zinc-500">
         {organization.role}
       </span>
     </button>

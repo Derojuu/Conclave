@@ -35,7 +35,7 @@ export function AcceptInvitationButton({ token }: { token: string }) {
   return (
     <div>
       <Button
-        className="button-primary flex min-h-12 w-full items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[9px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
+        className="button-primary flex min-h-12 w-full items-center justify-center gap-2 rounded-sm bg-zinc-950 px-5 py-3 text-[11px] font-bold tracking-[0.1em] uppercase disabled:opacity-60 dark:bg-white"
         disabled={isPending}
         onClick={accept}
         type="button"
@@ -48,7 +48,7 @@ export function AcceptInvitationButton({ token }: { token: string }) {
         Accept invitation
       </Button>
       {error ? (
-        <p className="mt-4 text-[9px] text-rose-500" role="alert">
+        <p className="mt-4 text-[11px] text-rose-500" role="alert">
           {error}
         </p>
       ) : null}

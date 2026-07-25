@@ -9,6 +9,7 @@ import {
   submissionStatusTransitions,
   type SubmissionStatus,
 } from "@/constants/submission";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 
 type SubmissionStatusControlProps = {
   organizationId: string;
@@ -31,6 +32,7 @@ export function SubmissionStatusControl({
     options[0] ?? currentStatus,
   );
   const [isPending, setIsPending] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   async function updateStatus() {
@@ -49,24 +51,26 @@ export function SubmissionStatusControl({
 
     if (!response.ok) {
       setMessage(result.error ?? "Submission status could not be updated.");
+      setConfirmOpen(false);
       return;
     }
 
     setMessage(`Submission moved to ${submissionStatusLabels[status]}.`);
+    setConfirmOpen(false);
     router.refresh();
   }
 
   return (
     <div>
-      <p className="text-[10px] font-bold text-zinc-950 uppercase dark:text-white">
+      <p className="text-[12px] font-bold text-zinc-950 uppercase dark:text-white">
         Submission status
       </p>
-      <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+      <p className="mt-2 text-[11px] leading-5 text-zinc-500">
         Control the submission and review lifecycle before evaluation begins.
       </p>
       <div className="mt-5 flex flex-col gap-3 sm:flex-row">
         <select
-          className="h-11 min-w-0 flex-1 border border-black/[0.08] bg-[#EBE8E1] px-3 text-[9px] font-bold outline-none focus:border-indigo-500 disabled:opacity-50 dark:border-white/[0.08] dark:bg-[#111]"
+          className="h-11 min-w-0 flex-1 border border-black/[0.08] bg-[#EBE8E1] px-3 text-[11px] font-bold outline-none focus:border-indigo-500 disabled:opacity-50 dark:border-white/[0.08] dark:bg-[#111]"
           disabled={disabled || isPending}
           onChange={(event) =>
             setStatus(event.target.value as SubmissionStatus)
@@ -80,9 +84,9 @@ export function SubmissionStatusControl({
           ))}
         </select>
         <button
-          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[8px] font-bold tracking-[0.1em] uppercase disabled:opacity-50 dark:bg-white"
+          className="button-primary inline-flex min-h-11 items-center justify-center gap-2 bg-zinc-950 px-5 text-[10px] font-bold tracking-[0.1em] uppercase disabled:opacity-50 dark:bg-white"
           disabled={disabled || isPending || !options.length}
-          onClick={updateStatus}
+          onClick={() => setConfirmOpen(true)}
           type="button"
         >
           {isPending ? (
@@ -99,14 +103,28 @@ export function SubmissionStatusControl({
         <p
           className={
             message.startsWith("Submission moved")
-              ? "mt-3 text-[9px] text-emerald-500"
-              : "mt-3 text-[9px] text-rose-500"
+              ? "mt-3 text-[11px] text-emerald-500"
+              : "mt-3 text-[11px] text-rose-500"
           }
           role="status"
         >
           {message}
         </p>
       ) : null}
+      <ConfirmationDialog
+        confirmLabel="Update submission status"
+        description={`This will move the submission from ${submissionStatusLabels[currentStatus]} to ${submissionStatusLabels[status]}. The change may affect editing and evaluation availability.`}
+        isPending={isPending}
+        onConfirm={() => void updateStatus()}
+        onOpenChange={setConfirmOpen}
+        open={confirmOpen}
+        title="Are you sure you want to change the submission status?"
+        tone={
+          status === "ARCHIVED" || status === "WITHDRAWN"
+            ? "danger"
+            : "default"
+        }
+      />
     </div>
   );
 }

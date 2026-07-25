@@ -17,10 +17,10 @@ export function FaqSection() {
 
         <div className="overflow-hidden rounded-sm border border-black/[0.06] bg-[#EBE8E1] dark:border-white/[0.06] dark:bg-[#111]">
           <div className="flex items-center justify-between border-b border-black/[0.06] px-5 py-4 dark:border-white/[0.06]">
-            <p className="text-[9px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
+            <p className="text-[11px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
               Information registry
             </p>
-            <span className="text-[8px] text-zinc-500">
+            <span className="text-[10px] text-zinc-500">
               {String(faqItems.length).padStart(2, "0")} ENTRIES
             </span>
           </div>
@@ -29,10 +29,10 @@ export function FaqSection() {
               <details className="group px-5" key={item.question}>
                 <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-5 py-4">
                   <span className="flex items-center gap-4">
-                    <span className="text-[8px] text-zinc-400">
+                    <span className="text-[10px] text-zinc-400">
                       0{index + 1}
                     </span>
-                    <span className="text-[10px] font-bold tracking-[0.06em] text-zinc-950 uppercase dark:text-white">
+                    <span className="text-[12px] font-bold tracking-[0.06em] text-zinc-950 uppercase dark:text-white">
                       {item.question}
                     </span>
                   </span>
@@ -40,7 +40,7 @@ export function FaqSection() {
                     <Icon name="chevron-right" size={12} />
                   </span>
                 </summary>
-                <p className="max-w-2xl border-t border-black/[0.05] py-5 text-[10px] leading-6 text-zinc-500 dark:border-white/[0.05]">
+                <p className="max-w-2xl border-t border-black/[0.05] py-5 text-[12px] leading-6 text-zinc-500 dark:border-white/[0.05]">
                   {item.answer}
                 </p>
               </details>

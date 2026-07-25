@@ -41,7 +41,7 @@ export default async function InvitationPage({
       <div className="p-6 sm:p-8">
         <div className="flex items-center gap-3">
           <span className="h-1.5 w-1.5 bg-emerald-500" />
-          <p className="text-[9px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
+          <p className="text-[11px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
             Organization invitation
           </p>
         </div>
@@ -50,17 +50,17 @@ export default async function InvitationPage({
         </h1>
 
         {invalid ? (
-          <p className="mt-5 text-[10px] leading-6 text-rose-500">
+          <p className="mt-5 text-[12px] leading-6 text-rose-500">
             This invitation is invalid, expired, revoked, or already accepted.
           </p>
         ) : emailMismatch ? (
-          <p className="mt-5 text-[10px] leading-6 text-rose-500">
+          <p className="mt-5 text-[12px] leading-6 text-rose-500">
             This invitation was issued to {invitation.email}. Sign in with that
             Google account to accept it.
           </p>
         ) : (
           <>
-            <p className="mt-5 text-[10px] leading-6 text-zinc-500">
+            <p className="mt-5 text-[12px] leading-6 text-zinc-500">
               You were invited to join as{" "}
               <strong className="text-zinc-950 dark:text-white">
                 {invitation.role}

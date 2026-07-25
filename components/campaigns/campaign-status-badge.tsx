@@ -22,7 +22,7 @@ export function CampaignStatusBadge({
 }) {
   return (
     <span
-      className={`inline-flex w-fit items-center border px-2.5 py-1.5 text-[8px] font-bold tracking-[0.08em] uppercase ${statusClasses[status]}`}
+      className={`inline-flex w-fit items-center border px-2.5 py-1.5 text-[10px] font-bold tracking-[0.08em] uppercase ${statusClasses[status]}`}
     >
       {campaignStatusLabels[status]}
     </span>

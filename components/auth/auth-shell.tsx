@@ -12,7 +12,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
             <BrandMark />
             <span className="text-sm font-bold">Conclave</span>
           </Link>
-          <span className="text-[8px] font-bold tracking-[0.15em] text-emerald-500 uppercase">
+          <span className="text-[10px] font-bold tracking-[0.15em] text-emerald-500 uppercase">
             Secure access
           </span>
         </header>

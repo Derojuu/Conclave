@@ -41,23 +41,23 @@ export default async function AccountPage() {
     <div className="max-w-4xl">
       <div className="flex items-center gap-3">
         <span className="h-1.5 w-1.5 bg-emerald-500" />
-        <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+        <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
           Identity and account
         </p>
       </div>
       <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
         Account settings
       </h1>
-      <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+      <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
         Manage your Conclave profile and optional blockchain identity.
       </p>
 
       <section className="mt-10 border-y border-black/[0.06] py-8 dark:border-white/[0.06]">
         <div className="mb-7">
-          <p className="text-[10px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[12px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
             Profile information
           </p>
-          <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+          <p className="mt-2 text-[11px] leading-5 text-zinc-500">
             Your email is managed by your authenticated Google account.
           </p>
         </div>
@@ -76,10 +76,10 @@ export default async function AccountPage() {
 
       <section className="border-t border-black/[0.06] py-8 dark:border-white/[0.06]">
         <div className="mb-7">
-          <p className="text-[10px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[12px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
             Personal settings
           </p>
-          <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+          <p className="mt-2 text-[11px] leading-5 text-zinc-500">
             Choose which account and decision events Conclave should deliver.
           </p>
         </div>

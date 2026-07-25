@@ -114,10 +114,10 @@ export default async function CampaignTimelinePage({
 
       <section className="mt-8">
         <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
-          <h2 className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+          <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
             Activity timeline
           </h2>
-          <span className="text-[8px] text-zinc-500">
+          <span className="text-[10px] text-zinc-500">
             {events.length + 1} EVENTS
           </span>
         </div>
@@ -127,21 +127,21 @@ export default async function CampaignTimelinePage({
             <li className="relative border-b border-black/[0.06] py-6 dark:border-white/[0.06]" key={event.id}>
               <span className="absolute top-7 -left-[31px] flex h-2 w-2 bg-indigo-500" />
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-[10px] font-bold text-zinc-950 dark:text-white">
+                <p className="text-[12px] font-bold text-zinc-950 dark:text-white">
                   {eventDescription(
                     event.action,
                     event.entityType,
                     event.metadata,
                   )}
                 </p>
-                <time className="shrink-0 text-[8px] text-zinc-500">
+                <time className="shrink-0 text-[10px] text-zinc-500">
                   {new Intl.DateTimeFormat("en", {
                     dateStyle: "medium",
                     timeStyle: "short",
                   }).format(event.createdAt)}
                 </time>
               </div>
-              <p className="mt-2 text-[8px] text-zinc-500">
+              <p className="mt-2 text-[10px] text-zinc-500">
               {event.entityType === "Evaluation"
                 ? "Confidential evaluator"
                 : (event.actor?.fullName ?? "System")}{" "}
@@ -158,17 +158,17 @@ export default async function CampaignTimelinePage({
               />
             </span>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-[10px] font-bold text-zinc-950 dark:text-white">
+              <p className="text-[12px] font-bold text-zinc-950 dark:text-white">
                 Campaign created.
               </p>
-              <time className="shrink-0 text-[8px] text-zinc-500">
+              <time className="shrink-0 text-[10px] text-zinc-500">
                 {new Intl.DateTimeFormat("en", {
                   dateStyle: "medium",
                   timeStyle: "short",
                 }).format(campaign.createdAt)}
               </time>
             </div>
-            <p className="mt-2 text-[8px] text-zinc-500">
+            <p className="mt-2 text-[10px] text-zinc-500">
               {campaign.createdBy.fullName} / Campaign
             </p>
           </li>

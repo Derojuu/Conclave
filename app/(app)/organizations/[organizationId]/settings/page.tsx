@@ -47,13 +47,13 @@ export default async function OrganizationSettingsPage({
 
   return (
     <div className="max-w-4xl">
-      <p className="text-[8px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+      <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
         {organization.slug} / configuration
       </p>
       <h1 className="mt-5 text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
         Organization settings
       </h1>
-      <p className="mt-4 max-w-2xl text-[11px] leading-6 text-zinc-500">
+      <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
         Manage the organization profile, identity, and workspace lifecycle.
       </p>
 
@@ -73,10 +73,10 @@ export default async function OrganizationSettingsPage({
 
       <section className="border-b border-black/[0.06] py-8 dark:border-white/[0.06]">
         <div className="mb-7">
-          <p className="text-[10px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[12px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
             Organization profile
           </p>
-          <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+          <p className="mt-2 text-[11px] leading-5 text-zinc-500">
             Changes to the name, description, and slug appear across the
             workspace immediately.
           </p>

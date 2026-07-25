@@ -49,14 +49,14 @@ export function NoxSection() {
                 </div>
                 <div>
                   <div className="flex items-center justify-between gap-4">
-                    <p className="text-[10px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:text-white">
+                    <p className="text-[12px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:text-white">
                       {item.title}
                     </p>
-                    <span className="text-[8px] text-zinc-400">
+                    <span className="text-[10px] text-zinc-400">
                       NOX / 0{index + 1}
                     </span>
                   </div>
-                  <p className="mt-2 text-[10px] leading-5 text-zinc-500">
+                  <p className="mt-2 text-[12px] leading-5 text-zinc-500">
                     {item.text}
                   </p>
                 </div>
@@ -68,14 +68,14 @@ export function NoxSection() {
         <div className="overflow-hidden rounded-sm border border-black/[0.06] bg-[#EBE8E1] dark:border-white/[0.06] dark:bg-[#111]">
           <div className="flex items-center justify-between border-b border-black/[0.06] px-5 py-4 dark:border-white/[0.06]">
             <div>
-              <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
+              <p className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
                 Confidentiality boundary matrix
               </p>
-              <p className="mt-1 text-[8px] tracking-[0.1em] text-zinc-500 uppercase">
+              <p className="mt-1 text-[10px] tracking-[0.1em] text-zinc-500 uppercase">
                 Runtime protection comparison
               </p>
             </div>
-            <span className="flex items-center gap-2 text-[8px] font-bold tracking-[0.1em] text-emerald-500 uppercase">
+            <span className="flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-emerald-500 uppercase">
               <span className="h-1.5 w-1.5 bg-emerald-500 animate-pulse" />
               Nox active
             </span>
@@ -87,7 +87,7 @@ export function NoxSection() {
                 {["PROTECTION", "TRADITIONAL", "ENCRYPTED APP", "CONCLAVE"].map(
                   (heading) => (
                     <div
-                      className="px-4 py-4 text-[8px] font-bold tracking-[0.1em] text-zinc-500 uppercase"
+                      className="px-4 py-4 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase"
                       key={heading}
                     >
                       {heading}
@@ -108,12 +108,12 @@ export function NoxSection() {
                       <div
                         className={
                           protectedByConclave
-                            ? "flex min-h-14 items-center bg-emerald-500/[0.05] px-4 text-[9px] font-bold text-emerald-600 uppercase dark:text-emerald-400"
+                            ? "flex min-h-14 items-center bg-emerald-500/[0.05] px-4 text-[11px] font-bold text-emerald-600 uppercase dark:text-emerald-400"
                             : cellIndex === 0
-                              ? "flex min-h-14 items-center px-4 text-[9px] font-bold text-zinc-700 uppercase dark:text-zinc-300"
+                              ? "flex min-h-14 items-center px-4 text-[11px] font-bold text-zinc-700 uppercase dark:text-zinc-300"
                               : exposed
-                                ? "flex min-h-14 items-center px-4 text-[9px] text-rose-500 uppercase"
-                                : "flex min-h-14 items-center px-4 text-[9px] text-zinc-500 uppercase"
+                                ? "flex min-h-14 items-center px-4 text-[11px] text-rose-500 uppercase"
+                                : "flex min-h-14 items-center px-4 text-[11px] text-zinc-500 uppercase"
                         }
                         key={`${row[0]}-${cellIndex}`}
                       >
@@ -135,7 +135,7 @@ export function NoxSection() {
 
           <div className="flex items-center gap-3 border-t border-black/[0.06] bg-emerald-500/[0.04] px-5 py-4 dark:border-white/[0.06]">
             <Icon className="text-emerald-500" name="shield" size={16} />
-            <p className="text-[9px] leading-5 text-zinc-500">
+            <p className="text-[11px] leading-5 text-zinc-500">
               Nox extends confidentiality to the moment sensitive inputs are
               combined and evaluated.
             </p>

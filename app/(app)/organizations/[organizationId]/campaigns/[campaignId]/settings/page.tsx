@@ -76,10 +76,10 @@ export default async function CampaignSettingsPage({
 
       <section className="border-b border-black/[0.06] py-8 dark:border-white/[0.06]">
         <div className="mb-7">
-          <p className="text-[10px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
+          <p className="text-[12px] font-bold tracking-[0.08em] text-zinc-950 uppercase dark:text-white">
             Campaign details
           </p>
-          <p className="mt-2 text-[9px] leading-5 text-zinc-500">
+          <p className="mt-2 text-[11px] leading-5 text-zinc-500">
             Update the campaign profile, deadline, and evaluation template.
           </p>
         </div>
