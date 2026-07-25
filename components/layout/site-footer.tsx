@@ -7,7 +7,7 @@ export function SiteFooter() {
         <div className="text-[11px] font-medium tracking-[0.1em] text-zinc-500 uppercase">
           Conclave - Confidential inputs. Verified outcomes.
         </div>
-        <div className="flex items-center gap-8">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           <a
             className="text-[11px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
             href={siteLinks.product}
@@ -27,6 +27,18 @@ export function SiteFooter() {
             href={siteLinks.faq}
           >
             FAQ
+          </a>
+          <a
+            className="text-[11px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
+            href={siteLinks.privacy}
+          >
+            PRIVACY
+          </a>
+          <a
+            className="text-[11px] font-medium tracking-[0.15em] text-zinc-400 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-white"
+            href={siteLinks.terms}
+          >
+            TERMS
           </a>
         </div>
       </div>

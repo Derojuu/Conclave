@@ -192,6 +192,20 @@ https://YOUR_PRODUCTION_DOMAIN/auth/callback
 Add preview deployment callback URLs only when needed. Prefer an explicit
 allowlist rather than a broad wildcard for production authentication.
 
+Before publishing the Google OAuth consent screen, set the application
+homepage, privacy policy, and terms URLs to public pages on the same verified
+production domain:
+
+```text
+https://YOUR_PRODUCTION_DOMAIN/
+https://YOUR_PRODUCTION_DOMAIN/privacy
+https://YOUR_PRODUCTION_DOMAIN/terms
+```
+
+The repository provides all three routes. Ensure `privacy@conclave.app` is a
+monitored inbox or update `constants/legal.ts` to an address operated by the
+deployment owner before submitting the OAuth application for verification.
+
 The sign-in flow is:
 
 ```text
