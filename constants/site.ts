@@ -13,6 +13,7 @@ export const navigationItems: NavigationItem[] = [
   { label: "IEXEC NOX", href: siteLinks.nox },
   { label: "APPLICATIONS", href: siteLinks.applications },
   { label: "SECURITY", href: siteLinks.security },
+  { label: "DEMO", href: siteLinks.demo },
   { label: "FAQ", href: siteLinks.faq },
 ];
 

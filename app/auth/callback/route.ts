@@ -14,10 +14,14 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
   const destination = safeDestination(requestUrl.searchParams.get("next"));
+  const authEntry =
+    requestUrl.searchParams.get("entry") === "sign-up"
+      ? "/auth/signup"
+      : "/auth/login";
 
   if (!code) {
     return NextResponse.redirect(
-      new URL("/auth/login?error=missing_code", request.url),
+      new URL(`${authEntry}?error=missing_code`, request.url),
     );
   }
 
@@ -26,7 +30,7 @@ export async function GET(request: NextRequest) {
 
   if (error) {
     return NextResponse.redirect(
-      new URL("/auth/login?error=oauth_callback", request.url),
+      new URL(`${authEntry}?error=oauth_callback`, request.url),
     );
   }
 
@@ -36,7 +40,7 @@ export async function GET(request: NextRequest) {
 
   if (!user) {
     return NextResponse.redirect(
-      new URL("/auth/login?error=session_missing", request.url),
+      new URL(`${authEntry}?error=session_missing`, request.url),
     );
   }
 
@@ -47,7 +51,7 @@ export async function GET(request: NextRequest) {
   } catch {
     await supabase.auth.signOut();
     return NextResponse.redirect(
-      new URL("/auth/login?error=profile_sync", request.url),
+      new URL(`${authEntry}?error=profile_sync`, request.url),
     );
   }
 

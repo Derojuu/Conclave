@@ -6,6 +6,8 @@ export const siteLinks = {
   security: "/#why-conclave",
   demo: "/#demo",
   faq: "/#faq",
+  login: "/auth/login",
+  signup: "/auth/signup",
   privacy: "/privacy",
   terms: "/terms",
   documentation: "https://docs.iex.ec/",

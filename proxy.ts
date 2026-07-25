@@ -34,7 +34,7 @@ export async function proxy(request: NextRequest) {
     return copyCookies(response, NextResponse.redirect(loginUrl));
   }
 
-  if (path === "/auth/login" && user) {
+  if ((path === "/auth/login" || path === "/auth/signup") && user) {
     return copyCookies(
       response,
       NextResponse.redirect(new URL("/dashboard", request.url)),

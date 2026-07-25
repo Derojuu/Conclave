@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 
 /** Absolute site origin, used for canonical + OG URLs. */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://conclave.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://conclave-nox.vercel.app";
 
 export const siteConfig = {
   name: "Conclave",
@@ -33,11 +33,43 @@ export const baseMetadata: Metadata = {
   applicationName: siteConfig.name,
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
+  publisher: siteConfig.name,
+  category: "technology",
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   alternates: {
     canonical: "/",
   },
+  manifest: "/site.webmanifest",
   icons: {
-    icon: "/images/conclave-icon.svg",
+    icon: [
+      {
+        url: "/images/conclave-icon.svg",
+        type: "image/svg+xml",
+      },
+      {
+        url: "/images/conclave-icon-32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/images/conclave-icon-32.png",
+    apple: [
+      {
+        url: "/images/conclave-apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: siteConfig.name,
   },
   openGraph: {
     type: "website",
@@ -46,11 +78,20 @@ export const baseMetadata: Metadata = {
     description: siteConfig.description,
     url: siteUrl,
     locale: "en_US",
+    images: [
+      {
+        url: "/images/conclave-social.png",
+        width: 1200,
+        height: 630,
+        alt: "Conclave - The Confidential Decision Infrastructure",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.title,
     description: siteConfig.description,
+    images: ["/images/conclave-social.png"],
   },
   robots: {
     index: true,

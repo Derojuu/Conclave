@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, LogIn } from "lucide-react";
+import { Loader2, LogIn, UserPlus } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -8,9 +8,13 @@ import { createClient } from "@/lib/supabase/client";
 
 type GoogleSignInButtonProps = {
   next: string;
+  intent?: "sign-in" | "sign-up";
 };
 
-export function GoogleSignInButton({ next }: GoogleSignInButtonProps) {
+export function GoogleSignInButton({
+  next,
+  intent = "sign-in",
+}: GoogleSignInButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,6 +25,7 @@ export function GoogleSignInButton({ next }: GoogleSignInButtonProps) {
     const supabase = createClient();
     const callbackUrl = new URL("/auth/callback", window.location.origin);
     callbackUrl.searchParams.set("next", next);
+    callbackUrl.searchParams.set("entry", intent);
 
     const { error: signInError } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -49,10 +54,16 @@ export function GoogleSignInButton({ next }: GoogleSignInButtonProps) {
       >
         {isLoading ? (
           <Loader2 aria-hidden="true" className="animate-spin" size={17} />
+        ) : intent === "sign-up" ? (
+          <UserPlus aria-hidden="true" size={17} />
         ) : (
           <LogIn aria-hidden="true" size={17} />
         )}
-        {isLoading ? "Redirecting to Google" : "Continue with Google"}
+        {isLoading
+          ? "Redirecting to Google"
+          : intent === "sign-up"
+            ? "Create account with Google"
+            : "Continue with Google"}
       </Button>
       {error ? (
         <p className="mt-4 text-[10px] leading-5 text-rose-500" role="alert">
