@@ -9,10 +9,7 @@ import {
 import Link from "next/link";
 
 import { OrganizationNavigation } from "@/components/organizations/organization-navigation";
-import {
-  ORGANIZATION_PERMISSIONS,
-  roleHasPermission,
-} from "@/constants/auth";
+import { ORGANIZATION_PERMISSIONS, roleHasPermission } from "@/constants/auth";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { requireOrganizationPermission } from "@/lib/security/rbac";
@@ -120,10 +117,10 @@ export default async function OrganizationDashboardPage({
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-[10px] font-bold tracking-[0.16em] text-zinc-500 uppercase">
+            <p className="text-[10px] font-bold tracking-[0.16em] break-words text-zinc-500 uppercase">
               {organization.slug} / organization
             </p>
-            <h1 className="mt-3 truncate text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
+            <h1 className="mt-3 text-3xl font-bold break-words text-zinc-950 uppercase sm:text-4xl dark:text-white">
               {organization.name}
             </h1>
           </div>
@@ -150,7 +147,7 @@ export default async function OrganizationDashboardPage({
           {organization.description ||
             "No organization description has been added."}
         </p>
-        <p className="mt-4 text-[10px] text-zinc-500">
+        <p className="mt-4 text-[10px] break-words text-zinc-500">
           OWNER: {organization.owner.fullName} / {organization.owner.email}
         </p>
       </section>
@@ -158,11 +155,7 @@ export default async function OrganizationDashboardPage({
       <section className="mt-8 grid gap-px overflow-hidden border border-black/[0.06] bg-black/[0.06] sm:grid-cols-2 xl:grid-cols-4 dark:border-white/[0.06] dark:bg-white/[0.06]">
         {stats.map((stat) => (
           <article className="bg-[#EBE8E1] p-5 dark:bg-[#111]" key={stat.label}>
-            <stat.icon
-              aria-hidden="true"
-              className="text-zinc-500"
-              size={17}
-            />
+            <stat.icon aria-hidden="true" className="text-zinc-500" size={17} />
             <p className="mt-7 text-3xl font-bold text-zinc-950 dark:text-white">
               {stat.value}
             </p>
@@ -190,8 +183,8 @@ export default async function OrganizationDashboardPage({
                 href={`/organizations/${organizationId}/campaigns/${campaign.id}`}
                 key={campaign.id}
               >
-                <div>
-                  <p className="text-[13px] font-bold text-zinc-950 dark:text-white">
+                <div className="min-w-0">
+                  <p className="text-[13px] font-bold break-words text-zinc-950 dark:text-white">
                     {campaign.title}
                   </p>
                   <p className="mt-2 text-[10px] text-zinc-500">

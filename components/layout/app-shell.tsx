@@ -44,9 +44,12 @@ export function AppShell({
   return (
     <div className="min-h-screen bg-[#F5F2EB] dark:bg-[#0a0a0a]">
       <header className="sticky top-0 z-40 border-b border-black/[0.06] bg-[#F5F2EB]/90 backdrop-blur-md dark:border-white/[0.06] dark:bg-[#0a0a0a]/90">
-        <div className="mx-auto flex h-16 max-w-[1500px] items-center justify-between px-5 sm:px-6">
-          <div className="flex min-w-0 items-center gap-3 sm:gap-6">
-            <Link className="flex items-center gap-3" href="/dashboard">
+        <div className="mx-auto flex h-16 max-w-[1500px] items-center justify-between gap-2 px-4 sm:px-6">
+          <div className="flex min-w-0 flex-1 items-center gap-2 min-[380px]:gap-3 sm:gap-6">
+            <Link
+              className="flex shrink-0 items-center gap-3"
+              href="/dashboard"
+            >
               <BrandMark />
               <span className="hidden text-sm font-bold sm:inline">
                 Conclave
@@ -58,7 +61,7 @@ export function AppShell({
             />
             <nav
               aria-label="Primary navigation"
-              className="hidden items-center gap-1 md:flex"
+              className="hidden items-center gap-1 lg:flex"
             >
               {navigation.map((item) => (
                 <Link
@@ -73,10 +76,10 @@ export function AppShell({
             </nav>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <Link
               aria-label={`${unreadNotificationCount} unread notifications`}
-              className="relative flex h-10 w-10 items-center justify-center border border-black/[0.07] text-zinc-500 transition-colors hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.07]"
+              className="relative hidden h-10 w-10 items-center justify-center border border-black/[0.07] text-zinc-500 transition-colors hover:border-indigo-500 hover:text-indigo-500 lg:flex dark:border-white/[0.07]"
               href="/notifications"
             >
               <Bell aria-hidden="true" size={15} />
@@ -89,68 +92,68 @@ export function AppShell({
               ) : null}
             </Link>
             <details className="relative">
-            <summary className="flex cursor-pointer list-none items-center gap-3 rounded-sm border border-black/[0.07] px-3 py-2 dark:border-white/[0.07]">
-              <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-sm bg-indigo-500/10 text-[11px] font-bold text-indigo-500">
-                {user.avatar ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    alt=""
-                    className="h-full w-full object-cover"
-                    src={user.avatar}
-                  />
-                ) : (
-                  user.fullName.slice(0, 2).toUpperCase()
-                )}
-              </span>
-              <span className="hidden text-left sm:block">
-                <span className="block max-w-40 truncate text-[11px] font-bold text-zinc-950 dark:text-white">
-                  {user.fullName}
+              <summary className="flex cursor-pointer list-none items-center gap-3 rounded-sm border border-black/[0.07] px-2 py-2 sm:px-3 dark:border-white/[0.07]">
+                <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-sm bg-indigo-500/10 text-[11px] font-bold text-indigo-500">
+                  {user.avatar ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      alt=""
+                      className="h-full w-full object-cover"
+                      src={user.avatar}
+                    />
+                  ) : (
+                    user.fullName.slice(0, 2).toUpperCase()
+                  )}
                 </span>
-                <span className="mt-0.5 block max-w-40 truncate text-[9px] text-zinc-500">
-                  {user.email}
+                <span className="hidden text-left sm:block">
+                  <span className="block max-w-40 truncate text-[11px] font-bold text-zinc-950 dark:text-white">
+                    {user.fullName}
+                  </span>
+                  <span className="mt-0.5 block max-w-40 truncate text-[9px] text-zinc-500">
+                    {user.email}
+                  </span>
                 </span>
-              </span>
-            </summary>
-            <div className="absolute top-12 right-0 w-64 overflow-hidden rounded-sm border border-black/[0.08] bg-[#EBE8E1] shadow-2xl dark:border-white/[0.08] dark:bg-[#111]">
-              <div className="border-b border-black/[0.06] px-4 py-4 dark:border-white/[0.06]">
-                <p className="truncate text-[12px] font-bold text-zinc-950 dark:text-white">
-                  {user.fullName}
-                </p>
-                <p className="mt-1 truncate text-[10px] text-zinc-500">
-                  {user.email}
-                </p>
-                <div className="mt-3 flex items-center gap-2 text-[9px] font-bold tracking-[0.1em] text-emerald-500 uppercase">
-                  <ShieldCheck aria-hidden="true" size={12} />
-                  {user.platformRole === "SUPER_ADMIN"
-                    ? "Super admin"
-                    : "Authenticated"}
+              </summary>
+              <div className="absolute top-12 right-0 w-[min(16rem,calc(100vw-2rem))] overflow-hidden rounded-sm border border-black/[0.08] bg-[#EBE8E1] shadow-2xl dark:border-white/[0.08] dark:bg-[#111]">
+                <div className="border-b border-black/[0.06] px-4 py-4 dark:border-white/[0.06]">
+                  <p className="truncate text-[12px] font-bold text-zinc-950 dark:text-white">
+                    {user.fullName}
+                  </p>
+                  <p className="mt-1 truncate text-[10px] text-zinc-500">
+                    {user.email}
+                  </p>
+                  <div className="mt-3 flex items-center gap-2 text-[9px] font-bold tracking-[0.1em] text-emerald-500 uppercase">
+                    <ShieldCheck aria-hidden="true" size={12} />
+                    {user.platformRole === "SUPER_ADMIN"
+                      ? "Super admin"
+                      : "Authenticated"}
+                  </div>
                 </div>
-              </div>
-              <Link
-                className="flex items-center gap-3 px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
-                href="/account"
-              >
-                <UserRound aria-hidden="true" size={14} />
-                Account settings
-              </Link>
-              <Link
-                className="flex items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:border-white/[0.06] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
-                href="/notifications"
-              >
-                <Bell aria-hidden="true" size={14} />
-                Notifications
-              </Link>
-              {user.platformRole === "SUPER_ADMIN" ? (
                 <Link
-                  className="flex items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-emerald-600 uppercase hover:bg-emerald-500/[0.05] dark:border-white/[0.06] dark:text-emerald-400"
-                  href="/admin"
+                  className="flex items-center gap-3 px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
+                  href="/account"
                 >
-                  <ShieldCheck aria-hidden="true" size={14} />
-                  Platform admin
+                  <UserRound aria-hidden="true" size={14} />
+                  Account settings
                 </Link>
-              ) : null}
-              <SignOutButton />
-            </div>
+                <Link
+                  className="flex items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-zinc-600 uppercase hover:bg-black/[0.04] dark:border-white/[0.06] dark:text-zinc-300 dark:hover:bg-white/[0.04]"
+                  href="/notifications"
+                >
+                  <Bell aria-hidden="true" size={14} />
+                  Notifications
+                </Link>
+                {user.platformRole === "SUPER_ADMIN" ? (
+                  <Link
+                    className="flex items-center gap-3 border-t border-black/[0.06] px-4 py-3 text-[11px] font-bold tracking-[0.08em] text-emerald-600 uppercase hover:bg-emerald-500/[0.05] dark:border-white/[0.06] dark:text-emerald-400"
+                    href="/admin"
+                  >
+                    <ShieldCheck aria-hidden="true" size={14} />
+                    Platform admin
+                  </Link>
+                ) : null}
+                <SignOutButton />
+              </div>
             </details>
           </div>
         </div>
@@ -179,10 +182,48 @@ export function AppShell({
           </div>
         </aside>
 
-        <main className="min-w-0 px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
+        <main className="min-w-0 px-5 pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] sm:px-8 lg:px-10 lg:py-10">
           {children}
         </main>
       </div>
+
+      <nav
+        aria-label="Mobile primary navigation"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-black/[0.08] bg-[#F5F2EB]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden dark:border-white/[0.08] dark:bg-[#0a0a0a]/95"
+      >
+        <div className="grid h-16 grid-cols-4">
+          {navigation.map((item) => (
+            <Link
+              className="flex min-w-0 flex-col items-center justify-center gap-1 text-zinc-500 transition-colors hover:text-indigo-500"
+              href={item.href}
+              key={item.href}
+            >
+              <item.icon aria-hidden="true" size={16} />
+              <span className="truncate text-[8px] font-bold tracking-[0.06em] uppercase">
+                {item.label}
+              </span>
+            </Link>
+          ))}
+          <Link
+            className="relative flex min-w-0 flex-col items-center justify-center gap-1 text-zinc-500 transition-colors hover:text-indigo-500"
+            href="/notifications"
+          >
+            <span className="relative">
+              <Bell aria-hidden="true" size={16} />
+              {unreadNotificationCount > 0 ? (
+                <span className="absolute -top-2 -right-2 flex min-h-3.5 min-w-3.5 items-center justify-center bg-indigo-500 px-1 text-[6px] font-bold text-white">
+                  {unreadNotificationCount > 99
+                    ? "99+"
+                    : unreadNotificationCount}
+                </span>
+              ) : null}
+            </span>
+            <span className="truncate text-[8px] font-bold tracking-[0.06em] uppercase">
+              Alerts
+            </span>
+          </Link>
+        </div>
+      </nav>
     </div>
   );
 }

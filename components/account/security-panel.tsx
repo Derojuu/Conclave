@@ -29,14 +29,14 @@ export function SecurityPanel({
             Security
           </p>
           <p className="mt-2 text-[11px] leading-5 text-zinc-500">
-            Your identity is managed by Google OAuth and validated by
-            Supabase on protected server requests.
+            Your identity is managed by Google OAuth and validated by Supabase
+            on protected server requests.
           </p>
         </div>
       </div>
 
       <dl className="mt-6 divide-y divide-black/[0.06] border-y border-black/[0.06] dark:divide-white/[0.06] dark:border-white/[0.06]">
-        <div className="flex items-center justify-between gap-5 py-4">
+        <div className="flex flex-col items-start gap-2 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
           <dt className="text-[10px] font-bold tracking-[0.08em] text-zinc-500 uppercase">
             Authentication
           </dt>
@@ -49,7 +49,7 @@ export function SecurityPanel({
             Google OAuth
           </dd>
         </div>
-        <div className="flex items-center justify-between gap-5 py-4">
+        <div className="flex flex-col items-start gap-2 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
           <dt className="text-[10px] font-bold tracking-[0.08em] text-zinc-500 uppercase">
             Platform access
           </dt>
@@ -57,11 +57,11 @@ export function SecurityPanel({
             {isSuperAdmin ? "Super admin" : "Standard user"}
           </dd>
         </div>
-        <div className="flex items-center justify-between gap-5 py-4">
+        <div className="flex flex-col items-start gap-2 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
           <dt className="text-[10px] font-bold tracking-[0.08em] text-zinc-500 uppercase">
             Last sign-in
           </dt>
-          <dd className="inline-flex items-center gap-2 text-right text-[11px] text-zinc-600 dark:text-zinc-300">
+          <dd className="inline-flex items-center gap-2 text-left text-[11px] text-zinc-600 sm:text-right dark:text-zinc-300">
             <Clock3 aria-hidden="true" size={12} />
             {lastSignIn}
           </dd>

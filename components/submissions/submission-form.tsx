@@ -58,11 +58,7 @@ export function SubmissionForm({
     if (!parsed.success) {
       parsed.error.issues.forEach((issue) => {
         const field = issue.path[0];
-        if (
-          field === "title" ||
-          field === "description" ||
-          field === "kind"
-        ) {
+        if (field === "title" || field === "description" || field === "kind") {
           setError(field, { message: issue.message });
         }
       });
@@ -169,7 +165,7 @@ export function SubmissionForm({
       </div>
 
       <section className="border-y border-black/[0.06] py-6 dark:border-white/[0.06]">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.1em] text-zinc-950 uppercase dark:text-white">
               <Link2 aria-hidden="true" size={13} />

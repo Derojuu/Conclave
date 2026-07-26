@@ -4,10 +4,7 @@ import Link from "next/link";
 
 import { CampaignStatusBadge } from "@/components/campaigns/campaign-status-badge";
 import { OrganizationNavigation } from "@/components/organizations/organization-navigation";
-import {
-  ORGANIZATION_PERMISSIONS,
-  roleHasPermission,
-} from "@/constants/auth";
+import { ORGANIZATION_PERMISSIONS, roleHasPermission } from "@/constants/auth";
 import type { CampaignStatus } from "@/constants/campaign";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -34,10 +31,7 @@ export default async function CampaignsPage({
   );
   const canManage =
     access.isSuperAdmin ||
-    roleHasPermission(
-      access.role,
-      ORGANIZATION_PERMISSIONS.campaignsManage,
-    );
+    roleHasPermission(access.role, ORGANIZATION_PERMISSIONS.campaignsManage);
   const campaigns = await prisma.evaluationCampaign.findMany({
     where: {
       organizationId,
@@ -74,8 +68,8 @@ export default async function CampaignsPage({
             Campaign management
           </h1>
           <p className="mt-4 max-w-2xl text-[13px] leading-6 text-zinc-500">
-            Configure confidential decision groups, assign evaluators, and manage
-            each campaign lifecycle.
+            Configure confidential decision groups, assign evaluators, and
+            manage each campaign lifecycle.
           </p>
         </div>
         {canManage ? (
@@ -110,7 +104,7 @@ export default async function CampaignsPage({
                     className="text-zinc-500"
                     size={15}
                   />
-                  <h2 className="text-[12px] font-bold text-zinc-950 uppercase group-hover:text-indigo-500 dark:text-white">
+                  <h2 className="min-w-0 text-[12px] font-bold break-words text-zinc-950 uppercase group-hover:text-indigo-500 dark:text-white">
                     {campaign.title}
                   </h2>
                   <CampaignStatusBadge

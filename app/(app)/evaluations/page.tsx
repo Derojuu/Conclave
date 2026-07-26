@@ -138,7 +138,7 @@ export default async function EvaluationsPage() {
                   <p className="text-[9px] font-bold tracking-[0.1em] text-indigo-500 uppercase">
                     {campaign.organization.name}
                   </p>
-                  <h2 className="mt-2 text-[15px] font-bold text-zinc-950 dark:text-white">
+                  <h2 className="mt-2 text-[15px] font-bold break-words text-zinc-950 dark:text-white">
                     {campaign.title}
                   </h2>
                   <p className="mt-2 max-w-3xl text-[11px] leading-5 text-zinc-500">
@@ -177,7 +177,7 @@ export default async function EvaluationsPage() {
                       >
                         <div>
                           <div className="flex flex-wrap items-center gap-3">
-                            <p className="text-[13px] font-bold text-zinc-950 group-hover:text-indigo-500 dark:text-white">
+                            <p className="text-[13px] font-bold break-words text-zinc-950 group-hover:text-indigo-500 dark:text-white">
                               {submission.title}
                             </p>
                             {submission.kind ? (

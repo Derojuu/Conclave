@@ -238,12 +238,12 @@ export default async function SubmissionOverviewPage({
           </div>
 
           <div className="pt-8">
-            <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
+            <div className="flex items-center justify-between gap-4 border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
               <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
                 Contributors
               </h2>
               <Link
-                className="text-[10px] font-bold text-indigo-500 uppercase"
+                className="shrink-0 text-[10px] font-bold text-indigo-500 uppercase"
                 href={`/organizations/${organizationId}/campaigns/${campaignId}/submissions/${submissionId}/contributors`}
               >
                 {canManage ? "Manage" : "View"} /{" "}
@@ -309,7 +309,7 @@ export default async function SubmissionOverviewPage({
                     <Link2 aria-hidden="true" size={15} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[11px] font-bold text-zinc-950 uppercase dark:text-white">
+                    <span className="block text-[11px] font-bold break-words text-zinc-950 uppercase dark:text-white">
                       {resource.label}
                     </span>
                     <span className="mt-1 block truncate text-[10px] text-zinc-500">
@@ -335,10 +335,10 @@ export default async function SubmissionOverviewPage({
             <p className="text-[9px] font-bold tracking-[0.1em] text-zinc-500 uppercase">
               Campaign
             </p>
-            <p className="mt-3 text-[12px] font-bold text-zinc-950 uppercase dark:text-white">
+            <p className="mt-3 text-[12px] font-bold break-words text-zinc-950 uppercase dark:text-white">
               {submission.campaign.title}
             </p>
-            <p className="mt-2 text-[10px] text-zinc-500">
+            <p className="mt-2 text-[10px] break-words text-zinc-500">
               {submission.campaign.organization.name}
             </p>
             <p className="mt-5 flex items-center gap-2 text-[10px] text-zinc-500">
@@ -352,10 +352,10 @@ export default async function SubmissionOverviewPage({
             </p>
           </div>
 
-          <div className="mt-8 flex items-center gap-3 text-[10px] text-zinc-500">
+          <div className="mt-8 flex min-w-0 items-center gap-3 text-[10px] text-zinc-500">
             <UserRound aria-hidden="true" size={13} />
-            Submission ID
-            <span className="truncate font-mono text-zinc-950 dark:text-white">
+            <span className="shrink-0">Submission ID</span>
+            <span className="min-w-0 flex-1 truncate font-mono text-zinc-950 dark:text-white">
               {submission.id}
             </span>
           </div>

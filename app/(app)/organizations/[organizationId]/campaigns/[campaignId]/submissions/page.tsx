@@ -165,7 +165,7 @@ export default async function CampaignSubmissionsPage({
                         className="text-zinc-500"
                         size={15}
                       />
-                      <h3 className="text-[12px] font-bold text-zinc-950 uppercase group-hover:text-indigo-500 dark:text-white">
+                      <h3 className="min-w-0 text-[12px] font-bold break-words text-zinc-950 uppercase group-hover:text-indigo-500 dark:text-white">
                         {submission.title}
                       </h3>
                       <SubmissionStatusBadge
@@ -177,9 +177,7 @@ export default async function CampaignSubmissionsPage({
                     </p>
                     <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[9px] tracking-[0.08em] text-zinc-500 uppercase">
                       {submission.kind ? <span>{submission.kind}</span> : null}
-                      <span>
-                        {submission._count.contributors} contributors
-                      </span>
+                      <span>{submission._count.contributors} contributors</span>
                       <span>{submission._count.evaluations} evaluations</span>
                       <span className="inline-flex items-center gap-1">
                         <Link2 aria-hidden="true" size={9} />

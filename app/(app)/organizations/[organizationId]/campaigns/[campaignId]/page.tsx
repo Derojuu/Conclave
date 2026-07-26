@@ -210,12 +210,12 @@ export default async function CampaignDashboardPage({
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1.3fr_0.7fr]">
         <section>
-          <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
+          <div className="flex items-center justify-between gap-4 border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
             <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Submissions
             </h2>
             <Link
-              className="text-[10px] font-bold text-indigo-500 uppercase"
+              className="shrink-0 text-[10px] font-bold text-indigo-500 uppercase"
               href={`/organizations/${organizationId}/campaigns/${campaignId}/submissions`}
             >
               View all / {campaign._count.submissions}
@@ -230,7 +230,7 @@ export default async function CampaignDashboardPage({
                   key={submission.id}
                 >
                   <div className="flex flex-wrap items-center gap-3">
-                    <p className="text-[13px] font-bold text-zinc-950 group-hover:text-indigo-500 dark:text-white">
+                    <p className="min-w-0 text-[13px] font-bold break-words text-zinc-950 group-hover:text-indigo-500 dark:text-white">
                       {submission.title}
                     </p>
                     <SubmissionStatusBadge
@@ -241,9 +241,7 @@ export default async function CampaignDashboardPage({
                     {submission.description}
                   </p>
                   <p className="mt-3 text-[9px] text-zinc-500 uppercase">
-                    {submission.kind
-                      ? `${submission.kind} / `
-                      : ""}
+                    {submission.kind ? `${submission.kind} / ` : ""}
                     {submission._count.evaluations} evaluations
                   </p>
                 </Link>
@@ -257,12 +255,12 @@ export default async function CampaignDashboardPage({
         </section>
 
         <section>
-          <div className="flex items-center justify-between border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
+          <div className="flex items-center justify-between gap-4 border-b border-black/[0.06] pb-4 dark:border-white/[0.06]">
             <h2 className="text-[12px] font-bold tracking-[0.12em] text-zinc-950 uppercase dark:text-white">
               Evaluator roster
             </h2>
             <Link
-              className="text-[10px] font-bold text-indigo-500 uppercase"
+              className="shrink-0 text-[10px] font-bold text-indigo-500 uppercase"
               href={`/organizations/${organizationId}/campaigns/${campaignId}/members`}
             >
               View all
@@ -271,7 +269,10 @@ export default async function CampaignDashboardPage({
           {campaign.evaluators.length ? (
             <div className="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
               {campaign.evaluators.map(({ evaluator }) => (
-                <div className="flex items-center gap-3 py-4" key={evaluator.id}>
+                <div
+                  className="flex items-center gap-3 py-4"
+                  key={evaluator.id}
+                >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden bg-indigo-500/10 text-[10px] font-bold text-indigo-500">
                     {evaluator.avatar ? (
                       // eslint-disable-next-line @next/next/no-img-element

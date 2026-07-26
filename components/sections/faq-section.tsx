@@ -28,11 +28,11 @@ export function FaqSection() {
             {faqItems.map((item, index) => (
               <details className="group px-5" key={item.question}>
                 <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-5 py-4">
-                  <span className="flex items-center gap-4">
+                  <span className="flex min-w-0 items-center gap-4">
                     <span className="text-[10px] text-zinc-400">
                       0{index + 1}
                     </span>
-                    <span className="text-[12px] font-bold tracking-[0.06em] text-zinc-950 uppercase dark:text-white">
+                    <span className="min-w-0 text-[12px] font-bold tracking-[0.06em] break-words text-zinc-950 uppercase dark:text-white">
                       {item.question}
                     </span>
                   </span>

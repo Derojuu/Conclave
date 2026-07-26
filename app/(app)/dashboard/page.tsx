@@ -69,10 +69,7 @@ export default async function DashboardPage() {
             icon: ShieldCheck,
           },
         ].map((stat) => (
-          <article
-            className="bg-[#EBE8E1] p-5 dark:bg-[#111]"
-            key={stat.label}
-          >
+          <article className="bg-[#EBE8E1] p-5 dark:bg-[#111]" key={stat.label}>
             <div className="flex items-center justify-between">
               <stat.icon
                 aria-hidden="true"
@@ -113,7 +110,7 @@ export default async function DashboardPage() {
                   <p className="truncate text-[13px] font-bold text-zinc-950 uppercase dark:text-white">
                     {organization.name}
                   </p>
-                  <p className="mt-2 text-[10px] text-zinc-500 uppercase">
+                  <p className="mt-2 text-[10px] break-words text-zinc-500 uppercase">
                     {organization.role} / {organization.slug}
                   </p>
                 </div>

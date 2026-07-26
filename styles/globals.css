@@ -85,6 +85,26 @@ button {
   animation: proof-flow 3.5s linear infinite;
 }
 
+.conclave-mark-frame {
+  animation: conclave-mark-frame 12s ease-in-out infinite;
+}
+
+.conclave-mark-breathe {
+  animation: conclave-mark-breathe 4.8s ease-in-out infinite;
+}
+
+.conclave-mark-scan {
+  animation: conclave-mark-scan 4.2s ease-in-out infinite;
+}
+
+.conclave-mark-ripple {
+  animation: conclave-mark-ripple 2.8s ease-out infinite;
+}
+
+.conclave-route-packet {
+  animation: conclave-route-packet 3.6s ease-in-out infinite;
+}
+
 @keyframes console-scan {
   0% {
     transform: translateY(-140%);
@@ -105,13 +125,92 @@ button {
   }
 }
 
+@keyframes conclave-mark-frame {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes conclave-mark-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.965);
+  }
+}
+
+@keyframes conclave-mark-scan {
+  0%,
+  18% {
+    opacity: 0;
+    top: 12%;
+  }
+
+  35% {
+    opacity: 0.8;
+  }
+
+  72% {
+    opacity: 0.25;
+    top: 86%;
+  }
+
+  100% {
+    opacity: 0;
+    top: 86%;
+  }
+}
+
+@keyframes conclave-mark-ripple {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.7);
+  }
+
+  75%,
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@keyframes conclave-route-packet {
+  0% {
+    left: 14%;
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  88% {
+    opacity: 1;
+  }
+
+  100% {
+    left: 84%;
+    opacity: 0;
+  }
+}
+
 @keyframes privacy-redact {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     filter: blur(0);
     letter-spacing: normal;
   }
-  35%, 65% {
+  35%,
+  65% {
     opacity: 0.12;
     filter: blur(2.5px);
     letter-spacing: 0.25em;
@@ -124,6 +223,11 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
   .console-scanline,
+  .conclave-mark-breathe,
+  .conclave-mark-frame,
+  .conclave-mark-ripple,
+  .conclave-mark-scan,
+  .conclave-route-packet,
   .proof-flow,
   .privacy-redact {
     animation: none;

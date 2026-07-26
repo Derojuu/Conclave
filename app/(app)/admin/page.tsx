@@ -100,7 +100,7 @@ export default async function PlatformAdminPage() {
                     {organization._count.campaigns} campaigns
                   </span>
                 </span>
-                <span className="text-[9px] text-zinc-400 uppercase">
+                <span className="max-w-24 shrink-0 truncate text-[9px] text-zinc-400 uppercase">
                   {organization.slug}
                 </span>
               </Link>
@@ -126,7 +126,7 @@ export default async function PlatformAdminPage() {
                     {record.email} / {record._count.memberships} memberships
                   </span>
                 </span>
-                <span className="text-[9px] font-bold text-emerald-500 uppercase">
+                <span className="shrink-0 text-[9px] font-bold text-emerald-500 uppercase">
                   {record.platformRole.replaceAll("_", " ")}
                 </span>
               </div>
@@ -154,7 +154,7 @@ export default async function PlatformAdminPage() {
                   {job.campaign.organization.name} / {job.provider}
                 </span>
               </span>
-              <span className="text-[9px] text-zinc-500">
+              <span className="min-w-0 truncate font-mono text-[9px] text-zinc-500">
                 {job.providerTaskId ?? "TASK PENDING"}
               </span>
               <span

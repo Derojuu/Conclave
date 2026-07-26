@@ -143,7 +143,7 @@ export default async function CampaignResultsPage({
                   <ShieldCheck aria-hidden="true" size={14} />
                   Verified confidential decision
                 </p>
-                <h2 className="mt-4 text-2xl font-bold text-zinc-950 dark:text-white">
+                <h2 className="mt-4 text-2xl font-bold break-words text-zinc-950 dark:text-white">
                   {campaign.result.decision}
                 </h2>
                 <p className="mt-4 max-w-3xl text-[12px] leading-6 text-zinc-600 dark:text-zinc-400">
@@ -176,14 +176,14 @@ export default async function CampaignResultsPage({
 
                   return (
                     <div
-                      className="grid grid-cols-[44px_1fr_auto] items-center gap-4 py-5"
+                      className="grid min-w-0 grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-3 py-5 sm:grid-cols-[44px_minmax(0,1fr)_auto] sm:gap-4"
                       key={entry.submissionId}
                     >
                       <span className="text-xl font-bold text-zinc-400">
                         {String(entry.rank).padStart(2, "0")}
                       </span>
-                      <div>
-                        <p className="text-[12px] font-bold text-zinc-950 dark:text-white">
+                      <div className="min-w-0">
+                        <p className="text-[12px] font-bold break-words text-zinc-950 dark:text-white">
                           {submission?.title ?? "Unknown submission"}
                         </p>
                         {submission?.kind ? (
@@ -221,7 +221,10 @@ export default async function CampaignResultsPage({
               {statistics.length ? (
                 <div className="mt-4 grid grid-cols-2 gap-px bg-black/[0.06] dark:bg-white/[0.06]">
                   {statistics.map(([label, value]) => (
-                    <div className="bg-[#EBE8E1] p-4 dark:bg-[#111]" key={label}>
+                    <div
+                      className="bg-[#EBE8E1] p-4 dark:bg-[#111]"
+                      key={label}
+                    >
                       <p className="text-lg font-bold text-zinc-950 dark:text-white">
                         {String(value)}
                       </p>

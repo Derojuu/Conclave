@@ -22,15 +22,17 @@ export function CampaignPageHeader({
   return (
     <header>
       <Link
-        className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase hover:text-indigo-500"
+        className="inline-flex max-w-full min-w-0 items-center gap-2 text-[10px] font-bold tracking-[0.1em] text-zinc-500 uppercase hover:text-indigo-500"
         href={`/organizations/${organizationId}/campaigns`}
       >
-        <ArrowLeft aria-hidden="true" size={12} />
-        {organizationName} campaigns
+        <ArrowLeft aria-hidden="true" className="shrink-0" size={12} />
+        <span className="min-w-0 break-words">
+          {organizationName} campaigns
+        </span>
       </Link>
       <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="text-3xl font-bold text-zinc-950 uppercase sm:text-4xl dark:text-white">
+          <h1 className="text-3xl font-bold break-words text-zinc-950 uppercase sm:text-4xl dark:text-white">
             {title}
           </h1>
           {description ? (

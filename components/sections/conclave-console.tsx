@@ -1,397 +1,179 @@
-"use client";
+import { Check, LockKeyhole, ShieldCheck } from "lucide-react";
 
-import { useEffect, useRef, useState } from "react";
-
-import { Icon } from "@/components/ui/icons";
+import { AnimatedConclaveMark } from "@/components/ui/animated-conclave-mark";
 import { LiveIndicator } from "@/components/ui/live-indicator";
-import { siteLinks } from "@/lib/site-links";
-import { cn } from "@/utils/cn";
-
-const stages = [
-  "Submission encrypted",
-  "Evaluator sealed",
-  "Nox computation",
-  "Receipt published",
-  "Result verified",
-] as const;
-
-const blockRail = [
-  { height: "481290", hash: "0x3f…a1" },
-  { height: "481291", hash: "0x7c…b4" },
-  { height: "481292", hash: "0xe2…09" },
-  { height: "481293", hash: "0x1a…f7" },
-] as const;
-
-const packetPositions = [
-  "left-0",
-  "left-1/4",
-  "left-1/2",
-  "left-3/4",
-  "right-0",
-] as const;
 
 const evaluators = [
-  ["AK", "Amina K.", "DOMAIN EXPERT"],
-  ["JL", "Jonas L.", "FEASIBILITY"],
-  ["MR", "Mira R.", "IMPACT"],
-  ["SO", "Samuel O.", "RISK"],
+  ["01", "Domain review"],
+  ["02", "Feasibility"],
+  ["03", "Impact"],
+  ["04", "Risk"],
 ] as const;
 
+const stages = ["INPUTS", "SEAL", "COMPUTE", "RECEIPT", "RESULT"] as const;
+
 export function ConclaveConsole() {
-  const [stage, setStage] = useState(-1);
-  const [blockConfs, setBlockConfs] = useState(0);
-  const timers = useRef<Array<ReturnType<typeof setTimeout>>>([]);
-  const confTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    return () => {
-      timers.current.forEach(clearTimeout);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (stage !== stages.length - 1) {
-      return;
-    }
-
-    confTimer.current = setInterval(
-      () => setBlockConfs((confirmations) => confirmations + 1),
-      900,
-    );
-
-    return () => {
-      if (confTimer.current) {
-        clearInterval(confTimer.current);
-        confTimer.current = null;
-      }
-    };
-  }, [stage]);
-
-  function runSequence() {
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
-
-    if (stage === stages.length - 1) {
-      setStage(-1);
-      setBlockConfs(0);
-      return;
-    }
-
-    setStage(0);
-    setBlockConfs(0);
-    stages.slice(1).forEach((_, index) => {
-      timers.current.push(
-        setTimeout(() => {
-          const nextStage = index + 1;
-          setStage(nextStage);
-          if (nextStage === stages.length - 1) {
-            setBlockConfs(1);
-          }
-        }, (index + 1) * 720),
-      );
-    });
-  }
-
   return (
-    <div className="relative w-full overflow-hidden rounded-sm border border-black/[0.06] bg-[#EBE8E1] text-left shadow-[0_40px_100px_rgba(0,0,0,0.22)] dark:border-white/[0.07] dark:bg-[#111]">
-      <div className="console-scanline pointer-events-none absolute inset-x-0 top-0 z-20 h-20 bg-gradient-to-b from-transparent via-indigo-500/[0.04] to-transparent" />
+    <div className="relative overflow-hidden rounded-sm border border-black/[0.07] bg-[#EBE8E1] shadow-[0_30px_80px_rgba(0,0,0,0.16)] dark:border-white/[0.08] dark:bg-[#111]">
+      <div className="console-scanline pointer-events-none absolute inset-x-0 top-0 z-20 h-16 bg-gradient-to-b from-transparent via-indigo-500/[0.04] to-transparent" />
 
-      <div className="relative z-10 flex h-12 items-center justify-between border-b border-black/[0.06] px-4 dark:border-white/[0.07] sm:px-6">
+      <div className="relative z-10 flex h-12 items-center justify-between border-b border-black/[0.06] px-4 sm:px-5 dark:border-white/[0.07]">
         <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-zinc-500/60" />
-          <span className="h-2 w-2 rounded-full bg-zinc-500/40" />
-          <span className="h-2 w-2 rounded-full bg-zinc-500/20" />
+          <span className="h-2 w-2 rounded-full bg-zinc-500/50" />
+          <span className="h-2 w-2 rounded-full bg-zinc-500/30" />
+          <span className="h-2 w-2 rounded-full bg-zinc-500/15" />
         </div>
-        <div className="text-[11px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
-          CONCLAVE / CONFIDENTIAL DECISION CONSOLE
-        </div>
+        <p className="truncate px-3 text-[9px] font-bold tracking-[0.14em] text-zinc-500 uppercase sm:text-[10px]">
+          Research grant selection / Final review
+        </p>
         <LiveIndicator
           className="hidden sm:flex"
-          label={stage >= 2 ? "Nox computing" : "Nox ready"}
-          tone={stage >= 2 && stage < 4 ? "amber" : "emerald"}
+          label="Nox protected"
+          tone="emerald"
         />
+        <span className="h-1.5 w-1.5 bg-emerald-500 sm:hidden" />
       </div>
 
-      <div className="relative z-10 grid lg:grid-cols-[1.08fr_0.92fr]">
-        <div className="relative flex min-h-[650px] flex-col justify-between overflow-hidden border-b border-black/[0.06] p-6 lg:border-r lg:border-b-0 lg:p-10 xl:p-12 dark:border-white/[0.07]">
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#8080800d_1px,transparent_1px),linear-gradient(to_bottom,#8080800d_1px,transparent_1px)] bg-[size:36px_36px]" />
-
-          <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-black/[0.03] px-3 py-1 dark:border-white/[0.08] dark:bg-white/[0.03]">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[11px] font-bold tracking-[0.18em] text-zinc-500 uppercase">
-                POWERED BY IEXEC NOX
-              </span>
+      <div className="relative z-10 grid grid-cols-[0.76fr_1.24fr]">
+        <section className="border-r border-black/[0.06] p-3 sm:p-5 dark:border-white/[0.07]">
+          <div className="flex items-end justify-between gap-2">
+            <div>
+              <p className="text-[8px] tracking-[0.12em] text-zinc-500 uppercase sm:text-[9px]">
+                Evaluator activity
+              </p>
+              <p className="mt-2 text-xl font-bold text-zinc-950 sm:text-2xl dark:text-white">
+                4 / 4
+              </p>
             </div>
-
-            <h1 className="mt-10 max-w-[700px] text-5xl leading-[0.88] font-bold text-zinc-900 uppercase sm:text-6xl xl:text-7xl dark:text-white">
-              THE CONFIDENTIAL DECISION INFRASTRUCTURE.
-            </h1>
-
-            <p className="mt-7 max-w-[560px] text-sm leading-relaxed text-zinc-500 sm:text-base">
-              Sensitive evaluations stay encrypted while Conclave computes the
-              approved outcome. Individual scores, comments, and identities are
-              never exposed.
-            </p>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button
-                className="button-primary inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-zinc-900 px-7 text-[12px] font-bold tracking-[0.18em] uppercase transition-colors hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200"
-                onClick={runSequence}
-                type="button"
-              >
-                {stage === stages.length - 1
-                  ? "Reset sequence"
-                  : stage >= 0
-                    ? stages[stage]
-                    : "Run confidential decision"}
-                {stage >= 0 && stage < stages.length - 1 ? (
-                  <span className="h-3.5 w-3.5 animate-spin rounded-full border border-current/25 border-t-current" />
-                ) : (
-                  <Icon name="chevron-right" size={14} />
-                )}
-              </button>
-              <a
-                className="button-secondary inline-flex h-12 items-center justify-center rounded-sm border border-black/10 px-7 text-[12px] font-bold tracking-[0.18em] uppercase transition-colors hover:bg-black/[0.03] dark:border-white/10 dark:hover:bg-white/[0.04]"
-                href={siteLinks.product}
-              >
-                View workflow
-              </a>
-            </div>
+            <LockKeyhole
+              aria-hidden="true"
+              className="mb-1 text-indigo-500"
+              size={14}
+            />
           </div>
 
-          <div className="relative z-10 mt-12 grid gap-px overflow-hidden border border-black/[0.07] bg-black/[0.07] sm:grid-cols-3 dark:border-white/[0.07] dark:bg-white/[0.07]">
-            {[
-              ["INPUTS", "Encrypted", "lock"],
-              ["COMPUTE", "Confidential", "cpu"],
-              ["OUTPUT", "Result only", "check"],
-            ].map(([label, value, icon]) => (
-              <div className="bg-[#EBE8E1] p-4 dark:bg-[#111]" key={label}>
-                <Icon
-                  className="mb-4 text-zinc-500"
-                  name={icon as "lock" | "cpu" | "check"}
-                  size={17}
-                />
-                <p className="text-[10px] tracking-[0.13em] text-zinc-500 uppercase">
-                  {label}
-                </p>
-                <p className="mt-2 text-[13px] font-bold text-zinc-900 uppercase dark:text-white">
-                  {value}
-                </p>
+          <div className="mt-4 divide-y divide-black/[0.06] border-y border-black/[0.06] dark:divide-white/[0.06] dark:border-white/[0.06]">
+            {evaluators.map(([number, role]) => (
+              <div
+                className="flex h-11 items-center justify-between gap-2"
+                key={number}
+              >
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center border border-black/[0.08] text-[8px] font-bold text-zinc-500 dark:border-white/[0.08]">
+                    {number}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="hidden truncate text-[9px] font-bold tracking-[0.06em] text-zinc-800 uppercase sm:block dark:text-zinc-200">
+                      {role}
+                    </p>
+                    <p className="text-[7px] text-zinc-500 uppercase sm:mt-1 sm:text-[8px]">
+                      Input private
+                    </p>
+                  </div>
+                </div>
+                <span className="flex shrink-0 items-center gap-1 text-[7px] font-bold text-emerald-500 uppercase sm:text-[8px]">
+                  <span className="h-1 w-1 bg-emerald-500" />
+                  <span className="hidden sm:inline">Sealed</span>
+                </span>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        <aside className="flex min-h-[650px] flex-col">
-          <div className="flex items-center justify-between border-b border-black/[0.06] px-5 py-4 dark:border-white/[0.07] sm:px-7">
+        <section className="relative min-w-0 p-3 sm:p-5">
+          <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[13px] font-bold tracking-[0.12em] text-zinc-900 uppercase dark:text-white">
-                RESEARCH GRANT SELECTION
+              <p className="text-[8px] tracking-[0.12em] text-zinc-500 uppercase sm:text-[9px]">
+                Confidential execution
               </p>
-              <p className="mt-1 text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
-                CAMPAIGN / REVIEW 02
+              <p className="mt-1 hidden text-[10px] font-bold text-zinc-900 uppercase sm:block dark:text-white">
+                Approved policy / Weighted aggregate
               </p>
             </div>
-            <span
-              className={cn(
-                "border px-2 py-1 text-[10px] font-bold tracking-[0.1em] uppercase",
-                stage === stages.length - 1
-                  ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-400"
-                  : "border-amber-400/30 bg-amber-400/10 text-amber-400",
-              )}
-            >
-              {stage === stages.length - 1 ? "VERIFIED" : "COLLECTING"}
+            <span className="border border-indigo-500/20 bg-indigo-500/[0.05] px-2 py-1 text-[7px] font-bold tracking-[0.08em] text-indigo-500 uppercase sm:text-[8px]">
+              Protected
             </span>
           </div>
 
-          <div className="flex flex-1 flex-col p-5 sm:p-7">
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-[10px] tracking-[0.13em] text-zinc-500 uppercase">
-                  EVALUATOR ACTIVITY
-                </p>
-                <p className="mt-2 text-3xl font-bold text-zinc-900 dark:text-white">
-                  {stage >= 0 ? "4 / 4" : "3 / 4"}
-                </p>
-              </div>
-              <span className="text-[10px] text-zinc-500 uppercase">
-                ALL INPUTS PRIVATE
-              </span>
-            </div>
-
-            <div className="mt-5 space-y-2">
-              {evaluators.map(([initials, name, role], index) => {
-                const finalEvaluator = index === evaluators.length - 1;
-                const sealed = !finalEvaluator || stage >= 1;
-
-                return (
+          <div className="relative mt-4 grid min-h-40 grid-cols-[1fr_auto_1fr] items-center gap-2 border-y border-black/[0.06] py-5 sm:min-h-44 sm:gap-5 dark:border-white/[0.06]">
+            <div className="relative z-10 min-w-0">
+              <p className="text-[7px] font-bold tracking-[0.1em] text-zinc-500 uppercase sm:text-[8px]">
+                Encrypted bundle
+              </p>
+              <div className="mt-3 space-y-2">
+                {[76, 58, 68].map((width, index) => (
                   <div
-                    className="flex items-center justify-between border border-black/[0.06] bg-black/[0.015] p-3 dark:border-white/[0.06] dark:bg-white/[0.02]"
-                    key={initials}
+                    className="flex items-center gap-1.5"
+                    key={`${width}-${index}`}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 text-[11px] font-bold text-zinc-700 dark:bg-white/10 dark:text-zinc-300">
-                        {initials}
-                      </div>
-                      <div>
-                        <p className="text-[12px] font-bold text-zinc-900 uppercase dark:text-white">
-                          {finalEvaluator && stage >= 1 ? "0x7C...92F" : name}
-                        </p>
-                        <p className="mt-1 text-[10px] text-zinc-500 uppercase">
-                          {finalEvaluator && stage >= 1
-                            ? "IDENTITY REDACTED"
-                            : role}
-                        </p>
-                      </div>
-                    </div>
+                    <span className="h-1 w-1 shrink-0 bg-indigo-500" />
                     <span
-                      className={cn(
-                        "flex items-center gap-2 text-[10px] font-bold uppercase",
-                        sealed ? "text-emerald-400" : "text-zinc-500",
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          "h-1.5 w-1.5 rounded-full",
-                          sealed
-                            ? "bg-emerald-400"
-                            : "bg-zinc-500 animate-pulse",
-                        )}
-                      />
-                      {sealed ? "SEALED" : "PENDING"}
-                    </span>
+                      className="h-px bg-zinc-300 dark:bg-zinc-700"
+                      style={{ width: `${width}%` }}
+                    />
                   </div>
-                );
-              })}
+                ))}
+              </div>
+              <p className="mt-3 hidden font-mono text-[7px] text-zinc-500 sm:block">
+                0x8f...c21
+              </p>
             </div>
 
-            <div className="mt-6 border border-black/[0.06] p-4 dark:border-white/[0.06]">
-              <div className="flex items-center justify-between">
-                <p className="text-[10px] font-bold tracking-[0.12em] text-zinc-500 uppercase">
-                  CONFIDENTIAL PIPELINE
-                </p>
-                <span className="text-[10px] text-zinc-500">
-                  {stage >= 0 ? stages[stage] : "AWAITING INPUT"}
+            <div className="relative z-10">
+              <AnimatedConclaveMark className="h-14 w-14 sm:h-20 sm:w-20" />
+            </div>
+
+            <div className="relative z-10 min-w-0 text-right">
+              <p className="text-[7px] font-bold tracking-[0.1em] text-emerald-500 uppercase sm:text-[8px]">
+                Verified result
+              </p>
+              <p className="mt-3 truncate text-[10px] font-bold text-zinc-950 uppercase sm:text-sm dark:text-white">
+                Northstar
+              </p>
+              <p className="mt-1 hidden text-[8px] text-zinc-500 uppercase sm:block">
+                Recommended
+              </p>
+              <div className="mt-3 inline-flex h-6 w-6 items-center justify-center border border-emerald-500/25 bg-emerald-500/[0.06] text-emerald-500">
+                <Check aria-hidden="true" size={12} />
+              </div>
+            </div>
+
+            <div className="absolute top-1/2 right-[14%] left-[14%] h-px bg-black/10 dark:bg-white/10" />
+            <div className="proof-flow absolute top-1/2 right-[14%] left-[14%] h-px bg-gradient-to-r from-indigo-500 via-emerald-400 to-indigo-500" />
+            <span className="conclave-route-packet absolute top-[calc(50%_-_3px)] left-[14%] z-20 h-1.5 w-1.5 bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.7)]" />
+          </div>
+
+          <div className="mt-4 grid grid-cols-5">
+            {stages.map((stage, index) => (
+              <div className="flex min-w-0 flex-col items-center" key={stage}>
+                <span
+                  className={
+                    index === stages.length - 1
+                      ? "flex h-5 w-5 items-center justify-center border border-emerald-500/35 text-emerald-500"
+                      : "flex h-5 w-5 items-center justify-center border border-indigo-500/25 text-indigo-500"
+                  }
+                >
+                  {index === stages.length - 1 ? (
+                    <ShieldCheck aria-hidden="true" size={10} />
+                  ) : (
+                    <span className="text-[7px]">{index + 1}</span>
+                  )}
+                </span>
+                <span className="mt-2 hidden text-[7px] text-zinc-500 sm:block">
+                  {stage}
                 </span>
               </div>
-
-              <div className="relative mt-6">
-                <div className="absolute top-4 right-4 left-4 h-px bg-black/10 dark:bg-white/10" />
-                <div
-                  className={cn(
-                    "proof-flow absolute top-4 left-4 h-px bg-gradient-to-r from-indigo-400 via-emerald-400 to-indigo-400 transition-[width] duration-700",
-                    stage < 0
-                      ? "w-0"
-                      : stage === 0
-                        ? "w-[10%]"
-                        : stage === 1
-                          ? "w-[28%]"
-                          : stage === 2
-                            ? "w-[50%]"
-                            : stage === 3
-                              ? "w-[72%]"
-                              : "w-[calc(100%_-_2rem)]",
-                  )}
-                />
-                {stage >= 0 ? (
-                  <span
-                    className={cn(
-                      "absolute top-[11px] z-20 h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.7)] transition-all duration-700",
-                      packetPositions[stage],
-                    )}
-                  />
-                ) : null}
-                <div className="relative grid grid-cols-5">
-                  {["INPUT", "SEAL", "NOX", "RECEIPT", "RESULT"].map(
-                    (label, index) => (
-                      <div className="flex flex-col items-center" key={label}>
-                        <div
-                          className={cn(
-                            "flex h-8 w-8 items-center justify-center border bg-[#EBE8E1] transition-colors duration-500 dark:bg-[#111]",
-                            stage >= index
-                              ? "border-emerald-400/40 text-emerald-400"
-                              : "border-black/10 text-zinc-500 dark:border-white/10",
-                          )}
-                        >
-                          {stage >= index ? (
-                            <Icon name="check" size={13} />
-                          ) : (
-                            <span className="text-[10px]">0{index + 1}</span>
-                          )}
-                        </div>
-                        <span className="mt-3 text-[9px] text-zinc-500">
-                          {label}
-                        </span>
-                      </div>
-                    ),
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div
-              className={cn(
-                "mt-auto border-t border-black/[0.06] pt-6 transition-opacity duration-500 dark:border-white/[0.06]",
-                stage === stages.length - 1 ? "opacity-100" : "opacity-45",
-              )}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[10px] tracking-[0.13em] text-zinc-500 uppercase">
-                    COMPUTED OUTCOME
-                  </p>
-                  <p className="mt-2 text-lg font-bold text-zinc-900 uppercase dark:text-white">
-                    {stage === stages.length - 1
-                      ? "NORTHSTAR / RECOMMENDED"
-                      : "RESULT LOCKED"}
-                  </p>
-                </div>
-                <div className="flex h-10 w-10 items-center justify-center border border-emerald-400/30 bg-emerald-400/10 text-emerald-400">
-                  <Icon
-                    name={stage === stages.length - 1 ? "check" : "lock"}
-                    size={18}
-                  />
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-        </aside>
+        </section>
       </div>
 
-      <div className="relative z-10 flex items-center gap-2 overflow-hidden border-t border-black/[0.06] px-5 py-3 dark:border-white/[0.07]">
-        <span className="shrink-0 text-[10px] tracking-[0.12em] text-zinc-500 uppercase">
-          BLOCK RAIL
+      <div className="relative z-10 flex h-9 items-center justify-between gap-4 border-t border-black/[0.06] px-4 sm:px-5 dark:border-white/[0.07]">
+        <span className="truncate font-mono text-[7px] text-zinc-500 sm:text-[8px]">
+          RECEIPT / 0x19a...7e2
         </span>
-        <div className="flex flex-1 items-center gap-1.5 overflow-hidden">
-          {blockRail.map((block, index) => {
-            const isResultBlock = index === blockRail.length - 1;
-            const settled = stage === stages.length - 1;
-            return (
-              <div
-                className={cn(
-                  "flex h-8 shrink-0 items-center gap-2 border px-2 text-[10px] font-bold transition-colors duration-500",
-                  isResultBlock && settled
-                    ? "border-emerald-400/50 bg-emerald-400/10 text-emerald-400"
-                    : "border-black/[0.08] bg-black/[0.02] text-zinc-500 dark:border-white/[0.08] dark:bg-white/[0.02]",
-                )}
-                key={block.height}
-              >
-                <span className="tabular-nums">#{block.height}</span>
-                <span className="hidden font-normal text-zinc-500 sm:inline">
-                  {block.hash}
-                </span>
-                {isResultBlock && settled ? (
-                  <span className="tabular-nums text-emerald-400">
-                    {blockConfs} conf
-                  </span>
-                ) : null}
-              </div>
-            );
-          })}
-        </div>
-        <span className="hidden shrink-0 text-[10px] text-zinc-500 sm:block">
-          GAS 21K · SESSION C-0291
+        <span className="shrink-0 text-[7px] font-bold tracking-[0.08em] text-emerald-500 uppercase sm:text-[8px]">
+          06 confirmations
         </span>
       </div>
     </div>

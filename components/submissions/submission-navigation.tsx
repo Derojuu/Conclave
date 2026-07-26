@@ -27,11 +27,11 @@ export function SubmissionNavigation({
   return (
     <nav
       aria-label="Submission navigation"
-      className="mt-7 flex flex-wrap gap-2 border-b border-black/[0.06] pb-4 dark:border-white/[0.06]"
+      className="mt-7 flex gap-2 overflow-x-auto border-b border-black/[0.06] pb-4 dark:border-white/[0.06]"
     >
       {links.map((link) => (
         <Link
-          className="inline-flex min-h-9 items-center gap-2 border border-black/[0.06] px-3 text-[10px] font-bold tracking-[0.08em] text-zinc-500 uppercase transition-colors hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.06]"
+          className="inline-flex min-h-9 shrink-0 items-center gap-2 border border-black/[0.06] px-3 text-[10px] font-bold tracking-[0.08em] text-zinc-500 uppercase transition-colors hover:border-indigo-500 hover:text-indigo-500 dark:border-white/[0.06]"
           href={link.href}
           key={link.href}
         >
