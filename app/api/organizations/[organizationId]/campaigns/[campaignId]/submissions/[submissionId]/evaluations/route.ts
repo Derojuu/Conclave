@@ -1,17 +1,24 @@
 import { Buffer } from "node:buffer";
 
 import { NextResponse } from "next/server";
+import {
+  decodeFunctionData,
+  keccak256,
+  parseEventLogs,
+  toHex,
+  type Hex,
+} from "viem";
 
-import {
-  getEvaluationEncryptionConfig,
-  requireEvaluationEncryptionConfig,
-} from "@/lib/confidential/encryption-config";
-import { getEvaluatorReference } from "@/lib/confidential/evaluator-reference";
-import {
-  computeEnvelopeHash,
-  envelopeHashMatches,
-} from "@/lib/confidential/evaluation-envelope";
+import { apiError } from "@/lib/api-response";
 import { withTransaction } from "@/lib/database";
+import {
+  confidentialDecisionEngineAbi,
+  getNoxContractAddress,
+  NOX_CHAIN_ID,
+  NOX_SCORE_SCALE,
+  toNoxId,
+} from "@/lib/nox/contract";
+import { getNoxPublicClient } from "@/lib/nox/server";
 import { prisma } from "@/lib/prisma";
 import { getRequestMetadata } from "@/lib/request-metadata";
 import {
@@ -20,13 +27,10 @@ import {
 } from "@/lib/security/evaluation-rbac";
 import {
   ConflictError,
+  ConfigurationError,
   ValidationError,
 } from "@/lib/security/errors";
-import {
-  encryptedEvaluationEnvelopeSchema,
-  evaluationAdditionalDataSchema,
-} from "@/lib/validation/evaluation";
-import { apiError } from "@/lib/api-response";
+import { noxEvaluationSubmissionSchema } from "@/lib/validation/evaluation";
 
 type EvaluationRouteContext = {
   params: Promise<{
@@ -35,16 +39,6 @@ type EvaluationRouteContext = {
     submissionId: string;
   }>;
 };
-
-function parseAdditionalData(value: string) {
-  try {
-    return evaluationAdditionalDataSchema.parse(
-      JSON.parse(Buffer.from(value, "base64").toString("utf8")),
-    );
-  } catch {
-    throw new ValidationError("Encrypted evaluation context is invalid.");
-  }
-}
 
 export async function GET(
   _request: Request,
@@ -59,10 +53,7 @@ export async function GET(
     );
     const evaluation = await prisma.evaluation.findUnique({
       where: {
-        submissionId_evaluatorId: {
-          submissionId,
-          evaluatorId: user.id,
-        },
+        submissionId_evaluatorId: { submissionId, evaluatorId: user.id },
       },
       select: {
         id: true,
@@ -70,34 +61,31 @@ export async function GET(
         submittedAt: true,
         updatedAt: true,
         payload: {
-          select: {
-            payloadHash: true,
-            sealedAt: true,
-            schemaVersion: true,
-            encryptionAlgorithm: true,
-            keyReference: true,
-          },
+          select: { payloadHash: true, keyReference: true, nonce: true },
         },
       },
     });
 
     return NextResponse.json({
       evaluation,
-      encryptionConfigured: getEvaluationEncryptionConfig() !== null,
+      noxConfigured: getNoxContractAddress() !== null,
     });
   } catch (error) {
     return apiError(error);
   }
 }
 
-async function persistEncryptedEvaluation(
-  request: Request,
-  context: EvaluationRouteContext,
-  finalSubmission: boolean,
-) {
+export async function PUT() {
+  return apiError(
+    new ValidationError(
+      "Nox evaluations are submitted once as final on-chain transactions.",
+    ),
+  );
+}
+
+export async function POST(request: Request, context: EvaluationRouteContext) {
   try {
-    const { organizationId, campaignId, submissionId } =
-      await context.params;
+    const { organizationId, campaignId, submissionId } = await context.params;
     const { user, campaign, template } =
       await requireCurrentEvaluationAssignment(
         organizationId,
@@ -110,164 +98,169 @@ async function persistEncryptedEvaluation(
       templateDeadline: template.deadline,
     });
 
-    const encryptionConfig = requireEvaluationEncryptionConfig();
-    const envelope = encryptedEvaluationEnvelopeSchema.parse(
-      await request.json(),
-    );
-
-    if (
-      envelope.encryptionAlgorithm !==
-        encryptionConfig.encryptionAlgorithm ||
-      envelope.keyReference !== encryptionConfig.keyReference
-    ) {
-      throw new ValidationError(
-        "The evaluation was encrypted for an unexpected Nox key.",
+    const input = noxEvaluationSubmissionSchema.parse(await request.json());
+    const configuredAddress = getNoxContractAddress();
+    if (!configuredAddress) {
+      throw new ConfigurationError(
+        "NEXT_PUBLIC_CONCLAVE_NOX_ADDRESS is required.",
       );
     }
-
-    if (!envelopeHashMatches(envelope)) {
-      throw new ValidationError(
-        "Encrypted evaluation integrity verification failed.",
-      );
-    }
-
-    const additionalData = parseAdditionalData(envelope.additionalData);
-    const evaluatorRef = getEvaluatorReference(campaignId, user.id);
     if (
-      additionalData.campaignId !== campaignId ||
-      additionalData.submissionId !== submissionId ||
-      additionalData.evaluatorRef !== evaluatorRef ||
-      additionalData.templateId !== template.id ||
-      additionalData.templateVersion !== template.version
+      input.contractAddress.toLowerCase() !== configuredAddress.toLowerCase()
     ) {
       throw new ValidationError(
-        "Encrypted evaluation context does not match this assignment.",
+        "The evaluation targeted an unexpected contract.",
+      );
+    }
+    if (!user.walletAddress) {
+      throw new ValidationError(
+        "Link the submitting wallet to your account first.",
       );
     }
 
     const existing = await prisma.evaluation.findUnique({
       where: {
-        submissionId_evaluatorId: {
-          submissionId,
-          evaluatorId: user.id,
-        },
+        submissionId_evaluatorId: { submissionId, evaluatorId: user.id },
       },
-      select: {
-        id: true,
-        status: true,
-        payload: {
-          select: { payloadHash: true },
-        },
-      },
+      select: { id: true, status: true, payload: { select: { nonce: true } } },
     });
-
     if (existing?.status === "SUBMITTED") {
       if (
-        finalSubmission &&
-        existing.payload?.payloadHash === envelope.payloadHash
+        existing.payload?.nonce.toLowerCase() ===
+        input.transactionHash.toLowerCase()
       ) {
-        return NextResponse.json({
-          evaluation: {
-            id: existing.id,
-            status: existing.status,
-            payloadHash: existing.payload.payloadHash,
-          },
-          idempotent: true,
-        });
+        return NextResponse.json({ evaluation: existing, idempotent: true });
       }
-
       throw new ConflictError(
         "This confidential evaluation has already been submitted.",
       );
     }
 
+    const client = getNoxPublicClient();
+    const [receipt, transaction] = await Promise.all([
+      client.getTransactionReceipt({ hash: input.transactionHash as Hex }),
+      client.getTransaction({ hash: input.transactionHash as Hex }),
+    ]);
+    if (
+      receipt.status !== "success" ||
+      transaction.to?.toLowerCase() !== configuredAddress.toLowerCase() ||
+      transaction.from.toLowerCase() !== user.walletAddress.toLowerCase()
+    ) {
+      throw new ValidationError("The Nox score transaction is invalid.");
+    }
+
+    const decoded = decodeFunctionData({
+      abi: confidentialDecisionEngineAbi,
+      data: transaction.input,
+    });
+    if (decoded.functionName !== "submitScore") {
+      throw new ValidationError("Expected a Nox submitScore transaction.");
+    }
+    const [onchainCampaignId, onchainSubmissionId, handle, proof] =
+      decoded.args;
+    if (
+      onchainCampaignId !== toNoxId(campaignId) ||
+      onchainSubmissionId !== toNoxId(submissionId) ||
+      handle.toLowerCase() !== input.handle.toLowerCase() ||
+      proof.toLowerCase() !== input.handleProof.toLowerCase()
+    ) {
+      throw new ValidationError(
+        "The Nox transaction does not match this assignment.",
+      );
+    }
+
+    const events = parseEventLogs({
+      abi: confidentialDecisionEngineAbi,
+      logs: receipt.logs,
+      eventName: "ScoreSubmitted",
+    });
+    if (
+      !events.some(
+        (event) =>
+          event.args.campaignId === toNoxId(campaignId) &&
+          event.args.submissionId === toNoxId(submissionId) &&
+          event.args.evaluator.toLowerCase() ===
+            user.walletAddress?.toLowerCase() &&
+          event.args.encryptedScoreHandle.toLowerCase() ===
+            input.handle.toLowerCase(),
+      )
+    ) {
+      throw new ValidationError(
+        "The confirmed transaction emitted no matching score event.",
+      );
+    }
+
+    const contextData = Buffer.from(
+      JSON.stringify({
+        campaignId,
+        submissionId,
+        templateId: template.id,
+        templateVersion: template.version,
+      }),
+    ).toString("base64");
+    const payloadHash = keccak256(
+      toHex(
+        `${input.handle}:${input.transactionHash}:${campaignId}:${submissionId}`,
+      ),
+    ).slice(2);
     const requestMetadata = await getRequestMetadata();
-    const evaluation = await withTransaction(async (transaction) => {
-      const saved = await transaction.evaluation.upsert({
+    const evaluation = await withTransaction(async (database) => {
+      const saved = await database.evaluation.upsert({
         where: {
-          submissionId_evaluatorId: {
-            submissionId,
-            evaluatorId: user.id,
-          },
+          submissionId_evaluatorId: { submissionId, evaluatorId: user.id },
         },
-        update: {
-          status: finalSubmission ? "SUBMITTED" : "SEALED",
-          submittedAt: finalSubmission ? new Date() : null,
-        },
+        update: { status: "SUBMITTED", submittedAt: new Date() },
         create: {
           campaignId,
           submissionId,
           evaluatorId: user.id,
-          status: finalSubmission ? "SUBMITTED" : "SEALED",
-          submittedAt: finalSubmission ? new Date() : null,
-        },
-        select: {
-          id: true,
-          status: true,
-          submittedAt: true,
+          status: "SUBMITTED",
+          submittedAt: new Date(),
         },
       });
-
-      await transaction.encryptedEvaluationPayload.upsert({
+      await database.encryptedEvaluationPayload.upsert({
         where: { evaluationId: saved.id },
         update: {
-          ciphertext: envelope.ciphertext,
-          encryptedKey: envelope.encryptedKey,
-          encryptionAlgorithm: envelope.encryptionAlgorithm,
-          keyReference: envelope.keyReference,
-          nonce: envelope.nonce,
-          authenticationTag: null,
-          additionalData: envelope.additionalData,
-          payloadHash: envelope.payloadHash,
-          schemaVersion: envelope.schemaVersion,
+          ciphertext: input.handle,
+          encryptedKey: input.handleProof,
+          encryptionAlgorithm: "IEXEC_NOX_EUINT256_V1",
+          keyReference: configuredAddress,
+          nonce: input.transactionHash,
+          additionalData: contextData,
+          payloadHash,
+          schemaVersion: 2,
           sealedAt: new Date(),
         },
         create: {
           evaluationId: saved.id,
-          ciphertext: envelope.ciphertext,
-          encryptedKey: envelope.encryptedKey,
-          encryptionAlgorithm: envelope.encryptionAlgorithm,
-          keyReference: envelope.keyReference,
-          nonce: envelope.nonce,
-          additionalData: envelope.additionalData,
-          payloadHash: envelope.payloadHash,
-          schemaVersion: envelope.schemaVersion,
+          ciphertext: input.handle,
+          encryptedKey: input.handleProof,
+          encryptionAlgorithm: "IEXEC_NOX_EUINT256_V1",
+          keyReference: configuredAddress,
+          nonce: input.transactionHash,
+          additionalData: contextData,
+          payloadHash,
+          schemaVersion: 2,
         },
       });
-
-      if (finalSubmission) {
-        await transaction.auditLog.create({
-          data: {
-            organizationId,
-            campaignId,
-            actorId: user.id,
-            action: "SUBMIT_EVALUATION",
-            entityType: "Evaluation",
-            entityId: saved.id,
-            metadata: {
-              payloadHash: envelope.payloadHash,
-              schemaVersion: envelope.schemaVersion,
-              encryptionAlgorithm: envelope.encryptionAlgorithm,
-            },
-            ...requestMetadata,
+      await database.auditLog.create({
+        data: {
+          organizationId,
+          campaignId,
+          actorId: user.id,
+          action: "SUBMIT_EVALUATION",
+          entityType: "Evaluation",
+          entityId: saved.id,
+          metadata: {
+            chainId: NOX_CHAIN_ID,
+            contractAddress: configuredAddress,
+            transactionHash: input.transactionHash,
+            handle: input.handle,
+            scoreScale: NOX_SCORE_SCALE,
           },
-        });
-        await transaction.notification.create({
-          data: {
-            userId: user.id,
-            type: "EVALUATION",
-            title: "Evaluation submitted",
-            body: "Your confidential evaluation was sealed successfully.",
-            data: {
-              organizationId,
-              campaignId,
-              submissionId,
-              evaluationId: saved.id,
-            },
-          },
-        });
-      }
-
+          ...requestMetadata,
+        },
+      });
       return saved;
     });
 
@@ -275,34 +268,13 @@ async function persistEncryptedEvaluation(
       {
         evaluation: {
           ...evaluation,
-          payloadHash: computeEnvelopeHash({
-            schemaVersion: envelope.schemaVersion,
-            encryptionAlgorithm: envelope.encryptionAlgorithm,
-            keyReference: envelope.keyReference,
-            encryptedKey: envelope.encryptedKey,
-            nonce: envelope.nonce,
-            ciphertext: envelope.ciphertext,
-            additionalData: envelope.additionalData,
-          }),
+          payloadHash,
+          transactionHash: input.transactionHash,
         },
       },
-      { status: existing ? 200 : 201 },
+      { status: 201 },
     );
   } catch (error) {
     return apiError(error);
   }
-}
-
-export async function PUT(
-  request: Request,
-  context: EvaluationRouteContext,
-) {
-  return persistEncryptedEvaluation(request, context, false);
-}
-
-export async function POST(
-  request: Request,
-  context: EvaluationRouteContext,
-) {
-  return persistEncryptedEvaluation(request, context, true);
 }

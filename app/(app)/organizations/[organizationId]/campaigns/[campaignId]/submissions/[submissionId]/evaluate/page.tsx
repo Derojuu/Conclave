@@ -3,9 +3,8 @@ import { ArrowLeft, LockKeyhole } from "lucide-react";
 import Link from "next/link";
 
 import { ConfidentialEvaluationForm } from "@/components/evaluations/confidential-evaluation-form";
-import { getEvaluationEncryptionConfig } from "@/lib/confidential/encryption-config";
-import { getEvaluatorReference } from "@/lib/confidential/evaluator-reference";
 import { requireAuthenticatedUser } from "@/lib/auth";
+import { getNoxContractAddress } from "@/lib/nox/contract";
 import { prisma } from "@/lib/prisma";
 import { requireEvaluationAssignment } from "@/lib/security/evaluation-rbac";
 
@@ -98,8 +97,7 @@ export default async function EvaluateSubmissionPage({
     throw new Error("Campaign evaluation template is missing.");
   }
 
-  const encryptionConfig = getEvaluationEncryptionConfig();
-  const evaluatorRef = getEvaluatorReference(campaignId, user.id);
+  const noxContractAddress = getNoxContractAddress();
 
   return (
     <div className="max-w-5xl">
@@ -154,21 +152,13 @@ export default async function EvaluateSubmissionPage({
 
         <ConfidentialEvaluationForm
           campaignId={campaignId}
-          encryptionConfig={
-            encryptionConfig
-              ? {
-                  publicKey: encryptionConfig.publicKey,
-                  keyReference: encryptionConfig.keyReference,
-                }
-              : null
-          }
-          evaluatorRef={evaluatorRef}
+          linkedWalletAddress={user.walletAddress}
+          noxContractAddress={noxContractAddress}
           existingEvaluation={
             existingEvaluation
               ? {
                   status: existingEvaluation.status,
-                  payloadHash:
-                    existingEvaluation.payload?.payloadHash ?? null,
+                  payloadHash: existingEvaluation.payload?.payloadHash ?? null,
                   submittedAt:
                     existingEvaluation.submittedAt?.toISOString() ?? null,
                 }
@@ -177,8 +167,6 @@ export default async function EvaluateSubmissionPage({
           organizationId={organizationId}
           submissionId={submissionId}
           template={{
-            id: template.id,
-            version: template.version,
             instructions: template.instructions,
             criteria: template.criteria.map((criterion) => ({
               ...criterion,

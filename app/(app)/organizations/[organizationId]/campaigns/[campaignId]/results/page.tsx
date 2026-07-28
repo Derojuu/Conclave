@@ -11,11 +11,12 @@ import {
 
 import { CampaignNavigation } from "@/components/campaigns/campaign-navigation";
 import { CampaignPageHeader } from "@/components/campaigns/campaign-page-header";
-import { StartComputationButton } from "@/components/results/start-computation-button";
+import { NoxCampaignControl } from "@/components/results/nox-campaign-control";
 import { ORGANIZATION_PERMISSIONS, roleHasPermission } from "@/constants/auth";
 import type { CampaignStatus } from "@/constants/campaign";
 import { requireAuthenticatedUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getNoxContractAddress } from "@/lib/nox/contract";
 import { requireCampaignPermission } from "@/lib/security/campaign-rbac";
 import { aggregateRankingEntrySchema } from "@/lib/validation/computation";
 import { z } from "zod";
@@ -55,6 +56,9 @@ export default async function CampaignResultsPage({
       organization: { select: { name: true } },
       submissions: {
         select: { id: true, title: true, kind: true },
+      },
+      evaluators: {
+        select: { evaluator: { select: { walletAddress: true } } },
       },
       evaluations: {
         where: { status: { in: ["SUBMITTED", "INCLUDED"] } },
@@ -212,9 +216,8 @@ export default async function CampaignResultsPage({
                   {campaign.result.consensusSummary}
                 </p>
                 <p className="mt-5 text-[9px] leading-4 text-zinc-500">
-                  Generated inside the confidential computation from aggregate
-                  feedback. No evaluator attribution or individual comments are
-                  included.
+                  Derived from verified aggregate totals. No evaluator-level
+                  score or attribution is published.
                 </p>
               </div>
 
@@ -308,9 +311,20 @@ export default async function CampaignResultsPage({
               </p>
             </div>
             {canPublish && campaign.status === "EVALUATING" ? (
-              <StartComputationButton
+              <NoxCampaignControl
                 campaignId={campaignId}
+                contractAddress={getNoxContractAddress()}
+                evaluatorWallets={campaign.evaluators.flatMap(
+                  ({ evaluator }) =>
+                    evaluator.walletAddress ? [evaluator.walletAddress] : [],
+                )}
+                expectedEvaluatorCount={campaign.evaluators.length}
+                linkedWalletAddress={user.walletAddress}
                 organizationId={organizationId}
+                submissions={campaign.submissions.map(({ id, title }) => ({
+                  id,
+                  title,
+                }))}
               />
             ) : null}
           </div>

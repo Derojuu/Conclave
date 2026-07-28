@@ -1,235 +1,203 @@
-
 # Conclave
 
-<img width="1200" height="630" alt="conclave-social" src="https://github.com/user-attachments/assets/d73fbd09-ad2b-4b76-a8c6-8c09c177cf9c" />
+![Conclave social preview](./public/images/conclave-social.png)
 
-**The Confidential Decision Infrastructure.**
+Conclave is confidential decision infrastructure for organizations. Teams
+create structured campaigns, assign evaluators, collect Nox-encrypted weighted
+scores, and reveal only the verified aggregate result after every required
+evaluation is complete.
 
-Conclave enables organizations to run structured evaluation campaigns while
-keeping individual scores, comments, rankings, and recommendations private.
-Encrypted evaluations are processed through confidential computation, and only
-the final verified decision is revealed.
+This repository is an entry for the **iExec WTF Hackathon Summer Edition** and
+targets the managed iExec Nox deployment on Ethereum Sepolia.
 
-Conclave is designed for high-stakes workflows such as:
+## Nox Integration
 
-- Hiring and admissions
-- Scholarship and grant selection
-- Investment committees
-- Vendor procurement
-- Research reviews
-- Innovation challenges
-- Board and executive decisions
+Conclave uses the official Nox toolchain:
 
-Conclave is not a voting platform, survey tool, form builder, DAO governance
-application, or hackathon platform.
-
-## Core Workflow
+- `@iexec-nox/handle` encrypts evaluator scores in the browser.
+- `@iexec-nox/nox-protocol-contracts` provides confidential Solidity types and
+  operations.
+- `@iexec-nox/nox-hardhat-plugin` compiles and optionally tests the contract.
+- `ConfidentialDecisionEngine` adds encrypted scores without revealing
+  individual values.
+- Public-decryption proofs are enabled only after every evaluator has submitted
+  once for every submission.
+- The contract verifies the proofs, publishes aggregate totals, and selects the
+  winner.
+- Next.js API routes independently verify Sepolia calldata, receipts, senders,
+  and Nox events before writing results to PostgreSQL.
 
 ```text
-Organization
-    |
-Evaluation Campaign
-    |
-Submissions + Assigned Evaluators
-    |
-Encrypted Private Evaluations
-    |
-iExec Nox Confidential Computation
-    |
-Verified Aggregate Decision
+criterion inputs -> normalized weighted score -> Nox encrypted handle
+                 -> confidential on-chain aggregation -> verified totals
 ```
 
-The application database stores encrypted evaluation payloads and public
-verification metadata. It must never store plaintext individual scores,
-private comments, rankings, or recommendations.
+The public chain reveals campaign participation, encrypted handles, final
+per-submission totals, and the winner. It does not reveal individual score
+values. Free-text private comments are deliberately outside the current Nox
+payload because this integration aggregates `uint256` values.
+
+## Product Workflow
+
+1. An administrator creates an organization, template, campaign, and
+   submissions.
+2. Evaluators accept invitations and link unique Sepolia wallets.
+3. The administrator initializes the confidential campaign on-chain.
+4. Each evaluator completes every assigned evaluation.
+5. The browser encrypts each weighted score and submits it to Nox on Sepolia.
+6. After all submissions are complete, the administrator finalizes encrypted
+   aggregates and obtains Nox public-decryption proofs.
+7. The contract verifies and publishes the result.
+8. Conclave verifies the transaction and displays the aggregate ranking.
 
 ## Technology
 
-- Next.js 16 App Router
-- React 19
-- TypeScript
-- Tailwind CSS
-- Supabase Auth and Storage
-- Supabase PostgreSQL
+- Next.js 16, React 19, TypeScript, Tailwind CSS
+- Supabase Auth, Google OAuth, Storage, and PostgreSQL
 - Prisma ORM
-- Google OAuth
 - RainbowKit, Wagmi, and Viem
-- iExec Nox integration boundary
-- Hardhat and Solidity
+- iExec Nox Handle SDK and confidential contracts
+- Hardhat 3 and Solidity 0.8.35
 - Zod and React Hook Form
-- Framer Motion
 
-## Product Modules
+## Prerequisites
 
-- Google authentication and persistent sessions
-- User profiles and account settings
-- Optional wallet connection
-- Multi-organization membership
-- Owner, admin, evaluator, observer, and super-admin roles
-- Organization invitations and member management
-- Evaluation campaign management
-- Generic submission management
-- Reusable and versioned evaluation templates
-- Weighted evaluation criteria
-- Evaluator assignments
-- Client-side confidential evaluation encryption
-- Confidential computation job orchestration
-- Verified aggregate decisions
-- Notifications and audit logs
+- Node.js 22 or 24 LTS
+- pnpm 10.13.1
+- Supabase project with Google Auth
+- Reown project ID
+- Ethereum Sepolia RPC URL
+- Dedicated wallet funded with Sepolia ETH for contract deployment
+- Vercel account for the public deployment
 
-## Getting Started
+Docker is not required for the managed Sepolia and Vercel workflow.
 
-### Prerequisites
+## Install
 
-- Node.js 22 or newer
-- pnpm 10
-- A Supabase project
-- Google OAuth credentials
-- PostgreSQL connection credentials
-
-iExec Nox credentials are required to exercise the complete confidential
-evaluation and computation workflow. Wallet and blockchain credentials are
-optional until blockchain features are used.
-
-### Install Dependencies
+Use the pinned pnpm version:
 
 ```powershell
-pnpm install
-```
-
-### Configure Environment Variables
-
-Copy the template:
-
-```powershell
+npx --yes pnpm@10.13.1 install --frozen-lockfile
 Copy-Item .env.example .env
 ```
 
-Follow [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md) for instructions on
-obtaining and configuring every credential.
+Follow [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md) to obtain every value.
 
-### Prepare the Database
-
-Generate Prisma Client and apply committed migrations:
+Prepare the database:
 
 ```powershell
-pnpm db:generate
-pnpm db:deploy
+npx --yes pnpm@10.13.1 db:generate
+npx --yes pnpm@10.13.1 db:deploy
 ```
 
-For a controlled development database, optional seed data can be installed
-with:
+Run the application:
 
 ```powershell
-pnpm db:seed
+npx --yes pnpm@10.13.1 dev
 ```
 
-Do not run the seed command against production without reviewing the seed
-script for that environment.
+## Deploy
 
-### Start Development
+Deploy `ConfidentialDecisionEngine` to Ethereum Sepolia:
 
 ```powershell
-pnpm dev
+$env:SEPOLIA_RPC_URL="https://YOUR_SEPOLIA_RPC_ENDPOINT"
+$env:SEPOLIA_PRIVATE_KEY="0xYOUR_FUNDED_DEPLOYER_PRIVATE_KEY"
+npx --yes pnpm@10.13.1 deploy:nox:sepolia
 ```
 
-The application is available at `http://localhost:3000` by default.
+Add the resulting address to Vercel as
+`NEXT_PUBLIC_CONCLAVE_NOX_ADDRESS`, configure the other values from
+`.env.example`, and redeploy. The complete deployment and demo steps are in
+[WEB3_SETUP.md](./WEB3_SETUP.md).
 
-## Available Commands
+## Commands
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm dev` | Start the Next.js development server |
-| `pnpm build` | Create a production build |
-| `pnpm start` | Start the production server |
-| `pnpm typecheck` | Run TypeScript checks |
-| `pnpm lint` | Run ESLint |
-| `pnpm test` | Run unit tests |
-| `pnpm format` | Format supported files |
-| `pnpm format:check` | Check formatting |
-| `pnpm compile` | Compile Solidity contracts |
-| `pnpm db:generate` | Generate Prisma Client |
-| `pnpm db:validate` | Validate the Prisma schema |
-| `pnpm db:migrate` | Create and apply a development migration |
-| `pnpm db:deploy` | Apply committed migrations |
-| `pnpm db:seed` | Seed a controlled development database |
-| `pnpm db:studio` | Open Prisma Studio |
+| Command                   | Purpose                                                      |
+| ------------------------- | ------------------------------------------------------------ |
+| `pnpm dev`                | Start the Next.js development server                         |
+| `pnpm build`              | Create a production build                                    |
+| `pnpm typecheck`          | Run TypeScript checks                                        |
+| `pnpm lint`               | Run ESLint                                                   |
+| `pnpm test`               | Run unit tests; no Docker required                           |
+| `pnpm compile`            | Compile all Solidity contracts with the Nox plugin           |
+| `pnpm test:nox`           | Optional local Nox end-to-end contract test; requires Docker |
+| `pnpm deploy:nox:sepolia` | Deploy the confidential engine to Sepolia                    |
+| `pnpm db:deploy`          | Apply committed Prisma migrations                            |
+| `pnpm db:seed`            | Seed only a controlled development database                  |
 
-## Repository Structure
+## Repository Map
 
 ```text
-app/                 Next.js routes, pages, layouts, and API handlers
-components/          Reusable product and UI components
-constants/           Shared application constants
-contracts/           Solidity contracts
-hooks/               Reusable React hooks
-lib/                 Auth, database, security, Nox, and domain services
-prisma/              Prisma schema, migrations, and seed script
-public/              Public static assets
-styles/              Global styles
-test/                Automated tests
-types/               Shared TypeScript types
-utils/               Focused utility functions
+app/                 Next.js pages and verified API routes
+components/          Product UI and Nox browser flows
+contracts/core/      ConfidentialDecisionEngine and registry contracts
+lib/nox/             ABI, score normalization, and Sepolia clients
+prisma/              Schema, migrations, and seed script
+scripts/             Sepolia deployment scripts
+test/unit/           Fast unit tests
+test/contracts/      Optional full Nox integration test
 ```
 
-## Roles
+## Privacy Boundary
 
-| Role | Scope |
-| --- | --- |
-| Super Admin | Platform administration |
-| Owner | Full control of an organization |
-| Admin | Manages campaigns, submissions, templates, and members |
-| Evaluator | Accesses assignments and submits private evaluations |
-| Observer | Read-only access to permitted state and published results |
+Conclave stores:
 
-Permissions are enforced in server-side routes and services. Client-side
-visibility is used for user experience, not as the security boundary.
+- public campaign, submission, assignment, and template configuration;
+- encrypted Nox handles and proofs;
+- transaction hashes and verification metadata;
+- verified aggregate totals, rankings, and winner.
 
-## Confidentiality Model
+Conclave does not store plaintext individual criterion responses or individual
+weighted scores. The evaluator's browser temporarily sees its own inputs to
+calculate the weighted score, then encrypts that score for the contract.
 
-Conclave may store:
+Final aggregate totals are public by design. This prevents the application
+server from inventing a result while preserving the confidentiality of each
+evaluator's contribution.
 
-- Campaign and submission configuration
-- Evaluator assignments
-- Encrypted evaluation payloads
-- Cryptographic hashes and commitments
-- Computation lifecycle metadata
-- Aggregate decision results
-- Neutral aggregate consensus summaries
+## Existing Work and Hackathon Work
 
-Conclave must not expose or store in plaintext:
+Before the WTF Hackathon integration, Conclave already contained the product
+application: Google/Supabase authentication, organizations and roles,
+campaigns, submissions, evaluation templates, assignments, storage, Prisma
+models, audit logs, and the user interface.
 
-- Individual criterion scores
-- Individual rankings
-- Private evaluator comments
-- Individual recommendations
-- Evaluator identities when anonymous evaluation is required
+The hackathon work adds the official iExec Nox integration:
 
-The private key capable of decrypting evaluations must remain within the Nox
-confidential execution and key-management boundary. It must never be placed in
-the application environment or repository.
+- confidential Solidity aggregation contract;
+- official Handle SDK input encryption;
+- evaluator-wallet authorization;
+- Sepolia transaction and event verification;
+- proof-based aggregate publication and winner selection;
+- verified database result persistence;
+- Nox deployment script, unit coverage, optional integration coverage, and
+  deployment documentation.
 
-## Documentation
+## Hackathon Deliverables
 
-- [Environment and credential setup](./ENVIRONMENT_SETUP.md)
-- [Architecture and delivery phases](./DATABASE.md)
-- [Prisma schema](./prisma/schema.prisma)
+- Functional Next.js front end
+- Open-source Solidity and application code
+- Managed Nox Sepolia architecture
+- Complete environment and deployment guide
+- [iExec tooling feedback](./feedback.md)
+- MIT license
 
-## Production Checklist
+The public Vercel URL, deployed Sepolia contract address, repository URL, and
+four-minute demo video should be added to this README and the submission post
+after deployment.
 
-Before deployment:
+## Verification
 
-1. Configure production environment variables and OAuth redirects.
-2. Apply migrations with `pnpm db:deploy`.
-3. Confirm private and public Supabase Storage bucket settings.
-4. Run `pnpm db:validate`.
-5. Run `pnpm typecheck`.
-6. Run `pnpm lint`.
-7. Run `pnpm test`.
-8. Run `pnpm compile`.
-9. Run `pnpm build`.
-10. Verify Nox key custody, callback signatures, and secret rotation procedures.
+Before publishing a deployment:
 
-Never commit `.env`, database credentials, Supabase service keys, Nox API
-tokens, webhook secrets, or cryptographic private keys.
+```powershell
+npx --yes pnpm@10.13.1 typecheck
+npx --yes pnpm@10.13.1 lint
+npx --yes pnpm@10.13.1 test
+npx --yes pnpm@10.13.1 compile
+npx --yes pnpm@10.13.1 build
+```
 
+Never commit `.env`, Supabase service keys, RPC secrets, or wallet private
+keys.
