@@ -19,6 +19,10 @@ import {
   NOX_CHAIN_ID,
   toNoxId,
 } from "@/lib/nox/contract";
+import {
+  retryNoxPublicDecryption,
+  waitForResolvedNoxHandles,
+} from "@/lib/nox/handle-status";
 
 type Props = {
   organizationId: string;
@@ -88,7 +92,12 @@ export function NoxCampaignControl({
       );
     if (!publicClient)
       throw new Error("The Ethereum Sepolia RPC connection is unavailable.");
-    return { address, walletClient, publicClient };
+    return {
+      account: connectedAddress,
+      address,
+      walletClient,
+      publicClient,
+    };
   }
 
   async function initialize() {
@@ -157,6 +166,48 @@ export function NoxCampaignControl({
         return;
       }
       if (!finalized) {
+        setMessage("Checking evaluation completion on Sepolia...");
+        const currentCampaignInfo = await clients.publicClient.readContract({
+          address: clients.address,
+          abi: confidentialDecisionEngineAbi,
+          functionName: "campaignInfo",
+          args: [campaignKey],
+        });
+        const evaluatorCount = Number(currentCampaignInfo[4]);
+        const submissionCounts = await Promise.all(
+          submissions.map(async (submission) => ({
+            title: submission.title,
+            count: Number(
+              await clients.publicClient.readContract({
+                address: clients.address,
+                abi: confidentialDecisionEngineAbi,
+                functionName: "getSubmissionCount",
+                args: [campaignKey, toNoxId(submission.id)],
+              }),
+            ),
+          })),
+        );
+        const incomplete = submissionCounts.filter(
+          ({ count }) => count !== evaluatorCount,
+        );
+        if (incomplete.length) {
+          throw new Error(
+            `Cannot finalize yet. Missing encrypted evaluations: ${incomplete
+              .map(
+                ({ title, count }) => `${title} (${count}/${evaluatorCount})`,
+              )
+              .join(", ")}.`,
+          );
+        }
+
+        await clients.publicClient.simulateContract({
+          account: clients.account,
+          address: clients.address,
+          abi: confidentialDecisionEngineAbi,
+          functionName: "finalizeCampaign",
+          args: [campaignKey],
+        });
+        setMessage("Finalizing encrypted aggregates with Nox...");
         const finalizeHash = await clients.walletClient.writeContract({
           address: clients.address,
           abi: confidentialDecisionEngineAbi,
@@ -171,22 +222,38 @@ export function NoxCampaignControl({
           throw new Error("Campaign finalization reverted.");
       }
 
+      const handles = await Promise.all(
+        submissions.map((submission) =>
+          clients.publicClient.readContract({
+            address: clients.address,
+            abi: confidentialDecisionEngineAbi,
+            functionName: "getAggregateHandle",
+            args: [campaignKey, toNoxId(submission.id)],
+          }),
+        ),
+      );
+      setMessage("Waiting for Nox to resolve encrypted aggregate handles...");
+      await waitForResolvedNoxHandles(handles);
+
       setMessage("Requesting proofs for aggregate totals...");
       const handleClient = await createViemHandleClient(clients.walletClient);
       const proofs: Hex[] = [];
-      for (const submission of submissions) {
-        const handle = await clients.publicClient.readContract({
-          address: clients.address,
-          abi: confidentialDecisionEngineAbi,
-          functionName: "getAggregateHandle",
-          args: [campaignKey, toNoxId(submission.id)],
-        });
-        const decrypted = await handleClient.publicDecrypt(
-          handle as Hex & { __solidityType?: "uint256" },
+      for (const handle of handles) {
+        const decrypted = await retryNoxPublicDecryption(() =>
+          handleClient.publicDecrypt(
+            handle as Hex & { __solidityType?: "uint256" },
+          ),
         );
         proofs.push(decrypted.decryptionProof);
       }
 
+      await clients.publicClient.simulateContract({
+        account: clients.account,
+        address: clients.address,
+        abi: confidentialDecisionEngineAbi,
+        functionName: "publishResults",
+        args: [campaignKey, proofs],
+      });
       const publishHash = await clients.walletClient.writeContract({
         address: clients.address,
         abi: confidentialDecisionEngineAbi,
@@ -262,9 +329,11 @@ export function NoxCampaignControl({
           )}
           {published
             ? "Record published result"
-            : exists
-              ? "Finalize Nox decision"
-              : "Initialize Nox campaign"}
+            : finalized
+              ? "Publish Nox result"
+              : exists
+                ? "Finalize Nox decision"
+                : "Initialize Nox campaign"}
         </Button>
       </div>
       {message ? (
