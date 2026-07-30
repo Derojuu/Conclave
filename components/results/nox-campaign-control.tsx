@@ -1,6 +1,7 @@
 "use client";
 
 import { createViemHandleClient } from "@iexec-nox/handle";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Cpu, Loader2, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { isAddress, type Address, type Hex } from "viem";
@@ -68,11 +69,11 @@ export function NoxCampaignControl({
   const published = campaignInfo?.[3] ?? false;
 
   function requireWallet() {
-    if (!address || !walletClient || !publicClient || !connectedAddress) {
-      throw new Error("Connect the linked wallet on Ethereum Sepolia.");
-    }
+    if (!address) throw new Error("Nox contract address is not configured.");
+    if (!connectedAddress)
+      throw new Error("Connect a wallet to initialize the Nox campaign.");
     if (chainId !== NOX_CHAIN_ID)
-      throw new Error("Switch to Ethereum Sepolia.");
+      throw new Error("Switch the connected wallet to Ethereum Sepolia.");
     if (
       linkedWalletAddress &&
       linkedWalletAddress.toLowerCase() !== connectedAddress.toLowerCase()
@@ -81,6 +82,12 @@ export function NoxCampaignControl({
         "The connected wallet must match your linked account wallet.",
       );
     }
+    if (!walletClient)
+      throw new Error(
+        "The connected wallet signer is unavailable. Reconnect the wallet and try again.",
+      );
+    if (!publicClient)
+      throw new Error("The Ethereum Sepolia RPC connection is unavailable.");
     return { address, walletClient, publicClient };
   }
 
@@ -88,7 +95,6 @@ export function NoxCampaignControl({
     setIsPending(true);
     setMessage("Creating the confidential campaign on Sepolia...");
     try {
-      const clients = requireWallet();
       if (!submissions.length)
         throw new Error("Add at least one submission first.");
       if (
@@ -106,6 +112,7 @@ export function NoxCampaignControl({
       ) {
         throw new Error("Each evaluator must link a unique wallet address.");
       }
+      const clients = requireWallet();
       const hash = await clients.walletClient.writeContract({
         address: clients.address,
         abi: confidentialDecisionEngineAbi,
@@ -235,24 +242,31 @@ export function NoxCampaignControl({
   }
   return (
     <div>
-      <Button
-        disabled={isPending}
-        onClick={() => void (exists ? finalizeAndPublish() : initialize())}
-        type="button"
-      >
-        {isPending ? (
-          <Loader2 className="animate-spin" size={14} />
-        ) : exists ? (
-          <ShieldCheck size={14} />
-        ) : (
-          <Cpu size={14} />
-        )}
-        {published
-          ? "Record published result"
-          : exists
-            ? "Finalize Nox decision"
-            : "Initialize Nox campaign"}
-      </Button>
+      <div className="flex flex-wrap items-center gap-3">
+        <ConnectButton
+          accountStatus="address"
+          chainStatus="icon"
+          showBalance={false}
+        />
+        <Button
+          disabled={isPending}
+          onClick={() => void (exists ? finalizeAndPublish() : initialize())}
+          type="button"
+        >
+          {isPending ? (
+            <Loader2 className="animate-spin" size={14} />
+          ) : exists ? (
+            <ShieldCheck size={14} />
+          ) : (
+            <Cpu size={14} />
+          )}
+          {published
+            ? "Record published result"
+            : exists
+              ? "Finalize Nox decision"
+              : "Initialize Nox campaign"}
+        </Button>
+      </div>
       {message ? (
         <p className="mt-3 text-[10px] text-zinc-500" role="status">
           {message}
