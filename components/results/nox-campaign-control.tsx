@@ -74,7 +74,7 @@ export function NoxCampaignControl({
     if (chainId !== NOX_CHAIN_ID)
       throw new Error("Switch to Ethereum Sepolia.");
     if (
-      !linkedWalletAddress ||
+      linkedWalletAddress &&
       linkedWalletAddress.toLowerCase() !== connectedAddress.toLowerCase()
     ) {
       throw new Error(

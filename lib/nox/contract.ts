@@ -118,6 +118,16 @@ export const confidentialDecisionEngineAbi = [
   },
   {
     type: "function",
+    name: "isEvaluator",
+    stateMutability: "view",
+    inputs: [
+      { name: "campaignId", type: "bytes32" },
+      { name: "evaluator", type: "address" },
+    ],
+    outputs: [{ name: "", type: "bool" }],
+  },
+  {
+    type: "function",
     name: "hasSubmitted",
     stateMutability: "view",
     inputs: [

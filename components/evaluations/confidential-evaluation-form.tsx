@@ -107,8 +107,50 @@ export function ConfidentialEvaluationForm({
     }
 
     setIsPending(true);
-    setMessage("Encrypting the weighted score with iExec Nox...");
+    setMessage("Checking the confidential campaign on Sepolia...");
     try {
+      const campaignKey = toNoxId(campaignId);
+      const submissionKey = toNoxId(submissionId);
+      const campaignInfo = await publicClient.readContract({
+        address: noxContractAddress as Address,
+        abi: confidentialDecisionEngineAbi,
+        functionName: "campaignInfo",
+        args: [campaignKey],
+      });
+      if (!campaignInfo[1]) {
+        throw new Error(
+          "This campaign is not initialized on Sepolia. Ask an administrator to open Results and select Initialize Nox campaign.",
+        );
+      }
+      if (campaignInfo[2]) {
+        throw new Error(
+          "This campaign is already finalized and no longer accepts evaluations.",
+        );
+      }
+      const authorized = await publicClient.readContract({
+        address: noxContractAddress as Address,
+        abi: confidentialDecisionEngineAbi,
+        functionName: "isEvaluator",
+        args: [campaignKey, address],
+      });
+      if (!authorized) {
+        throw new Error(
+          "The connected wallet is not an authorized evaluator for this on-chain campaign.",
+        );
+      }
+      const alreadySubmitted = await publicClient.readContract({
+        address: noxContractAddress as Address,
+        abi: confidentialDecisionEngineAbi,
+        functionName: "hasSubmitted",
+        args: [campaignKey, submissionKey, address],
+      });
+      if (alreadySubmitted) {
+        throw new Error(
+          "This wallet has already submitted a score for this proposal.",
+        );
+      }
+
+      setMessage("Encrypting the weighted score with iExec Nox...");
       const values = getValues();
       const criteria = template.criteria.map((criterion, index) => ({
         ...criterion,
@@ -133,8 +175,8 @@ export function ConfidentialEvaluationForm({
         abi: confidentialDecisionEngineAbi,
         functionName: "submitScore",
         args: [
-          toNoxId(campaignId),
-          toNoxId(submissionId),
+          campaignKey,
+          submissionKey,
           encrypted.handle,
           encrypted.handleProof,
         ],
