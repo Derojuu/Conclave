@@ -1,6 +1,7 @@
 # Conclave
 
-![Conclave social preview](./public/images/conclave-social.png)
+<img width="1200" height="630" alt="conclave-social" src="https://github.com/user-attachments/assets/f3a480fb-607a-4051-8ebf-7d9b2c71e5d5" />
+
 
 Conclave is confidential decision infrastructure for organizations. Teams
 create structured campaigns, assign evaluators, collect Nox-encrypted weighted
