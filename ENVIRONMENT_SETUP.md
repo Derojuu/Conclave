@@ -117,8 +117,7 @@ mainnet funds:
 $env:SEPOLIA_RPC_URL="https://YOUR_SEPOLIA_RPC_ENDPOINT"
 $env:SEPOLIA_PRIVATE_KEY="0xYOUR_DEDICATED_DEPLOYER_PRIVATE_KEY"
 ```
-$env:SEPOLIA_RPC_URL="https://eth-sepolia.g.alchemy.com/v2/alch_R8zHV15hiubDgiZESWhzm"
-$env:SEPOLIA_PRIVATE_KEY="109dc81d4adeb0fd9528df33759db6a14b00ba89e3ef7a4fb6f96067b941f23c"
+
 
 6. Install and deploy with the pinned package manager:
 

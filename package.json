@@ -16,6 +16,7 @@
     "test:nox": "hardhat test test/contracts/confidential-decision-engine.test.ts",
     "compile": "hardhat compile",
     "deploy:nox:sepolia": "hardhat run scripts/deploy-confidential-decision.ts --network sepolia",
+    "deploy:piggy-bank:sepolia": "hardhat run scripts/deploy-confidential-piggy-bank.ts --network sepolia",
     "db:generate": "prisma generate",
     "db:validate": "prisma validate",
     "db:migrate": "prisma migrate dev",
